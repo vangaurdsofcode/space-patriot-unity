@@ -1,0 +1,7 @@
+PASS: dry land accepted and submerged land rejected at normal (0.00, 1.00, 0.00)
+PASS: dry land accepted and submerged land rejected at normal (1.00, 0.00, 0.00)
+PASS: dry land accepted and submerged land rejected at normal (0.00, -1.00, 0.00)
+PASS: dry land accepted and submerged land rejected at normal (0.00, 0.00, 1.00)
+PASS: dry land accepted and submerged land rejected at normal (0.14, 0.99, 0.04)
+PASS: dry land accepted and submerged land rejected at normal (-0.11, 0.99, 0.09)
+PASS: every Oceanworks vertex shares the radial sea level (max error 0.001953 m)

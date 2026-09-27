@@ -1,0 +1,9 @@
+PASS: complete locally generated Kestrel FBX imported.
+Build: kestrel-pair-mirror-20260926-r2
+Renderers: 24 across three LOD levels.
+Bounds: (19.51, 8.59, 20.00) metres.
+Hull tangent-normal chart is neutral after the UV reset; no new hull high-to-low normal bake is claimed. Other parts retain their supplied normal atlas.
+Hull_LOD0: 40002 UV0 coordinates, 0 UV1 coordinates.
+Hull_LOD1: 16758 UV0 coordinates, 0 UV1 coordinates.
+Hull_LOD2: 7297 UV0 coordinates, 0 UV1 coordinates.
+Prefab remains in the ArtLab; active-build.txt and runtime ships were not changed.

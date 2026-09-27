@@ -202,7 +202,10 @@ for label,panel,sub in zip(('CONCEPT SHIP','ASSEMBLED SHIP','SHIP OVERLAY'),pane
 
 # Keep placement data visible in the report; unlike part-normalized overlays,
 # this records every component transform in the ship coordinate system.
-placements={p['id']:{i['name']:{'position_m':i['position'],'rotation_deg':i['rotation']} for i in p['instances']} for p in config['parts']}
+placements={p['id']:{i['name']:({'mirror_of':i['mirror_of'], 'mirror_axis':i.get('mirror_axis','Z'),
+                               'mirror_plane_offset_m':i.get('mirror_offset',0)} if i.get('mirror_of') else
+                              {'position_m':i['position'],'rotation_deg':i['rotation']})
+                       for i in p['instances']} for p in config['parts']}
 results['mount_transforms']=placements
 
 gap=14; cols=3; rows=math.ceil(len(cards)/cols)

@@ -19,7 +19,7 @@ namespace SpacePatriot
         public void Box(int x,int y,int w,int h,bool fill=true){if(fill){for(int j=Math.Max(0,y);j<Math.Min(H,y+h);j++)for(int i=Math.Max(0,x);i<Math.Min(W,x+w);i++)Dot(i,j,ink);}else{Line(x,y,x+w,y);Line(x+w,y,x+w,y+h);Line(x+w,y+h,x,y+h);Line(x,y+h,x,y);}}
         public void Text(string text,int x,int y,int size=2){foreach(char raw in text.ToUpperInvariant()){if(Font.TryGetValue(raw,out var glyph))for(int row=0;row<7;row++){int bits=Convert.ToInt32(glyph.Substring(row*2,2),16);for(int col=0;col<5;col++)if((bits&(1<<(4-col)))!=0)Box(x+col*size,y+row*size,size,size);}x+=6*size;if(x>W-18)break;}}
         public void Circle(int x,int y,int radius){int px=x+radius,py=y;for(int k=1;k<=96;k++){float a=k*Mathf.PI/48;int nx=x+Mathf.RoundToInt(Mathf.Cos(a)*radius),ny=y+Mathf.RoundToInt(Mathf.Sin(a)*radius);Line(px,py,nx,ny);px=nx;py=ny;}}
-        public void Bar(string title,float value,int row){int y=89+row*45;Text(title,28,y);Box(278,y-4,260,25,false);Box(281,y-1,Mathf.RoundToInt(Mathf.Clamp01(value)*253),18);Text((value*100).ToString("000"),554,y);}
+        public void Bar(string title,float value,int row){int y=89+row*45;Text(title,28,y,3);Box(278,y-4,260,25,false);Box(281,y-1,Mathf.RoundToInt(Mathf.Clamp01(value)*253),18);Text((value*100).ToString("000"),554,y,3);}
         public void Flush(){texture.SetPixels32(pixels);texture.Apply(false);}
         public void Dispose(){if(texture)UnityEngine.Object.Destroy(texture);}
     }
@@ -32,6 +32,36 @@ namespace SpacePatriot
     {
         MfdCanvas[] mfd;readonly int[] mfdPage={0,0,0};int radarRange=2,commChannel,powerBus;float mfdNext;string cockpitHint="";
         static readonly int[] Ranges={250,500,1000,2500,5000};
+        static readonly string[] PowerBuses={"engines","weapons","shields"};
+        string MfdMenu(int screen)=>screen==1?"navigation":screen==2&&mfdPage[2]==2?"cargo":"systems";
+        void OpenMfdMenu(int screen)
+        {
+            if(screen<0||screen>=mfdPage.Length)return;
+            page=MfdMenu(screen);menu=true;inputNeutral=true;
+            Cursor.lockState=CursorLockMode.None;Cursor.visible=true;
+        }
+        string MfdControlHint(int action)
+        {
+            if(action>=40&&action<=43)return new[]{"NAV: scroll destination / click route","COMM: scroll channel / click traffic","SENSOR: scroll radar range / click radar","DRIVE: scroll speed limit / click flight page"}[action-40];
+            if(action>=100&&action<=127)
+            {
+                int screen=(action-100)/10,key=(action-100)%10;
+                if(key>=8)return "";
+                string[] names=screen==0?new[]{"Previous flight page","Next flight page","Increase speed limit","Decrease speed limit",flightAssist?"Disable flight assist":"Enable flight assist",powered?"Turn main power off":"Turn main power on",lightsOn?"Turn cabin lights off":"Turn cabin lights on",flying?"Request landing":"Launch ship"}:
+                    screen==1?new[]{"Previous navigation page","Next navigation page","Next destination","Previous destination","Jump to "+worlds[selectedWorld].name,flying?"Request landing":"Launch ship","Cycle radar range","Scan local contacts"}:
+                    new[]{"Previous systems page","Next systems page","Increase "+PowerBuses[powerBus]+" power","Decrease "+PowerBuses[powerBus]+" power","Select next power bus",armed?"Safe weapons":"Arm weapons","Open cargo handling","Open vessel systems"};
+                return names[key]+" / click";
+            }
+            return action>=0&&action<6?new[]{powered?"Main power OFF":"Main power ON",flightAssist?"Flight assist OFF":"Flight assist ON",gearDown?"Retract landing gear":"Extend landing gear",lightsOn?"Cabin lights OFF":"Cabin lights ON","Tactical boost",cruise?"Cruise OFF":"Cruise ON"}[action]+" / click":"Cockpit switch / click";
+        }
+        void MfdFooter(MfdCanvas canvas,int screen)
+        {
+            // The centre bezel's rotary housing overlaps its bottom edge in
+            // the actual seated view. Keep its interaction hint above radar.
+            if(screen!=1)canvas.Line(23,412,615,412);
+            if(screen==1)canvas.Text("CLICK: NAVIGATION / SCROLL: PAGE "+(mfdPage[screen]+1)+"/3",25,63,2);
+            else canvas.Text("CLICK "+MfdMenu(screen).ToUpperInvariant()+" / SCROLL "+(mfdPage[screen]+1)+"/3",25,422,3);
+        }
         void SetupMfd()
         {
             foreach(var control in cabin.GetComponentsInChildren<CockpitControl>())control.InitializeMotion();
@@ -41,12 +71,13 @@ namespace SpacePatriot
         }
         public void OperateMfd(int action,int direction=1)
         {
-            if(action>=40&&action<=43){if(action==40)selectedWorld=(selectedWorld+worlds.Length+direction)%worlds.Length;if(action==41)commChannel=(commChannel+3+direction)%3;if(action==42)radarRange=Mathf.Clamp(radarRange+direction,0,Ranges.Length-1);if(action==43)throttle=Mathf.Clamp(throttle+direction*.05f,.05f,3);}
+            if(action>=40&&action<=43){if(action==40){selectedWorld=(selectedWorld+worlds.Length+direction)%worlds.Length;mfdPage[1]=1;}if(action==41){commChannel=(commChannel+3+direction)%3;mfdPage[1]=2;}if(action==42){radarRange=Mathf.Clamp(radarRange+direction,0,Ranges.Length-1);mfdPage[1]=0;}if(action==43){throttle=Mathf.Clamp(throttle+direction*.05f,.05f,3);mfdPage[0]=0;}}
             else if(action>=100){int screen=(action-100)/10,key=(action-100)%10;if(screen>2)return;
+                if(key>=8)return;
                 if(key<2)mfdPage[screen]=(mfdPage[screen]+3+(key==0?-1:1))%3;
                 else if(screen==0){if(key==2||key==3)throttle=Mathf.Clamp(throttle+(key==2?.05f:-.05f),.05f,3);if(key==4)ActivateCockpit(1);if(key==5)ActivateCockpit(0);if(key==6)ActivateCockpit(3);if(key==7)RequestLanding();}
-                else if(screen==1){if(key==2||key==3)selectedWorld=(selectedWorld+worlds.Length+(key==2?1:-1))%worlds.Length;if(key==4)BeginJump(selectedWorld);if(key==5)RequestLanding();if(key==6)radarRange=(radarRange+1)%Ranges.Length;if(key==7)Signal("scan");}
-                else{if(key==2||key==3)save.vessel.Allocate(new[]{"engines","weapons","shields"}[powerBus],key==2?1:-1);if(key==4)powerBus=(powerBus+1)%3;if(key==5)armed=!armed;if(key==6){menu=true;page="cargo";}if(key==7){menu=true;page="systems";}}
+                else if(screen==1){if(key==2||key==3){selectedWorld=(selectedWorld+worlds.Length+(key==2?1:-1))%worlds.Length;mfdPage[1]=1;}if(key==4)BeginJump(selectedWorld);if(key==5)RequestLanding();if(key==6){radarRange=(radarRange+1)%Ranges.Length;mfdPage[1]=0;}if(key==7)Signal("scan");}
+                else{if(key==2||key==3){save.vessel.Allocate(PowerBuses[powerBus],key==2?1:-1);mfdPage[2]=1;}if(key==4){powerBus=(powerBus+1)%3;mfdPage[2]=1;}if(key==5)armed=!armed;if(key==6){mfdPage[2]=2;OpenMfdMenu(2);}if(key==7){mfdPage[2]=0;OpenMfdMenu(2);}}
             }else ActivateCockpit(action);
             foreach(var control in cabin.GetComponentsInChildren<CockpitControl>())if(control.action==action)control.Turn(direction);
             mfdNext=0;
@@ -57,34 +88,35 @@ namespace SpacePatriot
             foreach(var control in cabin.GetComponentsInChildren<CockpitControl>())if(control.action>=0&&control.action<40)control.SetState(control.action==0?powered:control.action==1?flightAssist:control.action==2?gearDown:control.action==3?lightsOn:control.action==5?cruise:flying);
             foreach(var light in cabin.GetComponentsInChildren<Light>())light.enabled=lightsOn;
             foreach(var c in mfd)c.Clear();
-            var p=mfd[0];p.Text(new[]{"PROP / FLIGHT CONTROL","FUEL / CONSUMPTION","THERMAL / COMPONENTS"}[mfdPage[0]],25,27,2);p.Line(23,54,615,54);
-            if(!powered){p.Text("MAIN BUS OFFLINE",90,200,3);p.Text("MASTER PWR TO START",80,250);}
-            else if(mfdPage[0]==0){p.Bar("FUEL",save.fuel/100,0);p.Bar("THRUST",Mathf.Clamp01(speed/Spec.speed),1);p.Bar("POWER",save.vessel.Factor("engines",powered),2);p.Bar("SHIELD",shield/100,3);p.Bar("HEAT",heat/100,4);p.Text("SPD "+speed.ToString("000")+" M/S",25,337,3);p.Text("LIMIT "+(throttle*100).ToString("000")+"%",340,337);}
-            else if(mfdPage[0]==1){p.Bar("FUEL",save.fuel/100,0);p.Text("JUMP RESERVE "+Mathf.FloorToInt(save.fuel/8),28,170,3);p.Text("LOADED MASS "+LoadedMass.ToString("0.0")+" T",28,232);p.Text("ENGINE ACCEL "+EngineAcceleration.ToString("0.0"),28,276);}
+            var p=mfd[0];p.Text(new[]{"PROP / FLIGHT CONTROL","FUEL / CONSUMPTION","THERMAL / COMPONENTS"}[mfdPage[0]],25,27,3);p.Line(23,54,615,54);
+            if(!powered){p.Text("MAIN BUS OFFLINE",90,200,3);p.Text("MASTER PWR TO START",80,250,3);}
+            else if(mfdPage[0]==0){p.Bar("FUEL",save.fuel/100,0);p.Bar("THRUST",Mathf.Clamp01(speed/Spec.speed),1);p.Bar("POWER",save.vessel.Factor("engines",powered),2);p.Bar("SHIELD",shield/100,3);p.Bar("HEAT",heat/100,4);p.Text("SPD "+speed.ToString("000")+" M/S",25,337,4);p.Text("LIMIT "+(throttle*100).ToString("000")+"%",340,337,3);}
+            else if(mfdPage[0]==1){p.Bar("FUEL",save.fuel/100,0);p.Text("JUMP RESERVE "+Mathf.FloorToInt(save.fuel/8),28,170,3);p.Text("LOADED MASS "+LoadedMass.ToString("0.0")+" T",28,232,3);p.Text("ENGINE ACCEL "+EngineAcceleration.ToString("0.0"),28,276,3);}
             else for(int i=0;i<save.vessel.components.Count;i++)p.Bar(save.vessel.components[i].id,save.vessel.components[i].temperature/100,i);
-            p.Text((flightAssist?"IFCS":"DECOUPLED")+" / "+(gearDown?"GEAR DOWN":"GEAR UP"),25,393);p.Text("PREV NEXT   +/- LIMIT",25,419,1);
+            p.Text((flightAssist?"IFCS":"DECOUPLED")+" / "+(gearDown?"GEAR DOWN":"GEAR UP"),25,387,3);MfdFooter(p,0);
             var n=mfd[1];n.Text(new[]{"NAV / SURFACE RADAR","ROUTE / SECTOR ATLAS","COMM / TRAFFIC FEED"}[mfdPage[1]],25,27);n.Line(23,54,615,54);
-            if(mfdPage[1]==0){foreach(int radius in new[]{50,100,147})n.Circle(246,229,radius);n.Line(90,229,400,229);n.Line(246,73,246,385);n.Line(236,242,246,218,true);n.Line(246,218,256,242,true);n.Line(236,242,256,242,true);
+            if(mfdPage[1]==0){foreach(int radius in new[]{50,100,147})n.Circle(246,229,radius);n.Line(90,229,400,229);n.Line(246,83,246,385);n.Line(236,242,246,218,true);n.Line(246,218,256,242,true);n.Line(236,242,256,242,true);
                 foreach(var place in world.places){Vector3 v=ship.InverseTransformDirection(place.position-ship.position);int x=246+Mathf.RoundToInt(v.x/Ranges[radarRange]*145),y=229-Mathf.RoundToInt(v.z/Ranges[radarRange]*145);if(Vector2.Distance(new Vector2(x,y),new Vector2(246,229))<145)n.Box(x-2,y-2,5,5);}
                 foreach(var vessel in traffic.Values)if(vessel.gameObject.activeSelf){Vector3 v=ship.InverseTransformDirection(vessel.position-ship.position);int x=246+Mathf.RoundToInt(v.x/Ranges[radarRange]*145),y=229-Mathf.RoundToInt(v.z/Ranges[radarRange]*145);if(Vector2.Distance(new Vector2(x,y),new Vector2(246,229))<145){n.Line(x-3,y-3,x+3,y+3,true);n.Line(x-3,y+3,x+3,y-3,true);}}
-                n.Text("ALT M",452,85);for(int i=0;i<9;i++)n.Line(452,130+i*25,470+(i%2)*8,130+i*25);n.Text(Mathf.Max(0,ship.position.y-world.SurfaceAt(ship.position)-StandHeight).ToString("0000"),492,224,3);n.Text("RNG "+Ranges[radarRange],28,395);n.Text("HDG "+ship.eulerAngles.y.ToString("000"),355,395);}
+                n.Text("ALT M",452,85);for(int i=0;i<9;i++)n.Line(452,130+i*25,470+(i%2)*8,130+i*25);n.Text(Mathf.Max(0,world.AltitudeAboveSurface(ship.position)-StandHeight).ToString("0000"),492,224,3);n.Text("RNG "+Ranges[radarRange],28,395);n.Text("HDG "+ship.eulerAngles.y.ToString("000"),355,395);}
             else if(mfdPage[1]==1){n.Text(worlds[selectedWorld].name,28,100,3);n.Text(worlds[selectedWorld].system+" SYSTEM",28,157);n.Text("JUMP COST 8 FUEL",28,218);n.Text("FUEL "+save.fuel.ToString("0"),28,259);n.Text(!flying?"LAUNCH FIRST":gearDown?"RETRACT GEAR":speed>70?"REDUCE SPEED":"ALIGNMENT AVAILABLE",28,320);n.Text("SELECT +/-   RIGHT 1 JUMP",28,395);}
             else{n.Text(new[]{"PORT OPERATIONS","FREIGHT DISPATCH","SECTOR PATROL"}[commChannel],28,84);int count=0;for(int i=save.society.events.Count-1;i>=0&&count<6;i--){string text=save.society.events[i];if(commChannel==1&&!text.Contains("food")&&!text.Contains("Freight"))continue;if(commChannel==2&&!text.Contains("patrol"))continue;count++;n.Text(text.Length>47?text.Substring(0,47):text,25,135+count*39,2);}n.Text("COMM DIAL SELECTS CHANNEL",28,395);}
-            var s=mfd[2];s.Text(new[]{"SYS / VESSEL STATUS","POWER / DISTRIBUTION","HOLD / CARGO MANIFEST"}[mfdPage[2]],25,27);s.Line(23,54,615,54);
-            if(mfdPage[2]==0){for(int i=0;i<save.vessel.components.Count;i++){var c=save.vessel.components[i];s.Text(c.id,28,91+i*43);s.Text(c.enabled?c.health.ToString("000")+"%":"OFFLINE",438,91+i*43);}s.Text("CABIN "+save.vessel.pressure.ToString("000")+"%",28,373);}
-            else if(mfdPage[2]==1){string[] buses={"engines","weapons","shields"};for(int i=0;i<3;i++){s.Text((i==powerBus?"> ":"  ")+buses[i],28,107+i*75,3);s.Text(save.vessel.Allocation(buses[i]).ToString("00"),500,107+i*75,3);}s.Text("12 POINT BUS / +/- ADJUST",28,371);}
-            else{s.Text("ORGANICS "+save.organics,28,103,3);s.Text("ORE      "+save.ore,28,167,3);s.Text("CRYSTAL  "+save.crystal,28,231,3);s.Text("CAPACITY "+Progression.Used(save)+" / "+Spec.capacity,28,313);s.Text(cargoDoor?"HATCH OPEN / LAUNCH LOCK":"HATCH SEALED",28,373);}
-            s.Text("PREV NEXT / SELECT / +/-",28,419,1);foreach(var c in mfd)c.Flush();
+            var s=mfd[2];s.Text(new[]{"SYS / VESSEL STATUS","POWER / DISTRIBUTION","HOLD / CARGO MANIFEST"}[mfdPage[2]],25,27,3);s.Line(23,54,615,54);
+            if(mfdPage[2]==0){for(int i=0;i<save.vessel.components.Count;i++){var c=save.vessel.components[i];s.Text(c.id,28,91+i*43,3);s.Text(c.enabled?c.health.ToString("000")+"%":"OFFLINE",438,91+i*43,3);}s.Text("CABIN "+save.vessel.pressure.ToString("000")+"%",28,373,3);}
+            else if(mfdPage[2]==1){string[] buses={"engines","weapons","shields"};for(int i=0;i<3;i++){s.Text((i==powerBus?"> ":"  ")+buses[i],28,107+i*75,3);s.Text(save.vessel.Allocation(buses[i]).ToString("00"),500,107+i*75,3);}s.Text("12 POINT BUS / +/- ADJUST",28,371,3);}
+            else{s.Text("ORGANICS "+save.organics,28,103,3);s.Text("ORE      "+save.ore,28,167,3);s.Text("CRYSTAL  "+save.crystal,28,231,3);s.Text("CAPACITY "+Progression.Used(save)+" / "+Spec.capacity,28,313,3);s.Text(cargoDoor?"HATCH OPEN / LAUNCH LOCK":"HATCH SEALED",28,373,3);}
+            MfdFooter(n,1);MfdFooter(s,2);foreach(var c in mfd)c.Flush();
         }
         void PointCockpit()
         {
-            cockpitHint="";if(!cockpit||Mouse.current==null)return;var ray=view.ScreenPointToRay(Mouse.current.position.ReadValue());
+            cockpitHint="";if(!cockpit||menu||Mouse.current==null)return;var ray=view.ScreenPointToRay(Mouse.current.position.ReadValue());
             if(!Physics.Raycast(ray,out var hit,8,1<<2)||!hit.collider.TryGetComponent<CockpitControl>(out var control))return;
-            int a=control.action;cockpitHint=a>=40&&a<=43?new[]{"NAV: scroll destination / click route","COMM: scroll channel / click traffic","SENSOR: scroll radar range / click radar","DRIVE: scroll speed limit"}[a-40]:a>=100?"MFD softkey / click":a>=0?"Cockpit switch / click":"Live multifunction display";
+            int a=control.action;cockpitHint=a>=0?MfdControlHint(a):control.screen>=0&&control.screen<3?"Click: "+MfdMenu(control.screen)+" / Scroll: display page":"Live multifunction display";
             float wheel=Mouse.current.scroll.ReadValue().y;if(a>=40&&a<=43&&Mathf.Abs(wheel)>.01f){OperateMfd(a,wheel>0?1:-1);return;}
+            if(a<0&&control.screen>=0&&control.screen<3&&Mathf.Abs(wheel)>.01f){int screen=control.screen;mfdPage[screen]=(mfdPage[screen]+3+(wheel>0?1:-1))%3;mfdNext=0;return;}
             if(!Mouse.current.leftButton.wasPressedThisFrame)return;
             if(a>=40&&a<=43){if(a==40)mfdPage[1]=1;if(a==41)mfdPage[1]=2;if(a==42)mfdPage[1]=0;if(a==43)mfdPage[0]=(mfdPage[0]+1)%3;mfdNext=0;}
-            else if(a>=0)OperateMfd(a);else if(control.screen>=0){mfdPage[control.screen]=(mfdPage[control.screen]+1)%3;mfdNext=0;}
+            else if(a>=0)OperateMfd(a);else if(control.screen>=0)OpenMfdMenu(control.screen);
         }
     }
 }

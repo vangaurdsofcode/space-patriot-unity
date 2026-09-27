@@ -1,0 +1,14 @@
+PASS 100 original craft remain and Kestrel has its own prototype slot
+PASS Actual FrontierGame ship uses registered authored Kestrel exterior
+PASS Eight collision proxies and model axes match the playable ship
+PASS All three imported mesh LODs survive runtime instantiation
+PASS Both main legs and nose gear are connected across LODs
+PASS Gear command retracts every rendered LOD leg
+PASS Gear command restores every rendered LOD leg
+PASS Temporary pressure deck retains live cockpit controls and MFD keys
+PASS Actual launch command clears the surface and enters flight
+PASS Actual keyboard forward thrust flies the authored ship nose first
+PASS Runtime collision proxies remain attached during flight
+PASS Runtime LOD0 renders all eight authored components
+PASS Runtime LOD1 renders all eight authored components
+PASS Runtime LOD2 renders all eight authored components

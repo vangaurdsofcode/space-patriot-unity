@@ -1,0 +1,16 @@
+Unity 6000.3.25f1 live Editor check, 2026-09-26
+
+World: Earth, walking view at local (720.00, 6.61, 775.00)
+Source reference: Reference/Original/source/visuals/stage.js sets FogExp2 to 0.00022.
+Before: Unity RenderSettings.fogDensity was 0.0008; at that density the 1.4-1.85 km Gaussian woodland band was almost completely washed out.
+After: Unity surface and Gaussian vegetation fog use 0.00022, matching the source engine. The live screenshot at this value shows the woodland transition; the no-fog screenshot was used only to isolate the cause.
+Runtime vegetation: 20,637 meadow splats and 23,654 woodland splats built for the test neighborhood.
+Editor ground truth after the C# edit: compiling=false, compilationFailed=false, consoleErrors=0, consoleWarnings=0.
+
+Captures:
+- worlds-earth-gaussian-pass.png: before density correction
+- worlds-earth-gaussian-no-fog.png: fog isolation control
+- worlds-earth-gaussian-source-fog.png: live 0.00022 source-density test
+- worlds-earth-gaussian-fog-fixed.png: final live capture after code change
+
+Scope: This validates the Earth temperate vegetation/fog transition only. It is not evidence that all world biomes, planetary ranges, collision or climate visuals match the HTML game.

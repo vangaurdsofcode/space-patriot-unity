@@ -33,9 +33,9 @@ Shader "SpacePatriot/WorldworksPlanet" {
   else if(type<4.5){float crack=1.-smoothstep(.012,.085,abs(worldNoise(n*lerp(28.,170.,lod)+o)-.5));albedo=lerp(float3(.66,.77,.81),float3(.035,.20,.27),crack*.65)*(.8+.3*large);}
   else{albedo=lerp(float3(.038,.034,.034),float3(.16,.075,.047),grain);float lava=1.-smoothstep(.025,.09,abs(worldNoise(n*lerp(18.,110.,lod)+o)-.5));lava*=smoothstep(.25,.58,worldNoise(n*13.+o));albedo=lerp(albedo,float3(.29,.043,.008),lava*.7)+float3(2.5,.28,.014)*lava;}
   if(!(_Liquid>.5&&h<=.02))albedo*=_WorldTint.rgb*(.92+.08*(.5+.5*sin(h*.001*_PlanetRadius*440.+worldNoise(n*370.+o)*2.)));return albedo;}
- struct A {float4 p:POSITION;float3 n:NORMAL;float2 uv:TEXCOORD0;};
- struct V {float4 p:SV_POSITION;float3 w:TEXCOORD0;float3 n:TEXCOORD1;float2 uv:TEXCOORD2;float fog:TEXCOORD3;};
- V vert(A i){V o;o.w=TransformObjectToWorld(i.p.xyz);o.p=TransformWorldToHClip(o.w);o.n=TransformObjectToWorldNormal(i.n);o.uv=i.uv;o.fog=0;return o;}
+ struct A {float4 p:POSITION;float3 n:NORMAL;float2 uv:TEXCOORD0;float4 fields:COLOR;};
+ struct V {float4 p:SV_POSITION;float3 w:TEXCOORD0;float3 n:TEXCOORD1;float2 uv:TEXCOORD2;float fog:TEXCOORD3;float4 fields:TEXCOORD4;};
+ V vert(A i){V o;o.w=TransformObjectToWorld(i.p.xyz);o.p=TransformWorldToHClip(o.w);o.n=TransformObjectToWorldNormal(i.n);o.uv=i.uv;o.fields=i.fields;o.fog=0;return o;}
  half4 frag(V i):SV_Target {
   float3 n=normalize(i.n);float dist=distance(i.w,_WorldSpaceCameraPos);float local=i.uv.x;
   float3 detail=SAMPLE_TEXTURE2D(_GroundMap,sampler_GroundMap,i.w.xz*.045).rgb;
@@ -43,7 +43,15 @@ Shader "SpacePatriot/WorldworksPlanet" {
   float3 weights=pow(abs(n),4);weights/=max(.001,weights.x+weights.y+weights.z);
   float3 rock=SAMPLE_TEXTURE2D(_RockMap,sampler_RockMap,i.w.zy*.08).rgb*weights.x+SAMPLE_TEXTURE2D(_RockMap,sampler_RockMap,i.w.xz*.08).rgb*weights.y+SAMPLE_TEXTURE2D(_RockMap,sampler_RockMap,i.w.xy*.08).rgb*weights.z;
   float meadow=smoothstep(.6,.94,n.y)*_Living;
-  float3 land=lerp(lerp(broad,detail,.6),lerp(float3(.09,.145,.035),float3(.22,.28,.07),detail.g),meadow*.83);land=lerp(rock,land,smoothstep(.55,.85,n.y));
+  float moisture=saturate(i.fields.r),temperature=saturate(i.fields.g),rockExposure=saturate(i.fields.b);
+  float3 lush=lerp(float3(.055,.13,.036),float3(.18,.29,.072),saturate(detail.g*.8+moisture*.22));
+  float3 dry=lerp(float3(.25,.145,.065),float3(.54,.36,.16),saturate(detail.r*.62+temperature*.38));
+  float3 localGround=lerp(dry,lush,smoothstep(.24,.78,moisture));
+  float exposedRock=smoothstep(.46,.83,rockExposure)*(1.-.32*moisture);
+  localGround=lerp(localGround,lerp(rock,float3(.34,.32,.28),.35),exposedRock);
+  float snow=smoothstep(.34,.12,temperature)*smoothstep(.28,.68,rockExposure);
+  localGround=lerp(localGround,float3(.72,.79,.82),snow*.82);
+  float3 land=lerp(lerp(broad,detail,.6),localGround,lerp(.83,1.,_Living));land=lerp(rock,land,smoothstep(.55,.85,n.y));
   float3 radial=normalize(i.w-_PlanetCenter.xyz),sourceN=normalize(_SourceRight.xyz*radial.x+_SourceUp.xyz*radial.y+_SourceForward.xyz*radial.z);
   float3 globe=sourceMaterial(sourceN,sourceHeight(sourceN),1-smoothstep(9000,18000,dist));
   if(_Living>.5){

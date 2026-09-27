@@ -94,7 +94,7 @@ namespace SpacePatriot
                 Text("TAB  NAVIGATION     ESC  FLIGHT COMPUTER",31,861,510,23,12,muted,true);
                 if(!walking)
                 {
-                    Fill(31,702,256,121,new Color(.025f,.045f,.05f,.80f));Tag("VELOCITY",speed.ToString("0")+" m/s",48,720,142);Tag("ALTITUDE",Mathf.Max(0,ship.position.y-world.SurfaceAt(ship.position)-StandHeight).ToString("0")+" m",179,720,95);
+                    Fill(31,702,256,121,new Color(.025f,.045f,.05f,.80f));Tag("VELOCITY",speed.ToString("0")+" m/s",48,720,142);Tag("ALTITUDE",Mathf.Max(0,world.AltitudeAboveSurface(ship.position)-StandHeight).ToString("0")+" m",179,720,95);
                     Text("SPEED LIMIT  "+(throttle*100).ToString("0")+"%",48,784,220,24,13,muted,true);
                     Fill(1150,687,259,136,new Color(.025f,.045f,.05f,.80f));Meter("HULL",HullPercent,100,1170,704,218,amber);Meter("FUEL",save.fuel,100,1170,755,218,aqua);
                     Text("SHIELD  "+shield.ToString("0")+"    HEAT  "+heat.ToString("0"),1150,840,259,24,12,heat>80?amber:muted,true,TextAnchor.UpperRight);
@@ -225,24 +225,27 @@ namespace SpacePatriot
         }
         void Hangar()
         {
-            for(int i=0;i<10;i++){int col=i%5,row=i/5;if(Button(ShipSpec.Fleet[i*10].name.Split(' ')[0],400+col*184,228+row*39,173,33,selectedShip/10==i))selectedShip=i*10+selectedShip%10;}
-            if(Button("← FINISH",400,317,195,35))selectedShip=selectedShip/10*10+(selectedShip%10+9)%10;
+            for(int i=0;i<10;i++){int col=i%6,row=i/6;if(Button(ShipSpec.Fleet[i*10].name.Split(' ')[0],400+col*153,228+row*39,145,33,selectedShip<100&&selectedShip/10==i))selectedShip=i*10+(selectedShip<100?selectedShip%10:0);}
+            if(ShipSpec.Fleet.Length>100&&Button("KESTREL",400+4*153,267,145,33,selectedShip==100))selectedShip=100;
+            if(selectedShip<100&&Button("← FINISH",400,317,195,35))selectedShip=selectedShip/10*10+(selectedShip%10+9)%10;
             Text(ShipSpec.Fleet[selectedShip].name,611,319,470,36,21,paper,true);
-            if(Button("FINISH →",1113,317,195,35))selectedShip=selectedShip/10*10+(selectedShip%10+1)%10;
+            if(selectedShip<100&&Button("FINISH →",1113,317,195,35))selectedShip=selectedShip/10*10+(selectedShip%10+1)%10;
             var spec=ShipSpec.Fleet[selectedShip];Text(spec.designation+" / "+spec.role,400,371,915,27,13,amber,true);Text(spec.description,400,411,890,77,19,muted);
             Tag("SPEED",spec.speed.ToString("0")+" m/s",400,503,220);Tag("HOLD",spec.capacity+" units",634,503,210);Tag("LENGTH",spec.length.ToString("0.0")+" m",868,503,220);Tag("PRICE",spec.price+" CR",1102,503,205);
-            bool owned=save.ownedShips.Contains(selectedShip);bool eligible=AtPort&&Progression.Used(save)<=spec.capacity&&cargoTransfer==null;
+            var authored=AuthoredShipVisuals.Find(spec);
+            bool visualReady=spec.family>=0||(authored!=null&&Resources.Load<GameObject>(authored.resource)!=null);
+            bool owned=save.ownedShips.Contains(selectedShip);bool eligible=visualReady&&AtPort&&Progression.Used(save)<=spec.capacity&&cargoTransfer==null;
             if(Button(save.ship==selectedShip?"CURRENT VESSEL":owned?"ASSIGN VESSEL":"PURCHASE & ASSIGN",400,600,430,49,true,eligible&&save.ship!=selectedShip&&(owned||save.credits>=spec.price)))
             {
                 if(!owned){save.credits-=spec.price;save.ownedShips.Add(selectedShip);}
-                save.ship=selectedShip;save.hull=spec.health;activeDeck=null;RespawnShip();walking=true;walkPosition=ship.position+new Vector3(-Spec.width*.65f,1.75f-StandHeight,-3);Save();Toast("Fleet assignment complete. Original vessel dimensions and flight specifications restored.");
+                save.ship=selectedShip;save.hull=spec.health;activeDeck=null;RespawnShip();walking=true;SetSurfaceWalker(ship.position+new Vector3(-Spec.width*.65f,0,-3),ship.forward);Save();Toast("Fleet assignment complete. "+spec.name+" is ready at the port.");
             }
             int service=Mathf.CeilToInt((Spec.health-save.hull)*1.4f+(100-save.fuel)*2);
             if(Button("REPAIR + REFUEL / "+service+" CR",851,600,456,49,false,AtPort&&save.credits>=service))
             {save.credits-=service;save.hull=Spec.health;save.fuel=100;shield=100;systemsHull=save.hull;Save();Toast("Hull repaired and fuel replenished. Component maintenance is available under Vessel systems.");}
             int rearm=0;for(int i=0;i<WeaponSpec.All.Length;i++){var w=WeaponSpec.All[i];if(i!=1)rearm+=Mathf.Max(0,w.mag+w.reserve-save.ammo[i].mag-save.ammo[i].reserve)*(i==2?12:1);}
             if(Button("REARM / "+rearm+" CR",851,666,456,42,false,AtPort&&rearm>0&&save.credits>=rearm)){save.credits-=rearm;save.ammo=System.Array.ConvertAll(WeaponSpec.All,w=>new WeaponAmmo(w.mag,w.reserve));reloadRemaining=0;reloadWeapon=-1;Save();Toast("Magazines and reserve ammunition replenished.");}
-            Text((spec.family==9?"4":spec.family==7?"3":spec.family==2||spec.family==5||spec.family==6?"2":"1")+" walkable decks · F leave helm · E stations / bulkheads. Service lift: E down, Shift+E up.",400,654,425,50,15,muted);
+            Text((spec.interiorFamily==9?"4":spec.interiorFamily==7?"3":spec.interiorFamily==2||spec.interiorFamily==5||spec.interiorFamily==6?"2":"1")+" walkable decks · F leave helm · E stations / bulkheads. Service lift: E down, Shift+E up.",400,654,425,50,15,muted);
             if(AtPort&&save.fuel<12&&Button("PORT EMERGENCY FUEL / 12 UNITS",400,706,460,42))
             {save.fuel=12;Save();Toast("Safety reserve issued. No charge.");}
         }
@@ -262,7 +265,7 @@ namespace SpacePatriot
                 "Mouse while holding right button, or arrow keys: pitch/yaw · Q/E or [/] roll · U level to horizon",
                 "Space or L launch · T flight assist · G gear · P power · Cockpit switch for cruise · H jump · Double-tap W tactical thrust",
                 "X brake · G extend gear · L lands on a pad or any solid ground below 650 m and 45 m/s. Buy at exchange; load at cargo ramp.",
-                "V cockpit/chase · Z/I instruments · Click modeled switches/MFDs · Y arm weapons · 1/2/3 select · R reload · C target · Left click fire · Tab navigation · Esc menu"};
+                "V cockpit/chase · Z/I instruments · Click MFD for its menu; scroll MFD pages or knobs. Hover switches for actions. Y arm · 1/2/3 select · R reload · C target · Tab navigation · Esc menu"};
             for(int i=0;i<left.Length;i++){Text(left[i],x,y+i*71,110,30,12,amber,true);Text(right[i],x+118,y+i*71,started?783:522,65,16,paper);}
         }
         void Settings(float x,float y)

@@ -2,7 +2,7 @@
 
 Thanks for helping build the ships and places in Space Patriot. The current Kestrel K-017 is a review candidate, not an approved final asset. It gives us a working Unity import and a repeatable comparison workflow; the overlays still show silhouette, paint, and component-shape errors that need an artist's eye.
 
-The public repository is [xxhendrixx/space-patriot-unity](https://github.com/xxhendrixx/space-patriot-unity). Fork it, create a branch for each asset pass, and open a pull request with the comparison renders attached or committed. A local-only Blender pass can also be shared as the contribution folder described below.
+The public repository is [xxhendrixx/space-patriot-unity](https://github.com/xxhendrixx/space-patriot-unity). Fork it, create a branch for each asset pass, and open a pull request with the comparison renders attached or committed. A local-only Blender pass can also be shared as the contribution folder described below. Install [Git LFS](https://git-lfs.com/) before cloning or pulling: the editable `.blend`, interchange `.fbx`/`.glb` and final Kestrel texture files are stored through LFS. A normal `git pull` then retrieves updates without downloading the whole repository again.
 
 ## Start here
 
@@ -48,4 +48,4 @@ The model generator is optional for hand-authored Blender work; the final `.blen
 
 ## Current Kestrel review baseline
 
-The candidate includes the raw component meshes and provenance, editable Blender assembly, FBX and baked maps, Unity ArtLab prefab, Unity captures, six directional renders for the ship and each component, and comparison outputs. The current Unity import validates 24 mesh renderers across three LODs with bounds of approximately 19.50 × 9.49 × 15 metres. Concept paint is limited to the concept-facing surfaces; unsupported angles use a restrained base finish and still need authored detail. The whole-ship silhouette, mount fit and color projection need further art review; treat this as a baseline for iteration, not a finished ship.
+The current symmetric Kestrel candidate includes editable Blender assembly, FBX and baked maps, Unity ArtLab prefab, Unity captures, six directional renders, and comparison outputs. It has a separate selectable playable prototype slot, `SP-K017`, with validated launch, flight, gear and all three LODs; the existing 100 ships retain their assignments. The cockpit is still a temporary cabin. Concept paint, mount fit, gear geometry and surface detail need further art review; treat this as a working baseline, not a finished ship.

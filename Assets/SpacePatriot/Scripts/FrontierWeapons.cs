@@ -23,7 +23,7 @@ namespace SpacePatriot
         public WeaponAmmo Ammo=>save.ammo[WeaponIndex];
         void UpdateWeapons(float dt)
         {
-            if(!started||dead||menu)return;
+            if(!started||dead||menu||bindings==null||view==null||save==null||save.ammo==null)return;
             var pad=Gamepad.current;
             if(bindings.Down("Arm weapons"))armed=!armed;
             if(Down(Key.Digit1)){if(walking||aboard)groundWeapon=3;else shipWeapon=0;armed=true;}

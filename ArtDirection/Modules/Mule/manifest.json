@@ -1,0 +1,242 @@
+{
+  "schema": "space-patriot-component-reference-v1",
+  "family": {
+    "index": 2,
+    "name": "Mule",
+    "class": "Freighter",
+    "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+    "catalog_indices": [
+      20,
+      29
+    ],
+    "runtime_exterior_resource": "OriginalShips/refit-2",
+    "runtime_interior_resource": "OriginalShips/cabin-2"
+  },
+  "component": {
+    "id": "PressureHull",
+    "name": "Mule central pressure hull",
+    "status": "reference-ready-for-local-mesh-experiment; not production accepted",
+    "source_identity": "MULE, top-right panel of ArtDirection/fleet-target.png",
+    "source_board_length_metres": 50,
+    "nominal_catalog_variant": "LW-S021 / Mule Chalk",
+    "nominal_ship_dimensions_metres_length_beam_height": [
+      34.09256804665318,
+      22.4067589469254,
+      7.53174953722395
+    ],
+    "proposed_component_dimensions_metres_length_beam_height": [
+      26,
+      9.6,
+      7.1
+    ],
+    "scale_note": "The existing 50 m perspective concept is interpreted within existing catalog ship dimensions. 26 x 9.6 x 7.1 m is a new component envelope, not an existing measured mesh. It leaves lateral space for six external pods/trusses and fore/aft space for thrusters. Full assembly fit must be verified before replacing runtime geometry."
+  },
+  "reference": {
+    "source": "pressure-hull-turnaround-v1.png",
+    "prompt": "pressure-hull-v1.prompt.txt",
+    "source_sha256": "d03ef0bff9572d1881c0f2399f98d4ed62d98d50e2e5c1299f5b46c7afce979c",
+    "generation_tool": "built-in image_gen.imagegen",
+    "input_image": "ArtDirection/fleet-target.png",
+    "generated_original": "C:/Users/hendr/.codex/generated_images/01a0dfcb-9b20-7a71-b9ee-2ce4f7cae1dd/exec-7563938e-b553-408c-a3b4-7db0b6ab1ac9.png",
+    "interpretation": "A source-faithful design study for the central cab/pressure tunnel, excluding the six freight pods and outer systems visible on the original board. Generated views are not guaranteed to be projections of one manifold 3D object."
+  },
+  "registration": {
+    "script": "prepare_pressure_hull_views.py",
+    "report": "view-registration.json",
+    "pixels_per_metre": 40,
+    "canvas_pixels": [
+      1536,
+      768
+    ],
+    "origin": "Component bounding-box centre",
+    "canonical_runtime_axes": {
+      "x": "starboard/right",
+      "y": "dorsal/up",
+      "z": "nose/forward"
+    },
+    "blender_export_note": "Do not infer the orientation of a raw Tripo mesh. Fit its nose/up/right landmarks explicitly, preserve a transform record, and verify final Unity +Z nose/+Y up before export. No raw mesh transform exists yet.",
+    "view_order": [
+      "top",
+      "bottom",
+      "port",
+      "starboard",
+      "nose",
+      "aft"
+    ],
+    "views": {
+      "top": {
+        "camera_axis": "+Y",
+        "image_right": "-Z",
+        "image_up": "+X",
+        "metres_u_v": [
+          26,
+          9.6
+        ],
+        "registered": "views-registered/top.png",
+        "raw": "views-raw/top.png"
+      },
+      "bottom": {
+        "camera_axis": "-Y",
+        "image_right": "-Z",
+        "image_up": "-X",
+        "metres_u_v": [
+          26,
+          9.6
+        ],
+        "registered": "views-registered/bottom.png",
+        "raw": "views-raw/bottom.png"
+      },
+      "port": {
+        "camera_axis": "-X",
+        "image_right": "-Z",
+        "image_up": "+Y",
+        "metres_u_v": [
+          26,
+          7.1
+        ],
+        "registered": "views-registered/port.png",
+        "raw": "views-raw/port.png"
+      },
+      "starboard": {
+        "camera_axis": "+X",
+        "image_right": "+Z",
+        "image_up": "+Y",
+        "metres_u_v": [
+          26,
+          7.1
+        ],
+        "registered": "views-registered/starboard.png",
+        "raw": "views-raw/starboard.png"
+      },
+      "nose": {
+        "camera_axis": "+Z",
+        "image_right": "-X",
+        "image_up": "+Y",
+        "metres_u_v": [
+          9.6,
+          7.1
+        ],
+        "registered": "views-registered/nose.png",
+        "raw": "views-raw/nose.png"
+      },
+      "aft": {
+        "camera_axis": "-Z",
+        "image_right": "+X",
+        "image_up": "+Y",
+        "metres_u_v": [
+          9.6,
+          7.1
+        ],
+        "registered": "views-registered/aft.png",
+        "raw": "views-raw/aft.png"
+      }
+    },
+    "limitations": [
+      "Bounds normalization rescales each view independently. It corrects metric extents but does not prove agreement of individual panels, windows or surface normals.",
+      "Original generated end elevations use a different px/m scale from side/top views. Retain source and report; do not use the raw sheet directly as a six-view bake atlas.",
+      "Do not project background pixels into the hull. Registration outputs contain a foreground alpha mask.",
+      "Some tiny dark exposed service features fall outside the main pressure shell; ensure their mesh representation before baking their texture into a flat shell."
+    ]
+  },
+  "interior_contract": {
+    "source": "Assets/SpacePatriot/Resources/DeckPlans.json, plans[family=2]",
+    "generator": "Tools/AssetPipeline/visuals/production-layout.js",
+    "room_count": 11,
+    "deck_count": 2,
+    "decks": [
+      {
+        "index": 0,
+        "name": "FLIGHT / CREW",
+        "standing_eye_height_metres": 0
+      },
+      {
+        "index": 1,
+        "name": "WORK DECK / AIRLOCK",
+        "standing_eye_height_metres": -3.3
+      }
+    ],
+    "layout_coordinates": "Layout local +Z runs aft, Y is standing eye height; this is not the exterior runtime +Z forward contract. Preserve the existing cabin adapter until measured.",
+    "max_room_envelope_x": [
+      -4.2,
+      4.2
+    ],
+    "plan_z_extent": [
+      -1.45,
+      16
+    ],
+    "central_passage_width": 2.5,
+    "lift_plan_xz": [
+      0,
+      5
+    ],
+    "aft_airlock_plan_z": 15,
+    "required_spaces": [
+      "Upper flight deck",
+      "Two quarters rooms",
+      "Two mess rooms",
+      "Lower three cargo rooms",
+      "Lower workshop",
+      "Two central passages",
+      "Service lift between decks"
+    ],
+    "fit_verified": false
+  },
+  "missing_component_references": [
+    {
+      "id": "FreightPod",
+      "instances": 6,
+      "status": "missing orthographic reference",
+      "source_detail": "Corrugated sealed rectangular cassette with reinforced ochre corners; three each side"
+    },
+    {
+      "id": "CargoTruss",
+      "instances": 2,
+      "status": "missing orthographic reference",
+      "source_detail": "Exposed longitudinal freight cradle; distinct pod attachment joints and clear gaps"
+    },
+    {
+      "id": "Drive",
+      "instances": 4,
+      "status": "missing orthographic reference",
+      "source_detail": "Four rear-facing heavy thrusters specified by source concept prompt; confirm against actual runtime engine mounts"
+    },
+    {
+      "id": "PressureTank",
+      "instances": null,
+      "status": "missing orthographic reference",
+      "source_detail": "Rounded under-cab / spine utility tanks with routed conduits"
+    },
+    {
+      "id": "LandingGear",
+      "instances": null,
+      "status": "missing orthographic reference and hinge/attachment contract"
+    },
+    {
+      "id": "LoadingRampAndAirlock",
+      "instances": null,
+      "status": "missing independent moving-part reference; current art doors are closed"
+    },
+    {
+      "id": "Interior",
+      "instances": 1,
+      "status": "missing Mule-specific two-deck concept, modular room mesh and runtime interaction fit"
+    }
+  ],
+  "pipeline": {
+    "tripo_generated": false,
+    "local_gpu_inference_started": false,
+    "blender_cleanup_completed": false,
+    "uv_rebuilt": false,
+    "bake_completed": false,
+    "unity_imported": false,
+    "runtime_activated": false,
+    "next_step": "Use one isolated central-hull view as the initial local image-to-mesh experiment, then fit against all six registered views and existing two-deck envelope before texture projection. Do not feed the entire six-object sheet to single-image Tripo. Pause GPU inference until parent finishes concurrent Unity world tests.",
+    "bake_rules": [
+      "Use a fresh non-overlapping UV layout after mesh fitting.",
+      "Bake top, bottom, port, starboard, nose, aft sequentially.",
+      "A later view must not recolor pixels owned by an earlier view.",
+      "Reopen saved blend after each bake and verify packed/external texture consistency.",
+      "Require matched-view silhouette/detail overlay and complete assembly/LOD review before runtime replacement."
+    ]
+  }
+}

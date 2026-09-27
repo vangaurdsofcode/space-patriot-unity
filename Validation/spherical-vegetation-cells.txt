@@ -1,0 +1,3 @@
+PASS: 6 face centers, all 12 edges and all 8 corners have finite, unique, sorted, deterministic cells and no geometric coverage gaps.
+PASS: nine-cell cap, two-metre seam crossing, interior candidate revisit, north/south separation and world ID separation.
+Inspected cells: 2496

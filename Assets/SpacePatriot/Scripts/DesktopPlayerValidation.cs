@@ -114,6 +114,11 @@ namespace SpacePatriot
             ship.rotation=Quaternion.LookRotation(forward,normal);gearDown=true;flying=true;speed=0;velocity=Vector3.zero;RequestLanding();
             DesktopCheck(surfaceLanding&&docking,"Landing assist accepts unpadded ground on the far hemisphere");
             DesktopCheck(Vector3.Dot(surfaceLandingRotation*Vector3.up,normal)>.999f,"Landing assist aligns landing gear to local ground normal");
+            Vector3 farWalker=point+normal*1.75f;world.StreamSurface(farWalker,false);
+            DesktopCheck(world.TrySurface(farWalker,out var streamedGround,out var streamedNormal),"Far-side landing builds a collidable streamed terrain patch");
+            Vector3 tangent=Vector3.ProjectOnPlane(Vector3.forward,streamedNormal).normalized;
+            if(tangent.sqrMagnitude<.01f)tangent=Vector3.ProjectOnPlane(Vector3.right,streamedNormal).normalized;
+            DesktopCheck(world.TrySurface(farWalker+tangent*4,out var walkedGround,out var walkedNormal)&&Vector3.Dot(streamedNormal,walkedNormal)>.8f&&Vector3.Distance(streamedGround,walkedGround)<5,"On-foot steps remain attached to the far-side tangent terrain");
             surfaceLanding=false;docking=false;flying=previousFlying;gearDown=previousGear;velocity=previousVelocity;speed=previousSpeed;ship.position=previousPosition;ship.rotation=previousRotation;
         }
         void FrameDesktop(params Key[] keys)

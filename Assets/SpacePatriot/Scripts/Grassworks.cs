@@ -3,64 +3,83 @@ using UnityEngine;
 using UnityEngine.Rendering;
 namespace SpacePatriot
 {
-    // Native renderer for the user's grasspack3js.html blade geometry and wind field.
+    // Native grasspack renderer. Cells belong to the planet, never the observer's tangent plane.
     public sealed class Grassworks : MonoBehaviour
     {
         public const int TileSize=48, BladesPerTile=12000, MaximumTiles=9;
         public int BladeCount {get;private set;}
-        FrontierWorld world;Material material;
+        public int ResidentTiles=>tiles.Count;
+        FrontierWorld world;Material material;int revision;
+        Vector3 selectedAt=Vector3.positiveInfinity;
+        List<WorldVegetationCell> wanted=new();
         sealed class Tile {public GameObject go;public Mesh mesh;public int blades;}
-        readonly Dictionary<Vector2Int,Tile> tiles=new();
+        readonly Dictionary<WorldVegetationCell,Tile> tiles=new();
         public void Initialize(FrontierWorld owner)
         {
-            world=owner;if(world.info.biome!="temperate"){enabled=false;return;}
+            world=owner;revision=world.VegetationRevision;
+            transform.localPosition=Vector3.zero;transform.localRotation=Quaternion.identity;transform.localScale=Vector3.one;
+            if(world.info.biome!="temperate"){enabled=false;return;}
             material=new Material(Resources.Load<Shader>("Shaders/Grassworks"));
         }
         void Update(){var camera=FrontierGame.Instance?.view;if(camera!=null)UpdateAround(camera.transform.position);}
         public void UpdateAround(Vector3 eye)
         {
-            if(world.info.biome!="temperate")return;
-            bool visible=eye.y-world.Height(eye.x,eye.z)<100&&new Vector2(eye.x,eye.z).magnitude<2700;
+            if(world==null||world.info.biome!="temperate")return;
+            if(revision!=world.VegetationRevision){ClearTiles();revision=world.VegetationRevision;selectedAt=Vector3.positiveInfinity;}
+            bool visible=world.TryVegetationFocus(eye,out var focus,out float altitude)&&altitude<100f&&altitude> -8f;
             foreach(var tile in tiles.Values)tile.go.SetActive(visible);if(!visible)return;
-            var center=new Vector2Int(Mathf.FloorToInt(eye.x/TileSize),Mathf.FloorToInt(eye.z/TileSize));
-            var remove=new List<Vector2Int>();foreach(var key in tiles.Keys)if(Mathf.Abs(key.x-center.x)>1||Mathf.Abs(key.y-center.y)>1)remove.Add(key);
-            foreach(var key in remove){BladeCount-=tiles[key].blades;tiles[key].go.SetActive(false);Destroy(tiles[key].go);Destroy(tiles[key].mesh);tiles.Remove(key);}
-            // One new tile per frame bounds regeneration cost while flying or teleporting.
-            for(int z=-1;z<=1;z++)for(int x=-1;x<=1;x++){var key=center+new Vector2Int(x,z);if(!tiles.ContainsKey(key)){tiles.Add(key,BuildTile(key));return;}}
+            if((focus.position-selectedAt).sqrMagnitude>64f)
+            {
+                wanted=PlanetVegetationCells.Near(world.info.id,focus.up,TileSize,105,MaximumTiles);selectedAt=focus.position;
+                var remove=new List<WorldVegetationCell>();foreach(var key in tiles.Keys)if(!wanted.Contains(key))remove.Add(key);
+                foreach(var key in remove){Release(tiles[key]);tiles.Remove(key);}
+            }
+            // One tile per frame and nine resident tiles, even after a teleport.
+            foreach(var key in wanted)if(!tiles.ContainsKey(key)){tiles.Add(key,BuildTile(key));return;}
         }
+        // Kept for port-authoring tools. Global placement never calls Height(x,z).
         public bool CanGrow(float x,float z)
         {
-            if(Mathf.Abs(x-140)<320&&Mathf.Abs(z)<275)return false;
-            if(Vector2.Distance(new Vector2(x,z),new Vector2(world.outpost.x,world.outpost.z))<80)return false;
-            if(Vector2.Distance(new Vector2(x,z),new Vector2(world.grove.x,world.grove.z))<34)return false;
-            float y=world.Height(x,z);return y>-2&&Mathf.Abs(world.Height(x+2,z)-y)<1.4f&&Mathf.Abs(world.Height(x,z+2)-y)<1.4f;
+            var sample=world.SampleVegetation(new Vector3(x,world.Height(x,z),z)-world.PlanetCenter);
+            return sample.valid&&Vector3.Dot(sample.normal,sample.up)>.82f;
         }
-        Tile BuildTile(Vector2Int key)
+        Tile BuildTile(WorldVegetationCell key)
         {
-            var random=new System.Random(unchecked(world.info.seed^key.x*73856093^key.y*19349663));
-            float R()=>(float)random.NextDouble();
+            var random=new System.Random(key.Seed(world.info.seed));float R()=>(float)random.NextDouble();
+            var center=world.SampleVegetation(key.Direction());Quaternion rotation=PlanetVegetationCells.Rotation(center.up),inverse=Quaternion.Inverse(rotation);
+            // A shared surface lattice makes dense blades inexpensive while retaining relief and shoreline rejection.
+            const int resolution=16;var grid=new VegetationSample[(resolution+1)*(resolution+1)];
+            for(int z=0;z<=resolution;z++)for(int x=0;x<=resolution;x++)grid[z*(resolution+1)+x]=world.SampleVegetation(key.Direction(x/(float)resolution,z/(float)resolution));
             var positions=new List<Vector3>();var uv=new List<Vector2>();var extras=new List<Vector2>();var colors=new List<Color>();var indices=new List<int>();int count=0;
             for(int blade=0;blade<BladesPerTile;blade++)
             {
-                float x=(key.x+R())*TileSize,z=(key.y+R())*TileSize;
-                if(!CanGrow(x,z))continue;
-                var region=world.terrainFields.Sample(x,z);float seed=R(),angle=R()*Mathf.PI*2;
-                float height=(.18f+region.y*.65f)*Mathf.Lerp(.65f,1.35f,R()),width=.028f+region.y*.024f,y=world.Height(x,z)-.025f;
-                var color=Color.Lerp(new Color(.39f,.32f,.10f),new Color(.16f,.36f,.075f),region.y);
-                int first=positions.Count;
+                float u=R()*resolution,v=R()*resolution;int ix=Mathf.Min(resolution-1,(int)u),iz=Mathf.Min(resolution-1,(int)v);float tx=u-ix,tz=v-iz;
+                var a=grid[iz*(resolution+1)+ix];var b=grid[iz*(resolution+1)+ix+1];var c=grid[(iz+1)*(resolution+1)+ix];var d=grid[(iz+1)*(resolution+1)+ix+1];
+                if(!a.valid||!b.valid||!c.valid||!d.valid||Vector3.Dot(a.normal,a.up)<.82f)continue;
+                float moisture=Mathf.Lerp(Mathf.Lerp(a.moisture,b.moisture,tx),Mathf.Lerp(c.moisture,d.moisture,tx),tz);
+                // Preserve source density variation under the explicit native mesh budget.
+                if(R()>Mathf.Clamp01((9000+moisture*24000)/33000f))continue;
+                Vector3 root=Vector3.Lerp(Vector3.Lerp(a.position,b.position,tx),Vector3.Lerp(c.position,d.position,tx),tz);
+                Vector3 normal=Vector3.Lerp(Vector3.Lerp(a.up,b.up,tx),Vector3.Lerp(c.up,d.up,tx),tz).normalized;
+                float seed=R(),angle=R()*Mathf.PI*2,height=Mathf.Lerp(Mathf.Lerp(a.grassHeight,b.grassHeight,tx),Mathf.Lerp(c.grassHeight,d.grassHeight,tx),tz)*Mathf.Lerp(.65f,1.35f,R()),width=.022f+moisture*.035f;
+                Vector3 tangent=Vector3.ProjectOnPlane(rotation*new Vector3(Mathf.Cos(angle),0,Mathf.Sin(angle)),normal).normalized;
+                var color=world.info.GrassPigment(moisture);int first=positions.Count;
                 for(int segment=0;segment<=5;segment++)for(int side=0;side<2;side++)
                 {
                     float t=segment/5f,lateral=(side-.5f)*width*Mathf.Pow(1-t,.72f);
-                    positions.Add(new Vector3(x+Mathf.Cos(angle)*lateral,y+t*height,z+Mathf.Sin(angle)*lateral));
+                    positions.Add(inverse*(root-center.position+normal*(t*height-.025f)+tangent*lateral));
                     uv.Add(new Vector2(side,t));extras.Add(new Vector2(seed,height));colors.Add(color);
-                    if(segment<5&&side==0){int a=first+segment*2;indices.AddRange(new[]{a,a+2,a+1,a+1,a+2,a+3});}
+                    if(segment<5&&side==0){int q=first+segment*2;indices.Add(q);indices.Add(q+2);indices.Add(q+1);indices.Add(q+1);indices.Add(q+2);indices.Add(q+3);}
                 }
                 count++;
             }
             var mesh=new Mesh{name="Grassworks tile "+key,indexFormat=IndexFormat.UInt32};mesh.SetVertices(positions);mesh.SetUVs(0,uv);mesh.SetUVs(1,extras);mesh.SetColors(colors);mesh.SetTriangles(indices,0);mesh.RecalculateBounds();var bounds=mesh.bounds;bounds.Expand(4);mesh.bounds=bounds;
-            var go=new GameObject(mesh.name);go.transform.SetParent(transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;var renderer=go.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=true;
+            var go=new GameObject(mesh.name);go.transform.SetParent(transform,false);go.transform.localPosition=center.position;go.transform.localRotation=rotation;go.AddComponent<MeshFilter>().sharedMesh=mesh;
+            var renderer=go.AddComponent<MeshRenderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=true;
             BladeCount+=count;return new Tile{go=go,mesh=mesh,blades=count};
         }
-        void OnDestroy(){foreach(var t in tiles.Values)if(t.mesh!=null)Destroy(t.mesh);if(material!=null)Destroy(material);}
+        void Release(Tile tile){BladeCount-=tile.blades;if(tile.go!=null){tile.go.SetActive(false);Destroy(tile.go);}if(tile.mesh!=null)Destroy(tile.mesh);}
+        void ClearTiles(){foreach(var tile in tiles.Values)Release(tile);tiles.Clear();}
+        void OnDestroy(){ClearTiles();if(material!=null)Destroy(material);}
     }
 }

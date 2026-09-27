@@ -1,0 +1,1 @@
+World=earth eye=(9386.58, -16742.37, 15317.52) radialUp=(0.52, 0.07, 0.85) blades=97943 trees=1003 meadow=43716 woodland=115669 building=False

@@ -1,0 +1,73 @@
+{
+  "scope": "Original standalone Grassworks demo, Three.js0.180.0; not the Unity port",
+  "source": "Reference/Original/vendor/user-engines/grasspack3js.html",
+  "source_sha256": "9e9f9a35f4f7b5405a02543c2abbccdb5b54fbdd9d04e74e91cc389a4b167e8e",
+  "observed_at_utc": "2026-09-26 22:51:56 UTC",
+  "verification": "Root agent inspected the visible opt-in WebGL JSON panel after reloading the final source in the actual parent browser through CUA. Values below are the observed GPU report, not CPU estimates.",
+  "url": "http://127.0.0.1:8794/Reference/Original/vendor/user-engines/grasspack3js.html?validate-fireflies=1",
+  "passed": true,
+  "checks": [
+    "Maximum-pulse insect remains visibly luminous after pixel sampling",
+    "Halo remains at most six CSS pixels",
+    "Near and behind-camera insects contribute no fragments",
+    "120 overlapping insects cannot produce white/HDR flash",
+    "Per-insect pulse changes brightness",
+    "Insects have independent pulse phases",
+    "Existing toggle hides fireflies",
+    "Existing toggle restores fireflies"
+  ],
+  "pixels": {
+    "front": {
+      "countLit": 16,
+      "width": 4,
+      "height": 4,
+      "peak": 31,
+      "sum": 268,
+      "white": 0
+    },
+    "near": {
+      "countLit": 0,
+      "width": 0,
+      "height": 0,
+      "peak": 0,
+      "sum": 0,
+      "white": 0
+    },
+    "behind": {
+      "countLit": 0,
+      "width": 0,
+      "height": 0,
+      "peak": 0,
+      "sum": 0,
+      "white": 0
+    },
+    "overlap": {
+      "countLit": 16,
+      "width": 4,
+      "height": 4,
+      "peak": 118,
+      "sum": 1696,
+      "white": 0
+    },
+    "dim": {
+      "countLit": 4,
+      "width": 2,
+      "height": 2,
+      "peak": 3,
+      "sum": 20,
+      "white": 0
+    }
+  },
+  "limits": {
+    "point_diameter_css_pixels": 6,
+    "max_opacity": 0.42,
+    "near_fully_invisible_metres": 0.45,
+    "near_fully_visible_metres": 2,
+    "brightest_linear_rgb": [
+      0.48,
+      0.62,
+      0.035
+    ]
+  },
+  "interpretation": "Actual shader produced a visible 4x4-pixel core at peak phase and zero white pixels even with 120 coincident insects. Near/behind samples produced zero fragments. This checks the isolated effect and toggle, not every full-scene camera trajectory."
+}

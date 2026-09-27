@@ -1,0 +1,23 @@
+RUNNING: spherical vegetation acceptance; 2026-09-26T22:46:58.9403201Z
+PASS: earth: 512 whole-sphere radial/normal/habitat probes; eligible 365, southern eligible 188, wet rejected 147; moisture 0.493–0.931.
+SITE: earth equatorial root=(9385.02051,-16742.582,15314.9648) up=(0.5212168,0.07,0.8505487)
+SITE: earth southern root=(-3870.29468,-31775.2188,10929.374) up=(-0.214981735,-0.765,0.607089639)
+PASS: earth equatorial: blades 97943/9 tiles; trees 1003; meadow 43716 (11230 visible); woodland 115669 (24560 visible). Inspected 873 blade roots, 1003 tree roots and 515 splats plus actual instanced draw matrices; worst sampler error 0.028 m, active collider error 0.062 m, minimum outward dot 1.000.
+PASS: earth southern: blades 100458/9 tiles; trees 1119; meadow 47364 (12391 visible); woodland 113759 (28893 visible). Inspected 873 blade roots, 1119 tree roots and 514 splats plus actual instanced draw matrices; worst sampler error 0.028 m, active collider error 0.068 m, minimum outward dot 1.000.
+PASS: earth opposite-hemisphere teleport and actual blade-root fingerprint revisit 97943:7B1C9B298BD8F676
+PASS: earth runtime cube seam (-0.7035442,0.7035442,0.10025505); 6 overlapping tiles retain exact mesh fingerprints; 280 m rebase retains committed forest/splats and revisits deterministically.
+PASS: earth translated/rotated: blades 97943/9 tiles; trees 1003; meadow 43716 (11230 visible); woodland 115669 (24560 visible). Inspected 873 blade roots, 1003 tree roots and 515 splats plus actual instanced draw matrices; worst sampler error 0.028 m, active collider error 0.063 m, minimum outward dot 1.000.
+PASS: earth grass/tree/splat altitude gates at 100/500/1800 m.
+PASS: trappist-1-e: 512 whole-sphere radial/normal/habitat probes; eligible 375, southern eligible 203, wet rejected 137; moisture 0.470–0.909.
+SITE: trappist-1-e equatorial root=(12931.3008,-20523.6133,-12271.3418) up=(0.718230665,-0.14,-0.6815752)
+SITE: trappist-1-e southern root=(13247.4629,-26103.0215,9104.729) up=(0.735968232,-0.45,0.505816936)
+PASS: trappist-1-e equatorial: blades 102477/9 tiles; trees 1218; meadow 51000 (13024 visible); woodland 121045 (29055 visible). Inspected 873 blade roots, 1218 tree roots and 514 splats plus actual instanced draw matrices; worst sampler error 0.028 m, active collider error 0.065 m, minimum outward dot 1.000.
+PASS: trappist-1-e southern: blades 103518/9 tiles; trees 789; meadow 20604 (5865 visible); woodland 53970 (11044 visible). Inspected 872 blade roots, 789 tree roots and 515 splats plus actual instanced draw matrices; worst sampler error 0.029 m, active collider error 0.071 m, minimum outward dot 1.000.
+PASS: trappist-1-e opposite-hemisphere teleport and actual blade-root fingerprint revisit 102477:A6B67AF90AA01A7A
+PASS: trappist-1-e translated/rotated: blades 102477/9 tiles; trees 1218; meadow 51000 (13024 visible); woodland 121045 (29055 visible). Inspected 873 blade roots, 1218 tree roots and 514 splats plus actual instanced draw matrices; worst sampler error 0.026 m, active collider error 0.060 m, minimum outward dot 1.000.
+PASS: trappist-1-e grass/tree/splat altitude gates at 100/500/1800 m.
+PASS: earth after mid-build world switch: blades 97943/9 tiles; trees 1003; meadow 43716 (11230 visible); woodland 115669 (24560 visible). Inspected 873 blade roots, 1003 tree roots and 515 splats plus actual instanced draw matrices; worst sampler error 0.028 m, active collider error 0.062 m, minimum outward dot 1.000.
+PASS: world generation changed during a build; stale layer objects were retired and replacement roots belong to the new world.
+PASS: jupiter gas-world negative control rejects habitat and living layers.
+PASS: automated geometry acceptance completed. Visual captures and frame-time profiling remain separate evidence.
+SPHERICAL_VEGETATION_RUNTIME_PASS

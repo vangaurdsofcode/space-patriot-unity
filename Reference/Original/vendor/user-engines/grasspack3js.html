@@ -1060,6 +1060,11 @@ const fireflyPositions =
     fireflyCount*3
   );
 
+// Keep brightness local to each insect. The old shared opacity made every
+// point pulse together, and perspective point sizing could cover the screen
+// when an insect crossed the camera's near plane.
+const fireflyPulse = new Float32Array(fireflyCount*2);
+
 for(let i=0;i<fireflyCount;i++) {
 
   const r =
@@ -1080,6 +1085,9 @@ for(let i=0;i<fireflyCount;i++) {
 
   fireflyPositions[i*3+2] =
     Math.sin(a)*r;
+
+  fireflyPulse[i*2] = Math.random()*Math.PI*2;
+  fireflyPulse[i*2+1] = 2.8+Math.random()*4.2;
 }
 
 fireflyGeometry.setAttribute(
@@ -1090,13 +1098,65 @@ fireflyGeometry.setAttribute(
   )
 );
 
+fireflyGeometry.setAttribute(
+  "aPulse",new THREE.BufferAttribute(fireflyPulse,2)
+);
+
 const fireflyMaterial =
-  new THREE.PointsMaterial({
-    color:0xffef9c,
-    size:0.055,
+  new THREE.ShaderMaterial({
     transparent:true,
-    opacity:0.75,
-    depthWrite:false
+    depthTest:true,
+    depthWrite:false,
+    blending:THREE.NormalBlending,
+    toneMapped:false,
+    uniforms:{
+      uTime:{value:0},
+      uViewportHeight:{value:renderer.domElement.height},
+      uPixelRatio:{value:renderer.getPixelRatio()},
+      uOpacity:{value:0.42}
+    },
+    vertexShader:`
+      attribute vec2 aPulse;
+      uniform float uTime;
+      uniform float uViewportHeight;
+      uniform float uPixelRatio;
+      varying float vOpacity;
+      void main(){
+        vec4 mvPosition=modelViewMatrix*vec4(position,1.0);
+        float depth=-mvPosition.z;
+        // 0.45 m fully invisible, gently visible again by 2 m. Behind the
+        // camera contributes no fragments, regardless of point-size limits.
+        float nearFade=smoothstep(0.45,2.0,depth);
+        float farFade=1.0-smoothstep(36.0,48.0,length(mvPosition.xyz));
+        float wave=0.5+0.5*sin(uTime*6.28318530718/aPulse.y+aPulse.x);
+        vOpacity=nearFade*farFade*(0.10+0.90*wave*wave);
+        float projectedSize=0.055*projectionMatrix[1][1]
+          *uViewportHeight*0.5/max(depth,0.01);
+        // Limit the complete halo to six CSS pixels at every quality/DPR.
+        gl_PointSize=clamp(projectedSize,1.0,6.0*uPixelRatio);
+        gl_Position=projectionMatrix*mvPosition;
+        if(depth<=0.0){vOpacity=0.0;gl_Position=vec4(2.0,2.0,2.0,1.0);}
+      }
+    `,
+    fragmentShader:`
+      uniform float uOpacity;
+      varying float vOpacity;
+      void main(){
+        vec2 p=gl_PointCoord*2.0-1.0;
+        float r2=dot(p,p);
+        if(r2>=1.0||vOpacity<=0.0)discard;
+        float halo=exp(-r2*5.0)*(1.0-smoothstep(0.65,1.0,r2));
+        // Broad enough to survive a 4-6 pixel sprite; a needle-sized core
+        // fell between fragment centres and made the insect effectively dark.
+        float core=exp(-r2*10.0);
+        float alpha=uOpacity*vOpacity*(0.28*halo+0.72*core);
+        // Linear yellow-green, never white/HDR; normal alpha blending keeps
+        // even overlapping insects bounded by this faint chromatic source.
+        vec3 color=mix(vec3(0.15,0.26,0.018),vec3(0.48,0.62,0.035),core);
+        gl_FragColor=vec4(color,alpha);
+        #include <colorspace_fragment>
+      }
+    `
   });
 
 const fireflies =
@@ -1570,9 +1630,9 @@ function animateFireflies(time) {
     .position
     .needsUpdate=true;
 
-  fireflyMaterial.opacity =
-    .5 +
-    Math.sin(time*2.3)*.12;
+  fireflyMaterial.uniforms.uTime.value=time;
+  fireflyMaterial.uniforms.uViewportHeight.value=renderer.domElement.height;
+  fireflyMaterial.uniforms.uPixelRatio.value=renderer.getPixelRatio();
 }
 
 // ============================================================
@@ -1752,6 +1812,68 @@ function animate(now) {
 }
 
 requestAnimationFrame(animate);
+
+// Optional browser/GPU regression check. It renders the actual firefly shader
+// into a tiny off-screen target; ordinary demo visits do not run these tests.
+if(new URLSearchParams(location.search).has("validate-fireflies")) {
+  const validation=document.createElement("pre");
+  validation.id="firefly-validation";
+  validation.style.cssText="position:fixed;right:12px;top:12px;z-index:150;max-width:48vw;max-height:75vh;overflow:auto;padding:12px;background:#07100ef2;color:#a7bc6a;font:12px monospace;white-space:pre-wrap";
+  document.body.appendChild(validation);
+  const report={scope:"Original Grassworks demo / Three.js r180; not the Unity port",checks:[],passed:false};
+  const target=new THREE.WebGLRenderTarget(256,256);
+  const testScene=new THREE.Scene();
+  testScene.background=new THREE.Color(0x000000);
+  const testCamera=new THREE.PerspectiveCamera(50,1,0.1,100);
+  const testGeometry=new THREE.BufferGeometry();
+  const testMaterial=fireflyMaterial.clone();
+  testMaterial.uniforms.uViewportHeight.value=256;
+  testMaterial.uniforms.uPixelRatio.value=1;
+  const testPoints=new THREE.Points(testGeometry,testMaterial);
+  testPoints.frustumCulled=false;testScene.add(testPoints);
+  const previousTarget=renderer.getRenderTarget();
+  const previousToggle=$("firefliesToggle").checked;
+  const check=(condition,name)=>{if(!condition)throw new Error(name);report.checks.push(name);};
+  function sample(depth,count=1,time=0) {
+    const positions=new Float32Array(count*3),pulse=new Float32Array(count*2);
+    for(let i=0;i<count;i++){positions[i*3+2]=-depth;pulse[i*2]=Math.PI/2;pulse[i*2+1]=4;}
+    testGeometry.setAttribute("position",new THREE.BufferAttribute(positions,3));
+    testGeometry.setAttribute("aPulse",new THREE.BufferAttribute(pulse,2));
+    testMaterial.uniforms.uTime.value=time;
+    renderer.setRenderTarget(target);renderer.clear();renderer.render(testScene,testCamera);
+    const pixels=new Uint8Array(256*256*4);
+    renderer.readRenderTargetPixels(target,0,0,256,256,pixels);
+    let countLit=0,minX=256,maxX=-1,minY=256,maxY=-1,peak=0,sum=0,white=0;
+    for(let y=0;y<256;y++)for(let x=0;x<256;x++){
+      const i=(y*256+x)*4,r=pixels[i],g=pixels[i+1],b=pixels[i+2],value=Math.max(r,g,b);
+      peak=Math.max(peak,value);sum+=r+g+b;if(r>210&&g>210&&b>210)white++;
+      if(value>0){countLit++;minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y);}
+    }
+    return {countLit,width:maxX>=minX?maxX-minX+1:0,height:maxY>=minY?maxY-minY+1:0,peak,sum,white};
+  }
+  try {
+    const front=sample(2),near=sample(.2),behind=sample(-1),overlap=sample(2,120),dim=sample(2,1,2);
+    report.pixels={front,near,behind,overlap,dim};
+    check(front.countLit>0&&front.peak>=20,"Maximum-pulse insect remains visibly luminous after pixel sampling");
+    check(front.width<=6&&front.height<=6,"Halo remains at most six CSS pixels");
+    check(near.countLit===0&&behind.countLit===0,"Near and behind-camera insects contribute no fragments");
+    check(overlap.white===0&&overlap.peak<=192,"120 overlapping insects cannot produce white/HDR flash");
+    check(dim.sum<front.sum,"Per-insect pulse changes brightness");
+    check(new Set(fireflyPulse.filter((_,i)=>i%2===0)).size>100,"Insects have independent pulse phases");
+    $("firefliesToggle").checked=false;$("firefliesToggle").dispatchEvent(new Event("change"));
+    check(!fireflies.visible,"Existing toggle hides fireflies");
+    $("firefliesToggle").checked=true;$("firefliesToggle").dispatchEvent(new Event("change"));
+    check(fireflies.visible,"Existing toggle restores fireflies");
+    report.passed=true;
+  } catch(error) {report.error=error.message;}
+  finally {
+    renderer.setRenderTarget(previousTarget);
+    $("firefliesToggle").checked=previousToggle;fireflies.visible=previousToggle;
+    testGeometry.dispose();testMaterial.dispose();target.dispose();
+    validation.textContent=JSON.stringify(report,null,2);
+    validation.dataset.passed=String(report.passed);
+  }
+}
 
 // ============================================================
 // READY

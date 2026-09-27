@@ -99,7 +99,7 @@ def foreground_from_edge_connected_white(rgb):
 
 def project_uv(mesh, bounds, ref_box, image_size, category, axes=(0, 1), mirror_u=False,
                perspective_distance=2.6, view_sign=1, azimuth_degrees=0.0,
-               elevation_degrees=0.0):
+               elevation_degrees=0.0, mirror_v=False):
     # Preserve a seam-aware unwrap as the active UV map for atlas baking.
     # The separate ArtProjection map below samples the concept sheet only.
     bake_uv = mesh.uv_layers.get('AtlasUV')
@@ -156,13 +156,27 @@ def project_uv(mesh, bounds, ref_box, image_size, category, axes=(0, 1), mirror_
     px0=min(p[0] for p in projected);px1=max(p[0] for p in projected)
     py0=min(p[1] for p in projected);py1=max(p[1] for p in projected)
     project_width=max(1e-8,px1-px0);project_height=max(1e-8,py1-py0)
+    # Keep the concept image's proportions. Stretching U and V independently
+    # made panel shapes change aspect ratio whenever a generated mesh's camera
+    # bounds differed from the reference crop. Fit the projected mesh inside
+    # the foreground box with one shared scale instead.
+    ref_width=max(1e-8,x1-x0);ref_height=max(1e-8,y1-y0)
+    projection_scale=min(ref_width/project_width,ref_height/project_height)
+    fitted_width=project_width*projection_scale
+    fitted_height=project_height*projection_scale
+    ref_center_u=(x0+x1)*.5;ref_center_v=(y0+y1)*.5
+    x0=ref_center_u-fitted_width*.5;x1=ref_center_u+fitted_width*.5
+    y0=ref_center_v-fitted_height*.5;y1=ref_center_v+fitted_height*.5
     for poly in mesh.polygons:
         for loop_index in poly.loop_indices:
             vertex_index=mesh.loops[loop_index].vertex_index
             projected_x,projected_y=projected[vertex_index]
             normalized_u=(projected_x-px0)/project_width
             u = x0 + normalized_u * (x1-x0)
-            vtop = y0 + ((projected_y-py0)/project_height) * (y1-y0)
+            normalized_v = (projected_y-py0)/project_height
+            if mirror_v:
+                normalized_v = 1.0-normalized_v
+            vtop = y0 + normalized_v * (y1-y0)
             # A 28 px gutter at 4096 keeps each quadrant isolated through filtering.
             # ArtProjection samples the standalone concept image, so its UVs
             # must stay in that image's full 0..1 space. Only AtlasUV is packed
@@ -171,8 +185,17 @@ def project_uv(mesh, bounds, ref_box, image_size, category, axes=(0, 1), mirror_
             # made most painted details disappear.
             uv.data[loop_index].uv = (u, 1-vtop)
     mesh.uv_layers.active = bake_uv
+    return {
+        'center': tuple(mesh_center), 'right': tuple(right), 'up': tuple(up),
+        'normal': tuple(normal), 'camera_distance': camera_distance,
+        'px0': px0, 'px1': px1, 'py0': py0, 'py1': py1,
+        'ref_box': (x0,y0,x1,y1),
+        'reference_box': tuple(ref_box),
+        'preserve_reference_aspect': True,
+    }
 
-def bake_material(name, reference, foreground_mask, fallback, metallic, roughness, base_target, projection_normal):
+def bake_material(name, reference, foreground_mask, fallback, metallic, roughness, base_target,
+                  projection_normal, projection, facing_range):
     material = bpy.data.materials.new(name)
     material.use_nodes = True
     nodes = material.node_tree.nodes
@@ -181,12 +204,54 @@ def bake_material(name, reference, foreground_mask, fallback, metallic, roughnes
     bsdf = nodes.new('ShaderNodeBsdfPrincipled')
     bsdf.inputs['Roughness'].default_value = roughness
     bsdf.inputs['Metallic'].default_value = metallic
-    texcoord = nodes.new('ShaderNodeUVMap')
-    texcoord.uv_map = 'ArtProjection'
+    # Evaluate the camera projection from each bake sample's 3D position.
+    # Interpolating camera-projected UVs from mesh vertices bends the artwork
+    # across large triangles and causes the obvious smeared/blank panels.
+    geometry_position = nodes.new('ShaderNodeNewGeometry')
+    relative = nodes.new('ShaderNodeVectorMath'); relative.operation = 'SUBTRACT'
+    relative.inputs[1].default_value = projection['center']
+    material.node_tree.links.new(geometry_position.outputs['Position'], relative.inputs[0])
+
+    def dot_projection(label, direction):
+        dot = nodes.new('ShaderNodeVectorMath'); dot.operation = 'DOT_PRODUCT'; dot.label = label
+        dot.inputs[1].default_value = direction
+        material.node_tree.links.new(relative.outputs['Vector'], dot.inputs[0])
+        return dot.outputs['Value']
+
+    projected_depth = dot_projection('Distance along concept camera', projection['normal'])
+    denominator = nodes.new('ShaderNodeMath'); denominator.operation = 'SUBTRACT'
+    denominator.inputs[0].default_value = projection['camera_distance']
+    material.node_tree.links.new(projected_depth, denominator.inputs[1])
+    clamp_depth = nodes.new('ShaderNodeMath'); clamp_depth.operation = 'MAXIMUM'
+    clamp_depth.inputs[1].default_value = projection['camera_distance'] * .25
+    material.node_tree.links.new(denominator.outputs[0], clamp_depth.inputs[0])
+
+    def projected_axis(label, direction, lo, hi, image_lo, image_hi):
+        component = dot_projection(label + ' camera coordinate', direction)
+        divide = nodes.new('ShaderNodeMath'); divide.operation = 'DIVIDE'
+        material.node_tree.links.new(component, divide.inputs[0])
+        material.node_tree.links.new(clamp_depth.outputs[0], divide.inputs[1])
+        normalize = nodes.new('ShaderNodeMapRange'); normalize.clamp = False
+        normalize.inputs['From Min'].default_value = lo
+        normalize.inputs['From Max'].default_value = hi
+        normalize.inputs['To Min'].default_value = image_lo
+        normalize.inputs['To Max'].default_value = image_hi
+        material.node_tree.links.new(divide.outputs[0], normalize.inputs['Value'])
+        return normalize.outputs['Result']
+
+    x0, y0, x1, y1 = projection['ref_box']
+    projected_u = projected_axis('Horizontal', projection['right'], projection['px0'], projection['px1'], x0, x1)
+    projected_v_top = projected_axis('Vertical', projection['up'], projection['py0'], projection['py1'], y0, y1)
+    projected_v = nodes.new('ShaderNodeMath'); projected_v.operation = 'SUBTRACT'
+    projected_v.inputs[0].default_value = 1.0
+    material.node_tree.links.new(projected_v_top, projected_v.inputs[1])
+    projected_uv = nodes.new('ShaderNodeCombineXYZ')
+    material.node_tree.links.new(projected_u, projected_uv.inputs['X'])
+    material.node_tree.links.new(projected_v.outputs[0], projected_uv.inputs['Y'])
     source = new_image_node(material, 'Concept colour projection', reference)
-    material.node_tree.links.new(texcoord.outputs['UV'], source.inputs['Vector'])
+    material.node_tree.links.new(projected_uv.outputs['Vector'], source.inputs['Vector'])
     mask_node = new_image_node(material, 'Flood-filled concept foreground mask', foreground_mask)
-    material.node_tree.links.new(texcoord.outputs['UV'], mask_node.inputs['Vector'])
+    material.node_tree.links.new(projected_uv.outputs['Vector'], mask_node.inputs['Vector'])
     mask_bw = nodes.new('ShaderNodeRGBToBW')
     material.node_tree.links.new(mask_node.outputs['Color'], mask_bw.inputs['Color'])
     factor = nodes.new('ShaderNodeMath')
@@ -194,23 +259,23 @@ def bake_material(name, reference, foreground_mask, fallback, metallic, roughnes
     material.node_tree.links.new(mask_bw.outputs['Val'], factor.inputs[0])
     factor.inputs[1].default_value = 1.0
 
-    # A concept sheet is a single view, not a triplanar texture. Only use its
-    # pixels on faces that point toward that view. Without this facing mask,
-    # the side elevation gets stretched over the nose, roof and underside,
-    # which is the streaked appearance visible in the all-angle review.
+    # A concept sheet is a single view, not a triplanar texture. Project it on
+    # both sides of a bilateral component: the same screen-space projection
+    # lands on the corresponding reverse surface and reads mirrored from the
+    # back. This avoids leaving an entire port/starboard face as blank fallback.
     geometry = nodes.new('ShaderNodeNewGeometry')
     view_direction = nodes.new('ShaderNodeVectorMath')
     view_direction.operation = 'DOT_PRODUCT'
     view_direction.inputs[1].default_value = Vector(projection_normal)
     material.node_tree.links.new(geometry.outputs['Normal'], view_direction.inputs[0])
-    facing_value = view_direction.outputs['Value']
-    # Only the photographed side receives projected paint. The back side has
-    # its own manufactured finish; mirroring the photo there smears cockpit
-    # glazing, labels and wear across surfaces the reference never showed.
+    facing_abs = nodes.new('ShaderNodeMath')
+    facing_abs.operation = 'ABSOLUTE'
+    material.node_tree.links.new(view_direction.outputs['Value'], facing_abs.inputs[0])
+    facing_value = facing_abs.outputs[0]
     facing = nodes.new('ShaderNodeMapRange')
     facing.clamp = True
-    facing.inputs['From Min'].default_value = .08
-    facing.inputs['From Max'].default_value = .72
+    facing.inputs['From Min'].default_value = float(facing_range[0])
+    facing.inputs['From Max'].default_value = float(facing_range[1])
     facing.inputs['To Min'].default_value = 0.0
     facing.inputs['To Max'].default_value = 1.0
     material.node_tree.links.new(facing_value, facing.inputs['Value'])
@@ -219,63 +284,11 @@ def bake_material(name, reference, foreground_mask, fallback, metallic, roughnes
     material.node_tree.links.new(factor.outputs[0], facing_factor.inputs[0])
     material.node_tree.links.new(facing.outputs['Result'], facing_factor.inputs[1])
 
-    # A single-view concept cannot specify the roof, belly and end caps. Give
-    # those faces quiet, manufactured plate structure instead of a flat swatch.
-    texcoord_noise = nodes.new('ShaderNodeTexCoord')
-    noise = nodes.new('ShaderNodeTexNoise')
-    noise.inputs['Scale'].default_value = 1.35
-    noise.inputs['Detail'].default_value = 2.0
-    noise.inputs['Roughness'].default_value = .68
-    material.node_tree.links.new(texcoord_noise.outputs['Object'], noise.inputs['Vector'])
-    panel_noise_range = nodes.new('ShaderNodeMapRange')
-    panel_noise_range.clamp = True
-    panel_noise_range.inputs['From Min'].default_value = .15
-    panel_noise_range.inputs['From Max'].default_value = .85
-    panel_noise_range.inputs['To Min'].default_value = .94
-    panel_noise_range.inputs['To Max'].default_value = 1.04
-    material.node_tree.links.new(noise.outputs['Fac'], panel_noise_range.inputs['Value'])
-
-    cell_colors = nodes.new('ShaderNodeTexVoronoi')
-    cell_colors.feature = 'F1'
-    cell_colors.inputs['Scale'].default_value = 1.15
-    material.node_tree.links.new(texcoord_noise.outputs['Object'], cell_colors.inputs['Vector'])
-    cell_tint = nodes.new('ShaderNodeRGBToBW')
-    material.node_tree.links.new(cell_colors.outputs['Color'], cell_tint.inputs['Color'])
-    cell_range = nodes.new('ShaderNodeMapRange')
-    cell_range.clamp = True
-    cell_range.inputs['From Min'].default_value = .0
-    cell_range.inputs['From Max'].default_value = 1.0
-    cell_range.inputs['To Min'].default_value = .90
-    cell_range.inputs['To Max'].default_value = 1.08
-    material.node_tree.links.new(cell_tint.outputs['Val'], cell_range.inputs['Value'])
-    panel_variation = nodes.new('ShaderNodeMath')
-    panel_variation.operation = 'MULTIPLY'
-    material.node_tree.links.new(panel_noise_range.outputs['Result'], panel_variation.inputs[0])
-    material.node_tree.links.new(cell_range.outputs['Result'], panel_variation.inputs[1])
-    panel_tint = nodes.new('ShaderNodeMixRGB')
-    panel_tint.blend_type = 'MULTIPLY'
-    panel_tint.inputs[0].default_value = 1.0
-    panel_tint.inputs[1].default_value = fallback
-    material.node_tree.links.new(panel_variation.outputs[0], panel_tint.inputs[2])
-    panels = nodes.new('ShaderNodeTexVoronoi')
-    panels.feature = 'DISTANCE_TO_EDGE'
-    panels.inputs['Scale'].default_value = 1.15
-    material.node_tree.links.new(texcoord_noise.outputs['Object'], panels.inputs['Vector'])
-    seam_width = nodes.new('ShaderNodeMapRange')
-    seam_width.clamp = True
-    seam_width.inputs['From Min'].default_value = .004
-    seam_width.inputs['From Max'].default_value = .015
-    seam_width.inputs['To Min'].default_value = 0.0
-    seam_width.inputs['To Max'].default_value = 1.0
-    material.node_tree.links.new(panels.outputs['Distance'], seam_width.inputs['Value'])
-    fallback_panels = nodes.new('ShaderNodeMixRGB')
-    fallback_panels.inputs[1].default_value = tuple(c*.76 for c in fallback[:3]) + (1,)
-    material.node_tree.links.new(seam_width.outputs['Result'], fallback_panels.inputs[0])
-    material.node_tree.links.new(panel_tint.outputs['Color'], fallback_panels.inputs[2])
-
+    # A single view still cannot specify near-top/bottom surfaces or end caps;
+    # keep those at a quiet manufactured finish until dedicated views exist.
     mix = nodes.new('ShaderNodeMixRGB')
     mix.blend_type = 'MIX'
-    material.node_tree.links.new(fallback_panels.outputs['Color'], mix.inputs[1])
+    mix.inputs[1].default_value = fallback
     material.node_tree.links.new(facing_factor.outputs[0], mix.inputs[0])
     material.node_tree.links.new(source.outputs['Color'], mix.inputs[2])
     material.node_tree.links.new(mix.outputs['Color'], bsdf.inputs['Base Color'])
@@ -285,7 +298,7 @@ def bake_material(name, reference, foreground_mask, fallback, metallic, roughnes
     rough_map.inputs['From Max'].default_value = .85
     rough_map.inputs['To Min'].default_value = max(.38, roughness-.15)
     rough_map.inputs['To Max'].default_value = min(.92, roughness+.14)
-    material.node_tree.links.new(noise.outputs['Fac'], rough_map.inputs['Value'])
+    rough_map.inputs['Value'].default_value = .5
     material.node_tree.links.new(rough_map.outputs['Result'], bsdf.inputs['Roughness'])
     material.node_tree.links.new(bsdf.outputs['BSDF'], output_node.inputs['Surface'])
 
@@ -370,6 +383,8 @@ def clean_and_fit(filepath, record):
     high.name = record['id'] + '_HighSource'
     bpy.ops.object.transform_apply(location=True, rotation=True, scale=True)
     mesh_rotation = Euler(tuple(math.radians(v) for v in record.get('mesh_rotation', (0, 0, 0))), 'XYZ').to_matrix()
+    post_rotation = Euler(tuple(math.radians(v) for v in record.get('mesh_post_rotation', (0, 0, 0))), 'XYZ').to_matrix()
+    mesh_rotation = post_rotation @ mesh_rotation
     mesh_scale = record.get('mesh_scale', (1, 1, 1))
     for vertex in high.data.vertices:
         vertex.co = mesh_rotation @ vertex.co
@@ -459,11 +474,12 @@ for part in manifest['parts']:
     local_bounds = (min(coords_a), max(coords_a), min(coords_b), max(coords_b))
     flip_u=bool(part.get('projection_flip_u',False))
     view_sign = int(part.get('projection_view_sign',-1 if flip_u else 1))
-    project_uv(low.data, local_bounds, ref_box, image.size, category, axes,
+    projection = project_uv(low.data, local_bounds, ref_box, image.size, category, axes,
                bool(part.get('projection_mirror_u',False)),
                float(part.get('projection_distance',2.6)), view_sign,
                float(part.get('projection_azimuth_degrees',0)),
-               float(part.get('projection_elevation_degrees',0)))
+               float(part.get('projection_elevation_degrees',0)),
+               bool(part.get('projection_flip_v',False)))
     fallback = {'Hull':(.39,.37,.31,1), 'Wing':(.39,.37,.31,1),
                 'LandingGear':(.22,.24,.24,1), 'Drive':(.19,.21,.21,1)}[category]
     metal = {'Hull':.32, 'Wing':.27, 'LandingGear':.60, 'Drive':.66}[category]
@@ -478,7 +494,8 @@ for part in manifest['parts']:
     projection_normal.rotate(Quaternion(projection_right, -math.radians(float(part.get('projection_elevation_degrees',0)))))
     projection_normal.normalize()
     material, bsdf, output_node, source_node, projected_color = bake_material(
-        category + '_Projection', image, foreground_mask, fallback, metal, roughness, base_atlas, projection_normal)
+        category + '_Projection', image, foreground_mask, fallback, metal, roughness, base_atlas,
+        projection_normal, projection, manifest.get('projection_facing', (.08, .72)))
     high.data.materials.clear(); high.data.materials.append(material)
     low.data.materials.clear(); low.data.materials.append(material)
     set_bake_target(material, base_atlas)
@@ -488,9 +505,20 @@ for part in manifest['parts']:
     bake_emission_source(material, output_node, projected_color.outputs['Color'], low, base_atlas)
 
     normal_target = new_image_node(material, 'Bake target: shared tangent normal atlas', normal_atlas)
-    for node in material.node_tree.nodes: node.select = (node == normal_target)
-    material.node_tree.nodes.active = normal_target
-    bake_pass('NORMAL', low, high, material, normal_atlas, selected_to_active=True)
+    if manifest.get('bake_high_detail_normals', False):
+        for node in material.node_tree.nodes: node.select = (node == normal_target)
+        material.node_tree.nodes.active = normal_target
+        bake_pass('NORMAL', low, high, material, normal_atlas, selected_to_active=True)
+    else:
+        # These TripoSG parts are untextured, non-watertight generated meshes,
+        # not cleaned high-detail sculpts. Ray-baking them onto decimated copies
+        # creates spikes where rays hit another open shell. Wait for an authored
+        # high-poly source instead of shipping a false-detail normal map.
+        normal_pixels = np.empty(atlas_size * atlas_size * 4, dtype=np.float32)
+        normal_pixels.reshape(-1, 4)[:] = (0.5, 0.5, 1.0, 1.0)
+        normal_atlas.pixels.foreach_set(normal_pixels)
+        baked_targets.add(normal_atlas.name)
+        del normal_pixels
 
     bake_pass('ROUGHNESS', low, high, material, rough_atlas)
     nodes = material.node_tree.nodes
@@ -525,14 +553,25 @@ for part in manifest['parts']:
 
     instances = part['instances']
     if not instances: raise RuntimeError('No placed instances for ' + category)
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from mirror_ship_pairs import mirror_instance
     for level, mesh_data in enumerate(lod_meshes):
         for instance in instances:
             name = instance['name'] + f'_LOD{level}'
-            obj = bpy.data.objects.new(name, mesh_data.copy())
-            scene.collection.objects.link(obj)
-            obj.data.materials.clear(); obj.data.materials.append(material)
-            obj.location = Vector(instance['position'])
-            obj.rotation_euler = Euler(tuple(math.radians(v) for v in instance['rotation']), 'XYZ')
+            if instance.get('mirror_of'):
+                source_name = instance['mirror_of'] + f'_LOD{level}'
+                source = next((placed for placed in ship_objects if placed.name == source_name), None)
+                if source is None:
+                    raise RuntimeError('Place the mirror source first: ' + source_name)
+                obj = mirror_instance(source, name, axis=instance.get('mirror_axis', 'Z'),
+                                      offset=float(instance.get('mirror_offset', 0)))
+            else:
+                obj = bpy.data.objects.new(name, mesh_data.copy())
+                scene.collection.objects.link(obj)
+                obj.data.materials.clear(); obj.data.materials.append(material)
+                obj.location = Vector(instance['position'])
+                obj.rotation_euler = Euler(tuple(math.radians(v) for v in instance['rotation']), 'XYZ')
+                obj.scale = Vector(instance.get('scale', (1.0, 1.0, 1.0)))
             obj.hide_render = level > 0
             obj.hide_set(level > 0)
             ship_objects.append(obj)
@@ -644,7 +683,8 @@ bpy.ops.wm.save_as_mainfile(filepath=str(output/'Kestrel_K017.blend'), compress=
     'textures':{'base_color':'Textures/Kestrel_BaseColor.png','normal':'Textures/Kestrel_Normal.png',
                 'metallic_smoothness':'Textures/Kestrel_MetallicSmoothness.png',
                 'roughness_source':'Textures/Kestrel_Roughness_source.png',
-                'atlas_size_px':atlas_size,'layout':'2x2 shared material atlas; Hull, Wing, LandingGear, Drive'},
+                'atlas_size_px':atlas_size,'layout':'2x2 shared material atlas; Hull, Wing, LandingGear, Drive',
+                'normal_detail':'high-to-low bake' if manifest.get('bake_high_detail_normals', False) else 'neutral tangent normal; generated source is not a clean high-poly sculpt'},
     'fbx':fbx_path.name,'editable_blend':'Kestrel_K017.blend',
-    'status':'Assembled modular review candidate. Colors projected and baked from component references; high detail baked to tangent normal atlas.'},indent=2),encoding='utf8')
+    'status':'Review candidate only. Concept color is projected from a single view; unseen surfaces use a stable base finish. Geometry, multi-view paint and final normal detail require art review.'},indent=2),encoding='utf8')
 print('SHIP_ASSEMBLY_COMPLETE '+str(output),flush=True)

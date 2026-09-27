@@ -3399,6 +3399,27 @@
         0.16
       ],
       "fuelRate": 0.9821211537579074
+    },
+    {
+      "id": "SP-K017",
+      "index": 100,
+      "family": -1,
+      "interiorFamily": 0,
+      "variant": 0,
+      "name": "Kestrel K-017",
+      "className": "Prototype scout",
+      "description": "A broad twin-drive test craft with one walkable pressure deck and a compact cargo hold.",
+      "dimensions": [19.506, 20.0005, 8.5929],
+      "speed": 248.6066,
+      "acceleration": 33.5204,
+      "turn": 0.95593,
+      "capacity": 16,
+      "engines": 2,
+      "mass": 31.5,
+      "hyperSpeed": 23.8095,
+      "paint": [0.58, 0.64, 0.63],
+      "accent": [0.93, 0.5, 0.16],
+      "fuelRate": 0.707
     }
   ]
 }

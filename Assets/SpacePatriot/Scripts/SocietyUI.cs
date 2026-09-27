@@ -41,7 +41,7 @@ namespace SpacePatriot
         {
             if(!AtPort||cargoTransfer!=null)yield break;jumping=true;menu=false;selectedWorld=save.world;
             for(float t=0;t<1;t+=Time.deltaTime){travelFade=t;yield return null;}travelFade=1;
-            save.settlement=destination.id;world.Generate(CurrentWorld);RespawnShip();walking=true;cockpit=false;walkPosition=ship.position+new Vector3(-Spec.width*.65f,1.75f-StandHeight,-3);walkPosition.y=world.SurfaceAt(walkPosition)+1.75f;ClearCombat();SpawnRaiders();RebuildCargo();Save();
+            save.settlement=destination.id;world.Generate(CurrentWorld);RespawnShip();walking=true;cockpit=false;SetSurfaceWalker(ship.position+new Vector3(-Spec.width*.65f,0,-3),ship.forward);ClearCombat();SpawnRaiders();RebuildCargo();Save();
             for(float t=1;t>0;t-=Time.deltaTime){travelFade=t;yield return null;}travelFade=0;jumping=false;Toast("Arrived at "+destination.name+". E uses district terminals; community contracts are in Operations.");
         }
         void CityInteraction(int node)

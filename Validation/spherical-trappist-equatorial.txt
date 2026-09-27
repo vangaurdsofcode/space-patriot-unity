@@ -1,0 +1,1 @@
+World=trappist-1-e eye=(12933.46, -20524.03, -12273.39) radialUp=(0.72, -0.14, -0.68) blades=102477 trees=1218 meadow=51000 woodland=121045 building=False

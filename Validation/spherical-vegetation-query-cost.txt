@@ -1,0 +1,16 @@
+direction=(0.00, 1.00, 0.00) spacing=48 radius=105 candidates=9 enumeration_ms=0.073
+direction=(0.00, 1.00, 0.00) spacing=14 radius=240 candidates=1092 enumeration_ms=1.037
+direction=(0.00, 1.00, 0.00) spacing=7 radius=440 candidates=13016 enumeration_ms=11.148
+direction=(0.00, 1.00, 0.00) spacing=24 radius=2050 candidates=23805 enumeration_ms=14.810
+direction=(1.00, 0.00, 0.00) spacing=48 radius=105 candidates=9 enumeration_ms=0.034
+direction=(1.00, 0.00, 0.00) spacing=14 radius=240 candidates=1092 enumeration_ms=1.093
+direction=(1.00, 0.00, 0.00) spacing=7 radius=440 candidates=13016 enumeration_ms=7.828
+direction=(1.00, 0.00, 0.00) spacing=24 radius=2050 candidates=23805 enumeration_ms=15.061
+direction=(0.00, -1.00, 0.00) spacing=48 radius=105 candidates=9 enumeration_ms=0.039
+direction=(0.00, -1.00, 0.00) spacing=14 radius=240 candidates=1092 enumeration_ms=0.598
+direction=(0.00, -1.00, 0.00) spacing=7 radius=440 candidates=13016 enumeration_ms=8.196
+direction=(0.00, -1.00, 0.00) spacing=24 radius=2050 candidates=23805 enumeration_ms=14.875
+direction=(0.58, 0.58, 0.58) spacing=48 radius=105 candidates=9 enumeration_ms=0.081
+direction=(0.58, 0.58, 0.58) spacing=14 radius=240 candidates=1422 enumeration_ms=0.776
+direction=(0.58, 0.58, 0.58) spacing=7 radius=440 candidates=16926 enumeration_ms=10.088
+direction=(0.58, 0.58, 0.58) spacing=24 radius=2050 candidates=30735 enumeration_ms=18.537

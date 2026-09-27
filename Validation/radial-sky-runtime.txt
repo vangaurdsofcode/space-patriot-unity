@@ -1,0 +1,37 @@
+PASS: live Unity radial atmosphere acceptance; 12 GPU captures on Earth, TRAPPIST-1 e, Mars and Mercury.
+PASS: World catalog has earth
+earth-north world=earth altitude=3.0 radialUp=(0.00, 1.00, 0.00) skyZenith=RGBA(0.142, 0.335, 0.528, 1.006) skyHorizon=RGBA(0.202, 0.454, 0.706, 1.006) fogDensity=0.0002152 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: earth-north uses the live radial skybox
+earth-equator world=earth altitude=3.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.142, 0.335, 0.528, 1.006) skyHorizon=RGBA(0.202, 0.454, 0.706, 1.006) fogDensity=0.0002152 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: earth-equator uses the live radial skybox
+PASS: Equatorial sky follows radial up in the actual GPU render
+earth-south world=earth altitude=3.0 radialUp=(0.00, -1.00, 0.00) skyZenith=RGBA(0.142, 0.335, 0.528, 1.006) skyHorizon=RGBA(0.202, 0.454, 0.706, 1.006) fogDensity=0.0002152 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: earth-south uses the live radial skybox
+PASS: Southern sky follows radial up in the actual GPU render
+earth-ascent-200 world=earth altitude=200.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.080, 0.208, 0.338, 1.006) skyHorizon=RGBA(0.123, 0.295, 0.468, 1.006) fogDensity=0.0000508 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: earth-ascent-200 uses the live radial skybox
+PASS: Sky fades continuously by 200 m without a clear-flag switch
+earth-ascent-450 world=earth altitude=450.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.043, 0.128, 0.219, 1.006) skyHorizon=RGBA(0.067, 0.181, 0.298, 1.006) fogDensity=0.0000081 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: earth-ascent-450 uses the live radial skybox
+PASS: Sky fades continuously by 450 m without a clear-flag switch
+earth-ascent-800 world=earth altitude=800.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.016, 0.047, 0.098, 1.006) skyHorizon=RGBA(0.020, 0.062, 0.120, 1.006) fogDensity=0.0000003 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: earth-ascent-800 uses the live radial skybox
+PASS: Sky fades continuously by 800 m without a clear-flag switch
+earth-ascent-1200 world=earth altitude=1200.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.008, 0.020, 0.043, 1.006) skyHorizon=RGBA(0.008, 0.020, 0.043, 1.006) fogDensity=0.0000000 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: earth-ascent-1200 uses the live radial skybox
+PASS: Sky fades continuously by 1200 m without a clear-flag switch
+PASS: Sky reaches dark space at 1200 m
+earth-equator-world world=earth altitude=9.0 radialUp=(0.52, 0.07, 0.85) skyZenith=RGBA(0.138, 0.326, 0.516, 1.006) skyHorizon=RGBA(0.197, 0.444, 0.692, 1.006) fogDensity=0.0002060 flags=Skybox shader=SpacePatriot/RadialSky
+earth-south-world world=earth altitude=7.5 radialUp=(0.51, -0.61, -0.60) skyZenith=RGBA(0.138, 0.328, 0.518, 1.006) skyHorizon=RGBA(0.213, 0.413, 0.614, 1.006) fogDensity=0.0002082 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: World catalog has trappist-1-e
+trappist-1-e world=trappist-1-e altitude=3.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.228, 0.217, 0.155, 1.006) skyHorizon=RGBA(0.314, 0.301, 0.219, 1.006) fogDensity=0.0002152 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: trappist-1-e uses the live radial skybox
+PASS: TRAPPIST-1 e uses its distinct red-star atmospheric tint
+PASS: World catalog has mars
+mars world=mars altitude=3.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.182, 0.091, 0.058, 1.006) skyHorizon=RGBA(0.254, 0.131, 0.071, 1.006) fogDensity=0.0000379 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: mars uses the live radial skybox
+PASS: Mars uses a thinner sky than Earth
+PASS: World catalog has mercury
+mercury world=mercury altitude=3.0 radialUp=(1.00, 0.00, 0.00) skyZenith=RGBA(0.008, 0.020, 0.043, 1.006) skyHorizon=RGBA(0.008, 0.020, 0.043, 1.006) fogDensity=0.0000000 flags=Skybox shader=SpacePatriot/RadialSky
+PASS: mercury uses the live radial skybox
+PASS: Mercury remains airless at the surface

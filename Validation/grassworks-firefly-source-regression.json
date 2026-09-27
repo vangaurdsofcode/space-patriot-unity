@@ -1,0 +1,24 @@
+{
+  "scope": "Original Grassworks source and CPU math only; WebGL pixel test must run separately",
+  "source": "Reference/Original/vendor/user-engines/grasspack3js.html",
+  "passed": true,
+  "assertions": 252,
+  "maxDiameterCssPixels": 6,
+  "maxAlpha": 0.42,
+  "overlapLinearGreen": 0.6199999999999999,
+  "browserPixelTest": "Reference/Original/vendor/user-engines/grasspack3js.html?validate-fireflies=1",
+  "checks": [
+    "Original population stays at 120 insects",
+    "Shader uses explicit normal alpha/depth and no tone-mapped HDR",
+    "Every insect has its own stored phase and period",
+    "Pulse periods remain between 2.8 and 7 seconds",
+    "Actual animation updates time and viewport/DPR uniforms",
+    "Original drifting positions still update",
+    "Disabled toggle still skips firefly animation",
+    "No shared global opacity flash remains",
+    "Actual vertex shader enforces size/near/behind guards",
+    "Actual fragment shader uses round footprint and nonwhite color ceiling",
+    "Reset still restores visible fireflies",
+    "Normal alpha overlap remains below source green channel rather than adding brightness"
+  ]
+}

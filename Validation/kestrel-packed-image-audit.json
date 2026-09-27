@@ -1,0 +1,713 @@
+[
+  {
+    "blend": "Kestrel_K017.blend",
+    "written": null,
+    "image_path": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-ortho-fit-sixview-review-20260926-r2\\Textures\\Kestrel_BaseColor.png",
+    "is_dirty": false,
+    "source": "FILE",
+    "colorspace": "sRGB",
+    "pixel_hash": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+    "packed_hash": "74764857c50a42e2113c3166b0e1689c59ec974f42dd6b52fd96d27327f42d4f",
+    "mean_hull": [
+      0.43198731541633606,
+      0.412508487701416,
+      0.3800126612186432
+    ],
+    "changed_from_baseline": 0,
+    "changed_from_previous": null,
+    "uvs": {
+      "Hull_LOD0": [
+        {
+          "name": "AtlasUV",
+          "active": true,
+          "render": true
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        }
+      ],
+      "Hull_LOD1": [
+        {
+          "name": "AtlasUV",
+          "active": true,
+          "render": true
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        }
+      ],
+      "Hull_LOD2": [
+        {
+          "name": "AtlasUV",
+          "active": true,
+          "render": true
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        }
+      ]
+    },
+    "materials": {
+      "Kestrel / baked 4K ship atlas": {
+        "images": [
+          {
+            "node": "Kestrel 4K base colour",
+            "image": "Kestrel_BaseColor_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel baked detail normals",
+            "image": "Kestrel_Normal_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel metallic / smoothness",
+            "image": "Kestrel_Metal_4096",
+            "vector_links": []
+          }
+        ],
+        "uv_maps": [],
+        "normal_maps": [
+          {
+            "node": "Normal Map",
+            "uv_map": ""
+          }
+        ]
+      }
+    },
+    "image_hashes": {
+      "Kestrel_BaseColor_4096": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+      "Kestrel_Metal_4096": "5855895c2cc92f9ea641733014cc1a71cb297574800a715ad08c1f1a4345c83c",
+      "Kestrel_Normal_4096": "8d6cd2a0b980268c3fb8fa1124873125380f2ef23b462cd6d806eedcb245d782",
+      "Kestrel_Roughness_4096": "40f35fda4c658ab0a8c284abf7c2ab1ee91519cd2000bde66da0077eef3b2b77"
+    }
+  },
+  {
+    "blend": "01-top.blend",
+    "written": "top",
+    "image_path": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-sixview-fit-review-20260926-r2\\Textures\\Kestrel_BaseColor.png",
+    "is_dirty": false,
+    "source": "FILE",
+    "colorspace": "sRGB",
+    "pixel_hash": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+    "packed_hash": "74764857c50a42e2113c3166b0e1689c59ec974f42dd6b52fd96d27327f42d4f",
+    "mean_hull": [
+      0.43198731541633606,
+      0.412508487701416,
+      0.3800126612186432
+    ],
+    "changed_from_baseline": 0,
+    "changed_from_previous": 0,
+    "uvs": {
+      "Hull_LOD0": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD1": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD2": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ]
+    },
+    "materials": {
+      "Kestrel / baked 4K ship atlas": {
+        "images": [
+          {
+            "node": "Kestrel 4K base colour",
+            "image": "Kestrel_BaseColor_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel baked detail normals",
+            "image": "Kestrel_Normal_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel metallic / smoothness",
+            "image": "Kestrel_Metal_4096",
+            "vector_links": []
+          }
+        ],
+        "uv_maps": [],
+        "normal_maps": [
+          {
+            "node": "Normal Map",
+            "uv_map": ""
+          }
+        ]
+      }
+    },
+    "image_hashes": {
+      "Kestrel_BaseColor_4096": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+      "Kestrel_Metal_4096": "5855895c2cc92f9ea641733014cc1a71cb297574800a715ad08c1f1a4345c83c",
+      "Kestrel_Normal_4096": "8d6cd2a0b980268c3fb8fa1124873125380f2ef23b462cd6d806eedcb245d782"
+    }
+  },
+  {
+    "blend": "02-bottom.blend",
+    "written": "top,bottom",
+    "image_path": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-sixview-fit-review-20260926-r2\\Textures\\Kestrel_BaseColor.png",
+    "is_dirty": false,
+    "source": "FILE",
+    "colorspace": "sRGB",
+    "pixel_hash": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+    "packed_hash": "74764857c50a42e2113c3166b0e1689c59ec974f42dd6b52fd96d27327f42d4f",
+    "mean_hull": [
+      0.43198731541633606,
+      0.412508487701416,
+      0.3800126612186432
+    ],
+    "changed_from_baseline": 0,
+    "changed_from_previous": 0,
+    "uvs": {
+      "Hull_LOD0": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD1": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD2": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ]
+    },
+    "materials": {
+      "Kestrel / baked 4K ship atlas": {
+        "images": [
+          {
+            "node": "Kestrel 4K base colour",
+            "image": "Kestrel_BaseColor_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel baked detail normals",
+            "image": "Kestrel_Normal_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel metallic / smoothness",
+            "image": "Kestrel_Metal_4096",
+            "vector_links": []
+          }
+        ],
+        "uv_maps": [],
+        "normal_maps": [
+          {
+            "node": "Normal Map",
+            "uv_map": ""
+          }
+        ]
+      }
+    },
+    "image_hashes": {
+      "Kestrel_BaseColor_4096": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+      "Kestrel_Metal_4096": "5855895c2cc92f9ea641733014cc1a71cb297574800a715ad08c1f1a4345c83c",
+      "Kestrel_Normal_4096": "8d6cd2a0b980268c3fb8fa1124873125380f2ef23b462cd6d806eedcb245d782"
+    }
+  },
+  {
+    "blend": "03-port.blend",
+    "written": "top,bottom,port",
+    "image_path": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-sixview-fit-review-20260926-r2\\Textures\\Kestrel_BaseColor.png",
+    "is_dirty": false,
+    "source": "FILE",
+    "colorspace": "sRGB",
+    "pixel_hash": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+    "packed_hash": "74764857c50a42e2113c3166b0e1689c59ec974f42dd6b52fd96d27327f42d4f",
+    "mean_hull": [
+      0.43198731541633606,
+      0.412508487701416,
+      0.3800126612186432
+    ],
+    "changed_from_baseline": 0,
+    "changed_from_previous": 0,
+    "uvs": {
+      "Hull_LOD0": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD1": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD2": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ]
+    },
+    "materials": {
+      "Kestrel / baked 4K ship atlas": {
+        "images": [
+          {
+            "node": "Kestrel 4K base colour",
+            "image": "Kestrel_BaseColor_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel baked detail normals",
+            "image": "Kestrel_Normal_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel metallic / smoothness",
+            "image": "Kestrel_Metal_4096",
+            "vector_links": []
+          }
+        ],
+        "uv_maps": [],
+        "normal_maps": [
+          {
+            "node": "Normal Map",
+            "uv_map": ""
+          }
+        ]
+      }
+    },
+    "image_hashes": {
+      "Kestrel_BaseColor_4096": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+      "Kestrel_Metal_4096": "5855895c2cc92f9ea641733014cc1a71cb297574800a715ad08c1f1a4345c83c",
+      "Kestrel_Normal_4096": "8d6cd2a0b980268c3fb8fa1124873125380f2ef23b462cd6d806eedcb245d782"
+    }
+  },
+  {
+    "blend": "04-starboard.blend",
+    "written": "top,bottom,port,starboard",
+    "image_path": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-sixview-fit-review-20260926-r2\\Textures\\Kestrel_BaseColor.png",
+    "is_dirty": false,
+    "source": "FILE",
+    "colorspace": "sRGB",
+    "pixel_hash": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+    "packed_hash": "74764857c50a42e2113c3166b0e1689c59ec974f42dd6b52fd96d27327f42d4f",
+    "mean_hull": [
+      0.43198731541633606,
+      0.412508487701416,
+      0.3800126612186432
+    ],
+    "changed_from_baseline": 0,
+    "changed_from_previous": 0,
+    "uvs": {
+      "Hull_LOD0": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD1": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD2": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ]
+    },
+    "materials": {
+      "Kestrel / baked 4K ship atlas": {
+        "images": [
+          {
+            "node": "Kestrel 4K base colour",
+            "image": "Kestrel_BaseColor_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel baked detail normals",
+            "image": "Kestrel_Normal_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel metallic / smoothness",
+            "image": "Kestrel_Metal_4096",
+            "vector_links": []
+          }
+        ],
+        "uv_maps": [],
+        "normal_maps": [
+          {
+            "node": "Normal Map",
+            "uv_map": ""
+          }
+        ]
+      }
+    },
+    "image_hashes": {
+      "Kestrel_BaseColor_4096": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+      "Kestrel_Metal_4096": "5855895c2cc92f9ea641733014cc1a71cb297574800a715ad08c1f1a4345c83c",
+      "Kestrel_Normal_4096": "8d6cd2a0b980268c3fb8fa1124873125380f2ef23b462cd6d806eedcb245d782"
+    }
+  },
+  {
+    "blend": "05-nose.blend",
+    "written": "top,bottom,port,starboard,nose",
+    "image_path": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-sixview-fit-review-20260926-r2\\Textures\\Kestrel_BaseColor.png",
+    "is_dirty": false,
+    "source": "FILE",
+    "colorspace": "sRGB",
+    "pixel_hash": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+    "packed_hash": "74764857c50a42e2113c3166b0e1689c59ec974f42dd6b52fd96d27327f42d4f",
+    "mean_hull": [
+      0.43198731541633606,
+      0.412508487701416,
+      0.3800126612186432
+    ],
+    "changed_from_baseline": 0,
+    "changed_from_previous": 0,
+    "uvs": {
+      "Hull_LOD0": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD1": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD2": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ]
+    },
+    "materials": {
+      "Kestrel / baked 4K ship atlas": {
+        "images": [
+          {
+            "node": "Kestrel 4K base colour",
+            "image": "Kestrel_BaseColor_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel baked detail normals",
+            "image": "Kestrel_Normal_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel metallic / smoothness",
+            "image": "Kestrel_Metal_4096",
+            "vector_links": []
+          }
+        ],
+        "uv_maps": [],
+        "normal_maps": [
+          {
+            "node": "Normal Map",
+            "uv_map": ""
+          }
+        ]
+      }
+    },
+    "image_hashes": {
+      "Kestrel_BaseColor_4096": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+      "Kestrel_Metal_4096": "5855895c2cc92f9ea641733014cc1a71cb297574800a715ad08c1f1a4345c83c",
+      "Kestrel_Normal_4096": "8d6cd2a0b980268c3fb8fa1124873125380f2ef23b462cd6d806eedcb245d782"
+    }
+  },
+  {
+    "blend": "06-aft.blend",
+    "written": "top,bottom,port,starboard,nose,aft",
+    "image_path": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-sixview-fit-review-20260926-r2\\Textures\\Kestrel_BaseColor.png",
+    "is_dirty": false,
+    "source": "FILE",
+    "colorspace": "sRGB",
+    "pixel_hash": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+    "packed_hash": "74764857c50a42e2113c3166b0e1689c59ec974f42dd6b52fd96d27327f42d4f",
+    "mean_hull": [
+      0.43198731541633606,
+      0.412508487701416,
+      0.3800126612186432
+    ],
+    "changed_from_baseline": 0,
+    "changed_from_previous": 0,
+    "uvs": {
+      "Hull_LOD0": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD1": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ],
+      "Hull_LOD2": [
+        {
+          "name": "AtlasUV",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "ArtProjection",
+          "active": false,
+          "render": false
+        },
+        {
+          "name": "AtlasUV_SixView_v1",
+          "active": true,
+          "render": true
+        }
+      ]
+    },
+    "materials": {
+      "Kestrel / baked 4K ship atlas": {
+        "images": [
+          {
+            "node": "Kestrel 4K base colour",
+            "image": "Kestrel_BaseColor_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel baked detail normals",
+            "image": "Kestrel_Normal_4096",
+            "vector_links": []
+          },
+          {
+            "node": "Kestrel metallic / smoothness",
+            "image": "Kestrel_Metal_4096",
+            "vector_links": []
+          }
+        ],
+        "uv_maps": [],
+        "normal_maps": [
+          {
+            "node": "Normal Map",
+            "uv_map": ""
+          }
+        ]
+      }
+    },
+    "image_hashes": {
+      "Kestrel_BaseColor_4096": "0d514bfd473b1eb58d84afadc242612e89a2019920e17e08277d625b2ea6fce4",
+      "Kestrel_Metal_4096": "5855895c2cc92f9ea641733014cc1a71cb297574800a715ad08c1f1a4345c83c",
+      "Kestrel_Normal_4096": "8d6cd2a0b980268c3fb8fa1124873125380f2ef23b462cd6d806eedcb245d782"
+    }
+  },
+  {
+    "disk_hash": "5daa7c9db56ae0a3a3643faad21b1bff42251a657cc9d9890a0a6012c14d9182",
+    "disk_changed_from_baseline": 120344
+  }
+]

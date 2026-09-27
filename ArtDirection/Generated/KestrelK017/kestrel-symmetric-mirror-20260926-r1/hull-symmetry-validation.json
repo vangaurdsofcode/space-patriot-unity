@@ -1,0 +1,211 @@
+{
+  "source": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-postbake-pipeline-20260926-r2\\06-aft.blend",
+  "source_sha256": "599a325c1b6535f5f5b9a2fd06383cb34acaf9a46fb589fb40664f30226df973",
+  "source_half": "port / world Z<=0",
+  "plane_world_z": 0,
+  "nose_axis": "+X",
+  "up_axis": "+Y",
+  "atlas_repainted": false,
+  "requires_post_bake_uv_transfer": true,
+  "lods": [
+    {
+      "level": 0,
+      "before": {
+        "vertices": 25042,
+        "faces": 50000,
+        "triangles": 50000,
+        "boundary_edges": 618,
+        "centerline_boundary_edges": 0,
+        "nonmanifold_edges": 624,
+        "edges_with_more_than_two_faces": 6,
+        "loose_vertices": 0,
+        "watertight_manifold": false
+      },
+      "processing": {
+        "retained_port_triangles": 30396,
+        "removed_cut_plane_caps": 0,
+        "welded_generated_centerline_vertices": 738
+      },
+      "after": {
+        "maximum_vertex_symmetry_error_metres": 0.0,
+        "mirrored_face_and_uv_correspondence": true,
+        "mirrored_face_winding_verified": true,
+        "material_slots_and_texture_graph_unchanged": true,
+        "source_face_material_indices_preserved": true,
+        "original_port_uv_interpolation_max_error": 7.060114404211504e-08,
+        "source_uv_layer": "AtlasUV_SixView_v2",
+        "uv_layer_count": 1,
+        "object_transform_unchanged": true,
+        "topology": {
+          "vertices": 30310,
+          "faces": 60792,
+          "triangles": 60792,
+          "boundary_edges": 372,
+          "centerline_boundary_edges": 0,
+          "nonmanifold_edges": 380,
+          "edges_with_more_than_two_faces": 8,
+          "loose_vertices": 0,
+          "watertight_manifold": false
+        }
+      },
+      "reopened": {
+        "maximum_vertex_symmetry_error_metres": 0.0,
+        "mirrored_face_and_uv_correspondence": true,
+        "mirrored_face_winding_verified": true,
+        "material_slots_and_texture_graph_unchanged": true,
+        "source_face_material_indices_preserved": true,
+        "original_port_uv_interpolation_max_error": 7.060114404211504e-08,
+        "source_uv_layer": "AtlasUV_SixView_v2",
+        "uv_layer_count": 1,
+        "object_transform_unchanged": true,
+        "topology": {
+          "vertices": 30310,
+          "faces": 60792,
+          "triangles": 60792,
+          "boundary_edges": 372,
+          "centerline_boundary_edges": 0,
+          "nonmanifold_edges": 380,
+          "edges_with_more_than_two_faces": 8,
+          "loose_vertices": 0,
+          "watertight_manifold": false
+        }
+      }
+    },
+    {
+      "level": 1,
+      "before": {
+        "vertices": 8540,
+        "faces": 16999,
+        "triangles": 16999,
+        "boundary_edges": 613,
+        "centerline_boundary_edges": 0,
+        "nonmanifold_edges": 620,
+        "edges_with_more_than_two_faces": 6,
+        "loose_vertices": 0,
+        "watertight_manifold": false
+      },
+      "processing": {
+        "retained_port_triangles": 10615,
+        "removed_cut_plane_caps": 0,
+        "welded_generated_centerline_vertices": 382
+      },
+      "after": {
+        "maximum_vertex_symmetry_error_metres": 0.0,
+        "mirrored_face_and_uv_correspondence": true,
+        "mirrored_face_winding_verified": true,
+        "material_slots_and_texture_graph_unchanged": true,
+        "source_face_material_indices_preserved": true,
+        "original_port_uv_interpolation_max_error": 7.777969102118476e-08,
+        "source_uv_layer": "AtlasUV_SixView_v2",
+        "uv_layer_count": 1,
+        "object_transform_unchanged": true,
+        "topology": {
+          "vertices": 10528,
+          "faces": 21230,
+          "triangles": 21230,
+          "boundary_edges": 370,
+          "centerline_boundary_edges": 0,
+          "nonmanifold_edges": 378,
+          "edges_with_more_than_two_faces": 8,
+          "loose_vertices": 0,
+          "watertight_manifold": false
+        }
+      },
+      "reopened": {
+        "maximum_vertex_symmetry_error_metres": 0.0,
+        "mirrored_face_and_uv_correspondence": true,
+        "mirrored_face_winding_verified": true,
+        "material_slots_and_texture_graph_unchanged": true,
+        "source_face_material_indices_preserved": true,
+        "original_port_uv_interpolation_max_error": 7.777969102118476e-08,
+        "source_uv_layer": "AtlasUV_SixView_v2",
+        "uv_layer_count": 1,
+        "object_transform_unchanged": true,
+        "topology": {
+          "vertices": 10528,
+          "faces": 21230,
+          "triangles": 21230,
+          "boundary_edges": 370,
+          "centerline_boundary_edges": 0,
+          "nonmanifold_edges": 378,
+          "edges_with_more_than_two_faces": 8,
+          "loose_vertices": 0,
+          "watertight_manifold": false
+        }
+      }
+    },
+    {
+      "level": 2,
+      "before": {
+        "vertices": 3040,
+        "faces": 5999,
+        "triangles": 5999,
+        "boundary_edges": 613,
+        "centerline_boundary_edges": 0,
+        "nonmanifold_edges": 620,
+        "edges_with_more_than_two_faces": 6,
+        "loose_vertices": 0,
+        "watertight_manifold": false
+      },
+      "processing": {
+        "retained_port_triangles": 3774,
+        "removed_cut_plane_caps": 0,
+        "welded_generated_centerline_vertices": 201
+      },
+      "after": {
+        "maximum_vertex_symmetry_error_metres": 0.0,
+        "mirrored_face_and_uv_correspondence": true,
+        "mirrored_face_winding_verified": true,
+        "material_slots_and_texture_graph_unchanged": true,
+        "source_face_material_indices_preserved": true,
+        "original_port_uv_interpolation_max_error": 6.74742873796319e-08,
+        "source_uv_layer": "AtlasUV_SixView_v2",
+        "uv_layer_count": 1,
+        "object_transform_unchanged": true,
+        "topology": {
+          "vertices": 3687,
+          "faces": 7548,
+          "triangles": 7548,
+          "boundary_edges": 370,
+          "centerline_boundary_edges": 0,
+          "nonmanifold_edges": 378,
+          "edges_with_more_than_two_faces": 8,
+          "loose_vertices": 0,
+          "watertight_manifold": false
+        }
+      },
+      "reopened": {
+        "maximum_vertex_symmetry_error_metres": 0.0,
+        "mirrored_face_and_uv_correspondence": true,
+        "mirrored_face_winding_verified": true,
+        "material_slots_and_texture_graph_unchanged": true,
+        "source_face_material_indices_preserved": true,
+        "original_port_uv_interpolation_max_error": 6.74742873796319e-08,
+        "source_uv_layer": "AtlasUV_SixView_v2",
+        "uv_layer_count": 1,
+        "object_transform_unchanged": true,
+        "topology": {
+          "vertices": 3687,
+          "faces": 7548,
+          "triangles": 7548,
+          "boundary_edges": 370,
+          "centerline_boundary_edges": 0,
+          "nonmanifold_edges": 378,
+          "edges_with_more_than_two_faces": 8,
+          "loose_vertices": 0,
+          "watertight_manifold": false
+        }
+      }
+    }
+  ],
+  "passed": true,
+  "saved_files_reopened": true,
+  "unpaired_components_unchanged": true,
+  "packed_and_external_images_identical": true,
+  "atlas_sha256": {
+    "Kestrel_BaseColor_4096": "8c92f6773c98c8d369e21c25518eacbca77177009a05c51d05172d04aeb240ca",
+    "Kestrel_Normal_4096": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb",
+    "Kestrel_Metal_4096": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485",
+    "Kestrel_Roughness_4096": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713"
+  }
+}

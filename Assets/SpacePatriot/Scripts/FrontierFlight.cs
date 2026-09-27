@@ -30,7 +30,17 @@ namespace SpacePatriot
                 walking=false;aboard=false;cockpit=true;Toast("Space launches • WASD translates • Arrows / mouse steer • Q/E roll • X brakes • G gear • V camera");return;}
             if(activeDeck!=null){aboard=!aboard;deckLevel=0;deckLiftMoving=false;if(deckLiftPlatform)deckLiftPlatform.localPosition=new Vector3(0,-1.7f,-5);deckPosition=new Vector3(0,0,-1.8f);walkYaw=walkPitch=0;cockpit=true;Toast(aboard?"Walk the deck. F returns to the helm; use the airlock to disembark.":"Pilot station occupied.");return;}
             if(flying){Toast("Land before opening the airlock.");return;}
-            walking=true;walkPosition=ship.position+ship.right*(Spec.width*.6f+2);walkPosition.y=world.SurfaceAt(walkPosition)+1.75f;walkYaw=ship.eulerAngles.y;walkPitch=0;cockpit=false;
+            walking=true;SetSurfaceWalker(ship.position+ship.right*(Spec.width*.6f+2),ship.forward);cockpit=false;
+        }
+        void SetSurfaceWalker(Vector3 near,Vector3 facing)
+        {
+            Vector3 normal=world.transform.up;
+            if(world.TrySurface(near,out var point,out var surfaceNormal)){normal=surfaceNormal;walkPosition=point+normal*1.75f;}
+            else {walkPosition=near;walkPosition.y=world.SurfaceAt(walkPosition)+1.75f;}
+            walkForward=Vector3.ProjectOnPlane(facing,normal).normalized;
+            if(walkForward.sqrMagnitude<.01f)walkForward=Vector3.ProjectOnPlane(Vector3.forward,normal).normalized;
+            if(walkForward.sqrMagnitude<.01f)walkForward=Vector3.ProjectOnPlane(Vector3.right,normal).normalized;
+            walkYaw=walkPitch=0;
         }
         bool NeutralControls()
         {
@@ -164,7 +174,7 @@ namespace SpacePatriot
             UpdateMfd();
             velocityDisplay.text="SCM / "+(flightAssist?"IFCS":"DECOUPLED")+"\n"+speed.ToString("000")+" m/s\nLIMIT "+(throttle*100).ToString("0")+"%\nGEAR "+(gearDown?"DOWN":"UP");
             serviceDisplay.text=(powered?"BUS ONLINE":"BUS OFFLINE")+"\nFUEL "+save.fuel.ToString("000")+"\nHULL "+HullPercent.ToString("000")+"\nHOLD "+Progression.Used(save)+" / "+Spec.capacity;
-            navigationDisplay.text=CurrentWorld.name.ToUpperInvariant()+"\n"+(flying?"ALT "+Mathf.Max(0,ship.position.y-world.SurfaceAt(ship.position)-StandHeight).ToString("0"):"LANDED")+"\n"+(cruise?"CRUISE":armed?"WEAPONS ARMED":"WEAPONS SAFE")+"\nZ  INSTRUMENTS";
+            navigationDisplay.text=CurrentWorld.name.ToUpperInvariant()+"\n"+(flying?"ALT "+Mathf.Max(0,world.AltitudeAboveSurface(ship.position)-StandHeight).ToString("0"):"LANDED")+"\n"+(cruise?"CRUISE":armed?"WEAPONS ARMED":"WEAPONS SAFE")+"\nZ  INSTRUMENTS";
         }
     }
 }

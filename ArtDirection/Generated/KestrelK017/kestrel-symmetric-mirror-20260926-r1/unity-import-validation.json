@@ -1,0 +1,59 @@
+{
+    "build": "kestrel-symmetric-mirror-20260926-r1",
+    "prefab": "Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Kestrel_K017.prefab",
+    "normalStatus": "Hull tangent-normal chart is neutral after the UV reset; no new hull high-to-low normal bake is claimed. Other parts retain their supplied normal atlas.",
+    "passed": true,
+    "savedBakeValidationPresent": false,
+    "postBakeUvValidationPresent": true,
+    "runtimePromoted": false,
+    "renderers": 24,
+    "bounds": {
+        "x": 19.505996704101564,
+        "y": 8.592884063720704,
+        "z": 20.000469207763673
+    },
+    "hullUvs": [
+        {
+            "mesh": "Hull_LOD0",
+            "vertices": 48373,
+            "uv0Count": 48373,
+            "uv1Count": 0,
+            "minimum": {
+                "x": 0.003008172381669283,
+                "y": 0.5030083060264587
+            },
+            "maximum": {
+                "x": 0.4969918131828308,
+                "y": 0.9969916343688965
+            }
+        },
+        {
+            "mesh": "Hull_LOD1",
+            "vertices": 20881,
+            "uv0Count": 20881,
+            "uv1Count": 0,
+            "minimum": {
+                "x": 0.003010987304151058,
+                "y": 0.5030109882354736
+            },
+            "maximum": {
+                "x": 0.49698901176452639,
+                "y": 0.9969890117645264
+            }
+        },
+        {
+            "mesh": "Hull_LOD2",
+            "vertices": 9292,
+            "uv0Count": 9292,
+            "uv1Count": 0,
+            "minimum": {
+                "x": 0.003014416666701436,
+                "y": 0.5030144453048706
+            },
+            "maximum": {
+                "x": 0.4969855844974518,
+                "y": 0.9969855546951294
+            }
+        }
+    ]
+}

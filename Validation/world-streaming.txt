@@ -1,4 +1,6 @@
-PASS: On-foot streamed terrain has 193 x 193 samples
-PASS: Terrain patch recenters on its requested player position
-PASS: Patch center follows the active Worldworks height query
-PASS: Streamed patch renders over the existing planet height/collision system
+PASS: 193 x 193 close-range Worldworks terrain patch is generated for on-foot travel.
+PASS: Patch recenters on the player and queries the active source terrain height.
+PASS: The source-engine sphere renders as one continuous globe without the earlier radial wedge artifact (see continuous-planet.png).
+PASS: Native Windows player raycasts solid ground on all six cardinal directions.
+PASS: Native Windows player accepts an unpadded far-hemisphere landing and aligns gear to its surface normal.
+PASS: Native Windows player generates a collidable far-side streamed patch and supports a tangent on-foot step across it.

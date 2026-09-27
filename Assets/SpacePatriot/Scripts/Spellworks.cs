@@ -50,7 +50,7 @@ namespace SpacePatriot
             for(int i=0;i<64;i++){float a=i*Mathf.PI*2/64;var d=right*Mathf.Cos(a)+tangent*Mathf.Sin(a);Emit(p+d*.18f,d*3.2f+axis*.35f,scan,1.25f,.12f,0,0,1.1f);}
             for(int i=0;i<12;i++){float a=i*Mathf.PI*2/12;var d=right*Mathf.Cos(a)+tangent*Mathf.Sin(a);Emit(p+d*.35f,axis*Random.Range(1.1f,2.4f)+d*Random.Range(.25f,.7f),new Color(.35f,.85f,1.4f),.8f,.08f,5,0,1.4f);}
         }
-        public void Flush(){particles.Flush();smoke.Flush();}
+        public void Flush(){if(particles==null||smoke==null)return;particles.Flush();smoke.Flush();}
         void LateUpdate()=>Flush();
         void OnDestroy(){particles?.Dispose();smoke?.Dispose();}
     }

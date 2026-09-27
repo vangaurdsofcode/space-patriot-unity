@@ -1,0 +1,19 @@
+PASS: imported Unity prefab verified; 9 actual URP captures saved.
+PASS Hull_LOD0: 48373 imported vertices, symmetric shape/normals; maximum error 2.19811068E-06 m. Independent UV islands are deliberately not identical across the centerline.
+Hull_LOD0 _BaseMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_BaseColor.png (4096px)
+Hull_LOD0 _BumpMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_Normal.png (4096px)
+Hull_LOD0 _MetallicGlossMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_MetallicSmoothness.png (4096px)
+PASS Wing LOD0: 37037 imported vertices, mirrored position/UV/normal; maximum position error 3.05324761E-06 m.
+PASS Drive LOD0: 43793 imported vertices, mirrored position/UV/normal; maximum position error 2.78041443E-06 m.
+PASS Hull_LOD1: 20881 imported vertices, symmetric shape/normals; maximum error 2.19811068E-06 m. Independent UV islands are deliberately not identical across the centerline.
+Hull_LOD1 _BaseMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_BaseColor_LOD1.png (1024px)
+Hull_LOD1 _BumpMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_Normal_LOD1.png (1024px)
+Hull_LOD1 _MetallicGlossMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_MetallicSmoothness_LOD1.png (1024px)
+PASS Wing LOD1: 16083 imported vertices, mirrored position/UV/normal; maximum position error 3.05324761E-06 m.
+PASS Drive LOD1: 19404 imported vertices, mirrored position/UV/normal; maximum position error 2.78041443E-06 m.
+PASS Hull_LOD2: 9292 imported vertices, symmetric shape/normals; maximum error 1.96604992E-06 m. Independent UV islands are deliberately not identical across the centerline.
+Hull_LOD2 _BaseMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_BaseColor_LOD2.png (512px)
+Hull_LOD2 _BumpMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_Normal_LOD2.png (512px)
+Hull_LOD2 _MetallicGlossMap = Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Textures/Kestrel_MetallicSmoothness_LOD2.png (512px)
+PASS Wing LOD2: 6764 imported vertices, mirrored position/UV/normal; maximum position error 2.90048729E-06 m.
+PASS Drive LOD2: 8429 imported vertices, mirrored position/UV/normal; maximum position error 2.78041443E-06 m.

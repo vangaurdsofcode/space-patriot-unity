@@ -9,7 +9,17 @@ namespace SpacePatriot
     {
         public string id, name, system, biome;
         public int seed;
-        public float temperature, radius;
+        public float temperature, radius, stellarTemperatureK=5772f;
+        public bool AlienPhotosynthesis=>stellarTemperatureK>0&&stellarTemperatureK<4400f;
+        public Color GrassPigment(float moisture)
+        {
+            float m=Mathf.Clamp01(moisture);
+            Color baseColor=AlienPhotosynthesis?new Color(.065f,.24f,.45f):new Color(.18f,.42f,.075f);
+            Color dryColor=AlienPhotosynthesis?new Color(.30f,.12f,.34f):new Color(.43f,.36f,.095f);
+            float factor=(.7f+m*.6f)*(1-(1-m)*.35f),dry=(1-m)*.35f;
+            return new Color(baseColor.r*factor+dryColor.r*dry,baseColor.g*factor+dryColor.g*dry,baseColor.b*factor+dryColor.b*dry,1);
+        }
+        public Color FoliagePigment=>AlienPhotosynthesis?new Color(.42f,.15f,.49f):new Color(.55f,.65f,.39f);
         public Color Surface => biome switch {
             "temperate" => new Color(.22f,.28f,.22f), "desert" => new Color(.43f,.23f,.14f),
             "ice" => new Color(.39f,.48f,.51f), "volcanic" => new Color(.22f,.18f,.16f),
@@ -53,18 +63,18 @@ namespace SpacePatriot
     [Serializable] public class FleetCatalog { public OriginalCraft[] crafts; }
     [Serializable] public class OriginalCraft
     {
-        public string id,name,className,description; public int index,family,variant,capacity,engines;
+        public string id,name,className,description; public int index,family,interiorFamily,variant,capacity,engines;
         public float speed,acceleration,turn,mass,hyperSpeed,fuelRate; public float[] dimensions,paint,accent;
     }
     public sealed class ShipSpec
     {
         public string name,designation,role,description;
         public float speed,thrust,turn,health=100,mass,length,width,height;
-        public int capacity,price,family,variant;
+        public int capacity,price,family,interiorFamily,variant;
         public Color paint;
         public ShipSpec(OriginalCraft c){name=c.name;designation=c.id;role=c.className;description=c.description;
             speed=c.speed;thrust=c.acceleration;turn=c.turn*70;capacity=c.capacity;price=Mathf.RoundToInt(c.dimensions[0]*8);
-            family=c.family;variant=c.variant;mass=c.mass;length=c.dimensions[0];width=c.dimensions[1];height=c.dimensions[2];paint=new Color(c.paint[0],c.paint[1],c.paint[2]);}
+            family=c.family;interiorFamily=family<0?c.interiorFamily:family;variant=c.variant;mass=c.mass;length=c.dimensions[0];width=c.dimensions[1];height=c.dimensions[2];paint=new Color(c.paint[0],c.paint[1],c.paint[2]);}
         static ShipSpec[] fleet;
         public static ShipSpec[] Fleet { get { if(fleet==null){var records=JsonUtility.FromJson<FleetCatalog>(Resources.Load<TextAsset>("Fleet").text).crafts;fleet=Array.ConvertAll(records,c=>new ShipSpec(c));}return fleet; } }
     }

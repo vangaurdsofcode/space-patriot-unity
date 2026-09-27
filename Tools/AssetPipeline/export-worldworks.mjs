@@ -7,6 +7,7 @@ const c=vm.createContext({console});
 for(const f of ['engines-worldworks.js','engines-terrainworks.js'])vm.runInContext(fs.readFileSync(source+f,'utf8'),c);
 const catalog=JSON.parse(fs.readFileSync(base+'/Reference/Original/assets/data/cosmoplot-worlds.json'));
 const originals=catalog.systems.flatMap(s=>s.planets);
+const systemByWorld=new Map(catalog.systems.flatMap(s=>s.planets.map(p=>[p.id,s])));
 const worlds=JSON.parse(fs.readFileSync(base+'/Assets/SpacePatriot/Resources/Worlds.json')).worlds;
 // Keep Unity's playable catalog on the original living.js biome assignment.
 // These are source world identities, not broad visual guesses based on the
@@ -18,6 +19,8 @@ const out=base+'/Assets/SpacePatriot/Resources/Worldworks';fs.mkdirSync(out,{rec
 const report=[];
 for(const w of worlds){
  const source=originals.find(b=>b.id===w.id);if(!source)throw new Error('Missing original source world '+w.id);
+ const host=systemByWorld.get(w.id);if(!host)throw new Error('Missing host star for '+w.id);
+ w.stellarTemperatureK=host.stellar?.effectiveTemperatureK||5772;
  const biomeIndex=biomeByName[source.name];if(biomeIndex===undefined)throw new Error('Missing original living.js biome for '+source.name);
  const [type,wet]=biomeProfiles[biomeIndex],seed=source.worldSeed>>>0;
  if(w.seed!==seed)throw new Error(`${w.id}: Unity world seed ${w.seed} differs from original ${seed}; update Worlds.json before exporting.`);
@@ -56,4 +59,5 @@ for(const w of worlds){
  }
  fs.writeFileSync(out+'/'+w.id+'.bytes',data);report.push({world:w.id,sourceName:source.name,seed,type,humidity:wet,styles,provinces:provinces.map((p,i)=>({style:p.style,seed:(seed+Math.imul(i+1,0x9E3779B9))>>>0,temperature:p.temperature,moisture:p.moisture,contributingSamples:provinceSamples[i]})),min,max,samples:16641});
 }
-fs.writeFileSync(base+'/Validation/worldworks-export.json',JSON.stringify(report,null,2));console.log('Compiled original Worldworks + Terrainworks:',report.length,'worlds with five blended geology/climate provinces each');
+fs.writeFileSync(base+'/Assets/SpacePatriot/Resources/Worlds.json',JSON.stringify({worlds},null,2)+'\n');
+fs.writeFileSync(base+'/Validation/worldworks-export.json',JSON.stringify(report,null,2));console.log('Compiled original Worldworks + Terrainworks:',report.length,'worlds with five blended geology/climate provinces each; copied stellar pigments for',worlds.length,'worlds');

@@ -7,18 +7,34 @@ namespace SpacePatriot
     public partial class FrontierWorld
     {
         public const float PlanetRadius=18000, RegionRadius=3000, RingStep=25;
+        // Oceanworks' authored water datum is four metres below the terrain
+        // sphere. Share this radial level with vegetation, including far from port.
+        public const float SeaLevel=-4, VegetationShoreClearance=2;
         public const int LongitudeCount=384;
         const float AngleStep=2*Mathf.PI/LongitudeCount;
         public WorldworksTerrain terrainFields;
         public Grassworks grass;
+        PlanetRegionClimate regionClimate;
         PlanetEngineSurface sourceSurface;
         Mesh streamedTerrainMesh;
         Transform streamedTerrainRoot;
+        MeshCollider streamedTerrainCollider;
         MeshCollider planetCollider;
         Material terrainMaterial;
-        Vector2 streamedTerrainAnchor;
+        Vector3 streamedTerrainAnchor;
         bool streamedTerrainWalking;
+        Matrix4x4 surfaceWorldMatrix;
         public Vector3 PlanetCenter=>new Vector3(0,-PlanetRadius-3,0);
+        public float ElevationAboveSea(Vector3 planetLocalPoint)
+        {
+            return (planetLocalPoint-PlanetCenter).magnitude-(PlanetRadius+SeaLevel);
+        }
+        public bool CanRootVegetation(Vector3 planetLocalSurface)
+        {
+            // Original VegetationStage.point rejects ground below sea + .002 km.
+            // A negative world Y is not water on a curved planet.
+            return ElevationAboveSea(planetLocalSurface)>=VegetationShoreClearance;
+        }
         float PlanetwideRelief(Vector3 normal)
         {
             return sourceSurface.SourceHeightMeters(normal);
@@ -73,6 +89,14 @@ namespace SpacePatriot
         {
             point=default;normal=Vector3.up;
             if(info==null||info.biome=="gas")return false;
+            // A moved/rotated planet must update PhysX before querying its
+            // colliders; otherwise the first streamed patch uses the old pose.
+            var currentMatrix=transform.localToWorldMatrix;
+            if(surfaceWorldMatrix!=currentMatrix)
+            {
+                Physics.SyncTransforms();surfaceWorldMatrix=currentMatrix;
+                streamedTerrainAnchor=Vector3.positiveInfinity;
+            }
             if(planetCollider==null)
             {
                 var shell=content!=null?content.Find("Continuous spherical terrain"):null;
@@ -84,7 +108,10 @@ namespace SpacePatriot
             if(radial.sqrMagnitude<1)radial=Vector3.up;
             radial.Normalize();
             Vector3 origin=center+radial*(PlanetRadius+2200);
-            if(!planetCollider.Raycast(new Ray(origin,-radial),out var hit,3600))return false;
+            var ray=new Ray(origin,-radial);
+            if(streamedTerrainCollider&&streamedTerrainRoot&&streamedTerrainRoot.gameObject.activeInHierarchy&&streamedTerrainCollider.Raycast(ray,out var streamedHit,3600))
+            {point=streamedHit.point;normal=streamedHit.normal.normalized;if(Vector3.Dot(normal,radial)<0)normal=-normal;return true;}
+            if(!planetCollider.Raycast(ray,out var hit,3600))return false;
             point=hit.point;normal=hit.normal.normalized;
             if(Vector3.Dot(normal,radial)<0)normal=-normal;
             return true;
@@ -92,9 +119,10 @@ namespace SpacePatriot
         void Terrain()
         {
             terrainFields=new WorldworksTerrain(info.id);
+            regionClimate=new PlanetRegionClimate(info.id);
             sourceSurface=new PlanetEngineSurface(info);
-            var vertices=new List<Vector3>();var uv=new List<Vector2>();var indices=new List<int>();
-            void Add(Vector3 p,float local){vertices.Add(p);uv.Add(new Vector2(local,0));}
+            var vertices=new List<Vector3>();var uv=new List<Vector2>();var fields=new List<Color>();var indices=new List<int>();
+            void Add(Vector3 p,float local){var field=terrainFields.Sample(p.x,p.z);vertices.Add(p);uv.Add(new Vector2(local,0));fields.Add(new Color(field.y,field.z,field.w,1));}
             Add(new Vector3(0,RawPlanetHeight(0,0),0),1);
             const int localRings=120,globalRings=240;int rings=localRings+globalRings;float cap=Mathf.Asin(RegionRadius/PlanetRadius);
             for(int ring=1;ring<=rings;ring++)for(int j=0;j<LongitudeCount;j++)
@@ -109,7 +137,7 @@ namespace SpacePatriot
             for(int j=0;j<LongitudeCount;j++)Tri(0,1+j,1+(j+1)%LongitudeCount);
             for(int ring=0;ring<rings-1;ring++)for(int j=0;j<LongitudeCount;j++){int a=1+ring*LongitudeCount+j,b=1+ring*LongitudeCount+(j+1)%LongitudeCount,c=a+LongitudeCount,d=b+LongitudeCount;Tri(a,b,c);Tri(b,d,c);}
             for(int j=0;j<LongitudeCount;j++)Tri(vertices.Count-1,1+(rings-1)*LongitudeCount+j,1+(rings-1)*LongitudeCount+(j+1)%LongitudeCount);
-            var mesh=new Mesh{name=info.name+" / continuous Worldworks planet",indexFormat=IndexFormat.UInt32};mesh.SetVertices(vertices);mesh.SetUVs(0,uv);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateBounds();generatedAssets.Add(mesh);
+            var mesh=new Mesh{name=info.name+" / continuous Worldworks planet",indexFormat=IndexFormat.UInt32};mesh.SetVertices(vertices);mesh.SetUVs(0,uv);mesh.SetColors(fields);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateBounds();generatedAssets.Add(mesh);
             var source=Resources.Load<Material>("OriginalSurfaces/geology-"+(info.biome=="desert"?5:info.biome=="ice"?10:info.biome=="volcanic"?14:info.biome=="temperate"?6:8));
             terrainMaterial=new Material(Resources.Load<Shader>("Shaders/WorldworksPlanet"));
             terrainMaterial.SetTexture("_GroundMap",source.GetTexture("_BaseMap"));terrainMaterial.SetTexture("_RockMap",Resources.Load<Material>("OriginalSurfaces/geology-"+(info.biome=="desert"?1:info.biome=="ice"?9:2)).GetTexture("_BaseMap"));
@@ -136,34 +164,58 @@ namespace SpacePatriot
         }
         public void StreamSurface(Vector3 focus,bool walking)
         {
-            if(info==null||info.biome=="gas"||Mathf.Abs(focus.y-Height(focus.x,focus.z))>650||new Vector2(focus.x,focus.z).magnitude>PlanetRadius*.94f)
+            if(info==null||info.biome=="gas"||!TrySurface(focus,out var ground,out var normal)||Vector3.Dot(focus-ground,normal)>650)
             {if(streamedTerrainRoot)streamedTerrainRoot.gameObject.SetActive(false);return;}
             float recenter=walking?120:1200;
-            if(streamedTerrainMesh&&streamedTerrainWalking==walking&&Vector2.Distance(new Vector2(focus.x,focus.z),streamedTerrainAnchor)<recenter)
+            if(streamedTerrainMesh&&streamedTerrainWalking==walking&&Vector3.Distance(focus,streamedTerrainAnchor)<recenter)
             {if(!streamedTerrainRoot.gameObject.activeSelf)streamedTerrainRoot.gameObject.SetActive(true);return;}
-            BuildStreamedSurface(focus,walking);
+            BuildStreamedSurface(focus,ground,normal,walking);
         }
-        void BuildStreamedSurface(Vector3 focus,bool walking)
+        void BuildStreamedSurface(Vector3 focus,Vector3 ground,Vector3 normal,bool walking)
         {
             const float halfSize=6000,offset=.035f;int segments=walking?192:96,side=segments+1,count=side*side;
-            var vertices=new Vector3[count];var uvs=new Vector2[count];var triangles=new int[segments*segments*6];
+            var vertices=new Vector3[count];var uvs=new Vector2[count];var fields=new Color[count];var triangles=new int[segments*segments*6];
             float Spread(float value)=>Mathf.Sign(value)*Mathf.Pow(Mathf.Abs(value),2.1f);
+            Vector3 focusLocal=transform.InverseTransformPoint(ground),normalLocal=(focusLocal-PlanetCenter).normalized;
+            bool portPatch=normalLocal.y>.92f&&new Vector2(focusLocal.x,focusLocal.z).magnitude<RegionRadius+100;
+            Vector3 north=Vector3.ProjectOnPlane(Vector3.forward,normalLocal);
+            if(north.sqrMagnitude<.01f)north=Vector3.ProjectOnPlane(Vector3.right,normalLocal);
+            north.Normalize();Vector3 east=Vector3.Cross(normalLocal,north).normalized;
+            Quaternion frame=portPatch?Quaternion.identity:Quaternion.LookRotation(north,normalLocal);
+            Vector3 baseCenter=portPatch?focusLocal:PlanetCenter+normalLocal*(PlanetRadius+PlanetwideRelief(normalLocal));
             for(int z=0;z<side;z++)
             {
                 float localZ=Spread(z/(float)segments*2-1)*halfSize;
                 for(int x=0;x<side;x++)
                 {
-                    float localX=Spread(x/(float)segments*2-1)*halfSize;float worldX=focus.x+localX,worldZ=focus.z+localZ;
-                    int k=z*side+x;float y=Height(worldX,worldZ)+offset;vertices[k]=new Vector3(localX,y-focus.y,localZ);
+                    float localX=Spread(x/(float)segments*2-1)*halfSize;int k=z*side+x;
+                    if(portPatch)
+                    {
+                        float worldX=focusLocal.x+localX,worldZ=focusLocal.z+localZ,y=Height(worldX,worldZ);
+                        vertices[k]=new Vector3(worldX-baseCenter.x,y-baseCenter.y+offset,worldZ-baseCenter.z);
+                        var climate=regionClimate.Sample(new Vector3(worldX,PlanetRadius+y+3,worldZ).normalized);
+                        fields[k]=new Color(climate.x,climate.y,climate.z,climate.w);
+                    }
+                    else
+                    {
+                        Vector3 tangent=east*localX+north*localZ;
+                        Vector3 radial=(normalLocal*PlanetRadius+tangent).normalized;
+                        var climate=regionClimate.Sample(radial);
+                        float h=PlanetwideRelief(radial);
+                        Vector3 point=PlanetCenter+radial*(PlanetRadius+h+offset);
+                        Vector3 delta=point-baseCenter;vertices[k]=new Vector3(Vector3.Dot(delta,east),Vector3.Dot(delta,normalLocal),Vector3.Dot(delta,north));
+                        fields[k]=new Color(climate.x,climate.y,climate.z,climate.w);
+                    }
                     uvs[k]=new Vector2(1,0);
                 }
             }
             int t=0;for(int z=0;z<segments;z++)for(int x=0;x<segments;x++)
             {int a=z*side+x,b=a+1,c=a+side,d=c+1;triangles[t++]=a;triangles[t++]=c;triangles[t++]=b;triangles[t++]=b;triangles[t++]=c;triangles[t++]=d;}
-            var next=new Mesh{name=info.name+" / streamed Worldworks terrain",indexFormat=IndexFormat.UInt32};next.vertices=vertices;next.uv=uvs;next.triangles=triangles;next.RecalculateNormals();next.RecalculateBounds();
-            if(!streamedTerrainRoot){streamedTerrainRoot=new GameObject("Worldworks / moving terrain patch").transform;streamedTerrainRoot.SetParent(transform,false);var filter=streamedTerrainRoot.gameObject.AddComponent<MeshFilter>();var renderer=streamedTerrainRoot.gameObject.AddComponent<MeshRenderer>();renderer.sharedMaterial=terrainMaterial;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=true;}
-            streamedTerrainRoot.localPosition=new Vector3(focus.x,focus.y,focus.z);streamedTerrainRoot.GetComponent<MeshFilter>().sharedMesh=next;
-            if(streamedTerrainMesh)Destroy(streamedTerrainMesh);streamedTerrainMesh=next;streamedTerrainAnchor=new Vector2(focus.x,focus.z);streamedTerrainWalking=walking;streamedTerrainRoot.gameObject.SetActive(true);
+            var next=new Mesh{name=info.name+" / streamed Worldworks terrain",indexFormat=IndexFormat.UInt32};next.vertices=vertices;next.uv=uvs;next.colors=fields;next.triangles=triangles;next.RecalculateNormals();next.RecalculateBounds();
+            if(!streamedTerrainRoot){streamedTerrainRoot=new GameObject("Worldworks / moving terrain patch").transform;streamedTerrainRoot.SetParent(transform,false);streamedTerrainRoot.gameObject.AddComponent<MeshFilter>();var renderer=streamedTerrainRoot.gameObject.AddComponent<MeshRenderer>();renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=true;streamedTerrainCollider=streamedTerrainRoot.gameObject.AddComponent<MeshCollider>();}
+            streamedTerrainRoot.GetComponent<MeshRenderer>().sharedMaterial=terrainMaterial;
+            streamedTerrainRoot.localPosition=baseCenter;streamedTerrainRoot.localRotation=frame;streamedTerrainRoot.GetComponent<MeshFilter>().sharedMesh=next;streamedTerrainCollider.sharedMesh=null;streamedTerrainCollider.sharedMesh=next;
+            if(streamedTerrainMesh)Destroy(streamedTerrainMesh);streamedTerrainMesh=next;streamedTerrainAnchor=focus;streamedTerrainWalking=walking;streamedTerrainRoot.gameObject.SetActive(true);Physics.SyncTransforms();
         }
     }
 }

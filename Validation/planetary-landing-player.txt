@@ -1,0 +1,42 @@
+PASS Actual Windows player started with a graphics device: NVIDIA GeForce RTX 5060 Ti
+PASS World and campaign resources load in the native player
+PASS 420 settlements and more than 4,000 persistent residents initialise
+PASS Space requests launch and starts the hangar lift
+PASS Ship launches after the platform and roof clear
+PASS A supplies left strafe
+PASS D supplies right strafe
+PASS S supplies reverse thrust
+PASS Space supplies upward thrust
+PASS Ctrl supplies downward thrust
+PASS X brakes the ship
+PASS Solid terrain resolves on planet face (0.00, 1.00, 0.00)
+PASS Solid terrain resolves on planet face (0.00, -1.00, 0.00)
+PASS Solid terrain resolves on planet face (1.00, 0.00, 0.00)
+PASS Solid terrain resolves on planet face (-1.00, 0.00, 0.00)
+PASS Solid terrain resolves on planet face (0.00, 0.00, 1.00)
+PASS Solid terrain resolves on planet face (0.00, 0.00, -1.00)
+PASS Far-hemisphere surface resolves for landing
+PASS Landing assist accepts unpadded ground on the far hemisphere
+PASS Landing assist aligns landing gear to local ground normal
+PASS Far-side landing builds a collidable streamed terrain patch
+PASS On-foot steps remain attached to the far-side tangent terrain
+PASS Physical DRIVE knob changes actual flight speed limit
+PASS Physical MFD softkey selects the next live page
+PASS Three independent live cockpit displays render
+PASS Navigation display contains illuminated marks on a dark background
+PASS Physical cargo loading starts at the cargo access
+PASS Cargo loading conserves hold and dock inventory
+PASS Physical cargo unloading starts
+PASS Cargo unloading conserves hold and dock inventory
+PASS Society simulation advances in an unloaded world
+PASS Native save file roundtrip restores progress
+PASS Damaged current save recovers the previous complete generation
+PASS Mule Chalk service lift reaches deck 2
+PASS Wayfarer Chalk service lift reaches deck 2
+PASS Wayfarer Chalk service lift reaches deck 3
+PASS Meridian Chalk service lift reaches deck 2
+PASS Meridian Chalk service lift reaches deck 3
+PASS Meridian Chalk service lift reaches deck 4
+PASS Desktop window changes to 1280 x 800
+PASS Borderless fullscreen works
+PASS Returning to windowed mode works

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using System.Reflection;
 using UnityEngine;
 using UnityEditor;
 using SpacePatriot;
@@ -38,6 +39,25 @@ public static class EngineRestorationValidation
         }
         Check(solids==13,"Source global geology covers all 13 solid worlds",lines);
         Directory.CreateDirectory("Validation");File.WriteAllLines("Validation/source-global-surfaces.txt",lines);Debug.Log("SOURCE_GLOBAL_SURFACES_PASS "+lines.Count);
+    }
+    public static void SourcePlanetwideClimate()
+    {
+        var catalog=JsonUtility.FromJson<WorldCatalog>(Resources.Load<TextAsset>("Worlds").text);var lines=new List<string>();int loaded=0;
+        Vector3[] directions={Vector3.right,Vector3.left,Vector3.up,Vector3.down,Vector3.forward,Vector3.back,new Vector3(1,1,1).normalized,new Vector3(-1,.4f,1).normalized};
+        foreach(var world in catalog.worlds)
+        {
+            var field=new PlanetRegionClimate(world.id);var first=field.Sample(directions[0]);float minMoisture=first.x,maxMoisture=first.x,minExposure=first.z,maxExposure=first.z;bool finite=true;
+            foreach(var direction in directions)
+            {
+                var sample=field.Sample(direction);finite&=float.IsFinite(sample.x)&&float.IsFinite(sample.y)&&float.IsFinite(sample.z)&&float.IsFinite(sample.w);
+                minMoisture=Mathf.Min(minMoisture,sample.x);maxMoisture=Mathf.Max(maxMoisture,sample.x);minExposure=Mathf.Min(minExposure,sample.z);maxExposure=Mathf.Max(maxExposure,sample.z);
+            }
+            Check(finite,"Original PlanetEngines climate atlas loads and remains finite: "+world.id,lines);
+            Check(maxMoisture-minMoisture>.025f||maxExposure-minExposure>.025f,"Climate changes across the whole sphere instead of clamping to the port tile: "+world.id,lines);loaded++;
+            lines.Add("RANGE: "+world.id+" / moisture "+minMoisture.ToString("F3")+"–"+maxMoisture.ToString("F3")+" / exposure "+minExposure.ToString("F3")+"–"+maxExposure.ToString("F3"));
+        }
+        Check(loaded==catalog.worlds.Length,"All "+loaded+" source worlds have planetwide climate coverage",lines);
+        Directory.CreateDirectory("Validation");File.WriteAllLines("Validation/planet-climate-streaming.txt",lines);Debug.Log("SOURCE_PLANETWIDE_CLIMATE_PASS "+lines.Count);
     }
     public static void ExportSourceHeightSamples()
     {
@@ -87,6 +107,42 @@ public static class EngineRestorationValidation
         Check(Mathf.Abs(renderedHeight-(g.world.Height(focus.x,focus.z)+.035f))<.02f,"Patch center follows the active Worldworks height query",lines);
         Check(patch.GetComponent<MeshCollider>()==null,"Streamed patch renders over the existing planet height/collision system",lines);
         Directory.CreateDirectory("Validation");File.WriteAllLines("Validation/world-streaming.txt",lines);Debug.Log("WORLD_STREAMING_PASS "+lines.Count);
+    }
+    public static void StreamingTransitions()
+    {
+        var g=FrontierGame.Instance;if(g==null||!EditorApplication.isPlaying)throw new Exception("Enter Play mode first");
+        var lines=new List<string>();int oldWorld=g.save.world;string oldSettlement=g.save.settlement;
+        var flags=BindingFlags.Instance|BindingFlags.NonPublic;
+        Vector3 oldFocus=(bool)typeof(FrontierGame).GetField("walking",BindingFlags.Instance|BindingFlags.Public).GetValue(g)
+            ?(Vector3)typeof(FrontierGame).GetField("walkPosition",flags).GetValue(g):g.ship.position;
+        bool oldWalking=g.walking;Material previous=null;
+        try
+        {
+            foreach(string id in new[]{"mars","earth"})
+            {
+                int index=Array.FindIndex(g.worlds,w=>w.id==id);Check(index>=0,"World catalog contains "+id,lines);
+                g.save.world=index;g.world.Generate(g.CurrentWorld);
+                var focus=new Vector3(610,0,230);focus.y=g.world.Height(focus.x,focus.z)+2;
+                g.world.StreamSurface(focus,true);
+                var patch=GameObject.Find("Worldworks / moving terrain patch");
+                var renderer=patch?patch.GetComponent<MeshRenderer>():null;
+                var material=renderer?renderer.sharedMaterial:null;
+                var expected=Resources.Load<Shader>("Shaders/WorldworksPlanet");
+                Check(material!=null&&material.shader==expected&&material.shader.isSupported,
+                    "Streamed terrain has the current WorldworksPlanet material after "+id+" switch",lines);
+                Check(patch.GetComponent<MeshFilter>().sharedMesh!=null,"Streamed terrain mesh is rebuilt after "+id+" switch",lines);
+                if(previous!=null)Check(material!=previous,"Planet switch replaces its per-world terrain material",lines);
+                previous=material;
+            }
+            Directory.CreateDirectory("Validation");File.WriteAllLines("Validation/terrain-material-switch.txt",lines);
+            Debug.Log("TERRAIN_MATERIAL_SWITCH_PASS "+lines.Count);
+        }
+        finally
+        {
+            g.save.world=oldWorld;g.save.settlement=oldSettlement;g.world.Generate(g.CurrentWorld);
+            g.world.StreamSurface(oldFocus,oldWalking);
+            typeof(FrontierGame).GetField("saveTime",flags).SetValue(g,Time.unscaledTime);
+        }
     }
     public static void RuntimeEffectsAndAudio()
     {

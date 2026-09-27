@@ -1,0 +1,284 @@
+{
+  "source": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-symmetric-uv-20260926-r1\\HullSymmetry\\Kestrel_K017.blend",
+  "source_sha256": "396005e0440ea575bf509d1a42f891ec861151b22caccda5735c4a7787334a05",
+  "uv0": "AtlasUV_Packed_v3",
+  "lods": [
+    {
+      "mesh": "Hull_LOD0",
+      "triangles": 60792,
+      "uv0": "AtlasUV_Packed_v3",
+      "unwrap": {
+        "library": "xatlas==0.0.11",
+        "chart_count": 2128,
+        "width": 3148,
+        "height": 3142,
+        "utilization": 0.7890592813491821,
+        "padding": 10,
+        "isolated_folded_faces": [
+          803,
+          804,
+          1026,
+          1034,
+          2341,
+          2857,
+          2866,
+          5873,
+          6150,
+          35649,
+          35962,
+          37373
+        ]
+      },
+      "raster_overlap_texels": 0,
+      "painted_texels": 1346659,
+      "sub_0_002_pixel_shared_edge_ties": 0,
+      "triangles_without_pixel_centers": 599,
+      "method": "Post-bake UV transfer, protected non-hull quadrants, neutral normal only",
+      "channels": {
+        "Kestrel_BaseColor.png": {
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 0.016813419730993106,
+            "surface_area_fraction_error_over_0_10": 0.0045535166139275066,
+            "triangle_error_p50": 0.014283345381185059,
+            "triangle_error_p95": 0.0661807460814501,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "be32e24fb292c704c39ae91f54e33f76afe1d95edd79266d647123c383bb48da",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_Normal.png": {
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 3.722462487490676e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_MetallicSmoothness.png": {
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 2.7917619993120935e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 1.116840585814299e-08
+          },
+          "png_sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_Roughness_source.png": {
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 1.1166708532024702e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713",
+          "non_hull_unchanged": true
+        }
+      },
+      "art_approved": false
+    },
+    {
+      "mesh": "Hull_LOD1",
+      "triangles": 21230,
+      "uv0": "AtlasUV_Packed_v3",
+      "unwrap": {
+        "library": "xatlas==0.0.11",
+        "chart_count": 1677,
+        "width": 3039,
+        "height": 3040,
+        "utilization": 0.7864773273468018,
+        "padding": 10,
+        "isolated_folded_faces": [
+          1493,
+          1617,
+          1627,
+          1752,
+          3264,
+          3678,
+          3689,
+          3957
+        ]
+      },
+      "raster_overlap_texels": 0,
+      "painted_texels": 1439152,
+      "sub_0_002_pixel_shared_edge_ties": 0,
+      "triangles_without_pixel_centers": 260,
+      "method": "Post-bake UV transfer, protected non-hull quadrants, neutral normal only",
+      "channels": {
+        "Kestrel_BaseColor_LOD1.png": {
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 0.01542346728727964,
+            "surface_area_fraction_error_over_0_10": 0.0033346440736455023,
+            "triangle_error_p50": 0.013999770986295939,
+            "triangle_error_p95": 0.060437498200020257,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "36244d95d82bedf3a873ac7e10eea175cde1c5b05ba38950f9dc56ca96585bda",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_Normal_LOD1.png": {
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 1.7563574250952143e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_MetallicSmoothness_LOD1.png": {
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 1.3172280266270176e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 5.269552781618319e-09
+          },
+          "png_sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_Roughness_source_LOD1.png": {
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 5.26875193773059e-09,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713",
+          "non_hull_unchanged": true
+        }
+      },
+      "art_approved": false
+    },
+    {
+      "mesh": "Hull_LOD2",
+      "triangles": 7548,
+      "uv0": "AtlasUV_Packed_v3",
+      "unwrap": {
+        "library": "xatlas==0.0.11",
+        "chart_count": 1231,
+        "width": 2916,
+        "height": 2914,
+        "utilization": 0.7847648859024048,
+        "padding": 10,
+        "isolated_folded_faces": [
+          48,
+          152,
+          422,
+          494,
+          524,
+          529,
+          883,
+          1327,
+          1445,
+          1523,
+          1622,
+          1628,
+          1642,
+          1727,
+          1785,
+          1797,
+          2829,
+          2857,
+          2900,
+          3465,
+          3471,
+          3558,
+          3690,
+          3746,
+          3771,
+          3810,
+          3919,
+          4699,
+          4701,
+          4929,
+          5060,
+          5118,
+          6003,
+          6183,
+          6273,
+          6274,
+          6307,
+          6320,
+          7448,
+          7539
+        ]
+      },
+      "raster_overlap_texels": 0,
+      "painted_texels": 1563166,
+      "sub_0_002_pixel_shared_edge_ties": 0,
+      "triangles_without_pixel_centers": 133,
+      "method": "Post-bake UV transfer, protected non-hull quadrants, neutral normal only",
+      "channels": {
+        "Kestrel_BaseColor_LOD2.png": {
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 0.013430040320979213,
+            "surface_area_fraction_error_over_0_10": 0.0009042461139957738,
+            "triangle_error_p50": 0.012291798613685307,
+            "triangle_error_p95": 0.0531984777404159,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "426f5aa5ecd5bfb1a5cac4940a58c87205f8857c634874abdd60c4ea1bbca8f9",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_Normal_LOD2.png": {
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 3.376702291097145e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_MetallicSmoothness_LOD2.png": {
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 2.5324497348071076e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 1.013103067548093e-08
+          },
+          "png_sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485",
+          "non_hull_unchanged": true
+        },
+        "Kestrel_Roughness_source_LOD2.png": {
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 1.012949100516488e-08,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          },
+          "png_sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713",
+          "non_hull_unchanged": true
+        }
+      },
+      "art_approved": false
+    }
+  ],
+  "art_approved": false,
+  "geometry_unchanged": true,
+  "method": "Independent post-bake UV transfer per existing LOD; no post-unwrap decimation",
+  "requires_saved_file_validation": "saved-uv-repack-validation.json"
+}

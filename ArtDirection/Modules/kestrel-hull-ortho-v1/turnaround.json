@@ -1,0 +1,51 @@
+{
+  "asset": "Kestrel K-017 central pressure hull",
+  "version": 2,
+  "projection": "orthographic",
+  "source_sheet": "../kestrel-hull-orthographic-turnaround-v1.png",
+  "coordinate_convention": {
+    "model_forward": "+X",
+    "model_up": "+Y",
+    "model_starboard": "+Z",
+    "view_order": ["top", "bottom", "port", "starboard", "nose", "aft"],
+    "nose_to_aft_axis_in_side_views": "horizontal",
+    "top_bottom_nose_direction": "left",
+    "port_nose_direction": "left",
+    "starboard_nose_direction": "right",
+    "nose_aft_vertical_axis": "model up"
+  },
+  "views": {
+    "top": { "file": "top.png", "atlas_chart": 0, "row_major_tile": [0, 0] },
+    "bottom": { "file": "bottom.png", "atlas_chart": 1, "row_major_tile": [1, 0] },
+    "port": { "file": "port.png", "atlas_chart": 2, "row_major_tile": [0, 1] },
+    "starboard": { "file": "starboard.png", "atlas_chart": 3, "row_major_tile": [1, 1] },
+    "nose": { "file": "nose.png", "atlas_chart": 4, "row_major_tile": [0, 2] },
+    "aft": { "file": "aft.png", "atlas_chart": 5, "row_major_tile": [1, 2] }
+  },
+  "atlas": {
+    "image_size": [4096, 4096],
+    "hull_quadrant_uv": [0.0, 0.5, 0.5, 1.0],
+    "chart_grid": [2, 3],
+    "gutter_pixels": 12,
+    "uv_layer": "AtlasUV_SixView_v2",
+    "hull_uv0_only": true,
+    "tile_edges": "integer bottom-origin pixels; y=4096-round(row*2048/3)",
+    "reference_registration": "foreground bounds, one uniform pixel-per-metre scale, centered vertically",
+    "shared_by_hull_lods": [0, 1, 2]
+  },
+  "fit_from_concepts": {
+    "reference_unit": "nose-to-aft pixel length",
+    "hull_mesh_scale": [1.0, 0.784, 0.915],
+    "notes": "Top and both side silhouettes have matched fixed-length heights. Nose/aft concept views are slightly taller than the 3D hull at matched width; do not independently stretch a bake to hide this geometry mismatch."
+  },
+  "reproducibility": {
+    "script": "../../../Tools/LocalMeshes/bake_sixview_pipeline.py",
+    "pass_script": "../../../Tools/LocalMeshes/bake_kestrel_ortho_views.py",
+    "reopen_validator": "../../../Tools/LocalMeshes/verify_kestrel_ortho_saved.py",
+    "first_pass_flag": "--reset-uv",
+    "one_direction_per_process": true,
+    "later_passes_must_load_previous_pass_blend": true,
+    "accepted_existing_hull_pixels_reused": false,
+    "other_atlas_quadrants_modified": false
+  }
+}

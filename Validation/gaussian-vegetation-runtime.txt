@@ -1,0 +1,10 @@
+World: earth
+Camera: (960.00, 9.92, 350.00)
+Meadow splats: 20895
+Woodland splats: 23667
+Build complete: True
+Shader: SpacePatriot/GaussianVegetation
+Shader supported: True
+Capture: Validation/gaussian-world-after.png
+Limit: live screenshot is a visual review of current Earth vegetation, not evidence of full planet coverage or finished art.
+Remaining source parity gap: vegetation still uses a 2700m port cutoff. The absolute world-Y sea rejection was subsequently corrected; see vegetation-radial-runtime.txt.

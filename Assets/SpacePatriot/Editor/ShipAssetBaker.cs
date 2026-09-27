@@ -17,6 +17,7 @@ public static class ShipAssetBaker
         Directory.CreateDirectory(root+"/Geometry");Directory.CreateDirectory(root+"/Materials");Directory.CreateDirectory(root+"/Textures");Directory.CreateDirectory("Assets/SpacePatriot/Resources/Ships");AssetDatabase.Refresh();
         for(int i=0;i<ShipSpec.Fleet.Length;i++)
         {
+            if(ShipSpec.Fleet[i].family<0)continue; // Authored prototypes are registered separately.
             var ship=IndustrialArt.Ship(null,i,out _,out _);
             foreach(var filter in ship.GetComponentsInChildren<MeshFilter>(true))
             {

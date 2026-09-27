@@ -9,12 +9,16 @@
   "parts": [
     {
       "id": "Hull",
+      "symmetry": { "axis": "Z", "offset": 0, "source_side": "negative" },
+      "orthographic_reference_directory": "ArtDirection/Modules/kestrel-hull-ortho-v1",
       "reference": "ArtDirection/Modules/kestrel-hull-reference.png",
+      "dorsal_reference": "ArtDirection/Modules/kestrel-hull-dorsal-reference-v1.png",
+      "underside_reference": "ArtDirection/Modules/kestrel-hull-underside-reference-v1.png",
       "generation": "local",
       "seed": 17017,
       "longest_axis_metres": 19.5,
       "mesh_rotation": [0, 0, 90],
-      "mesh_scale": [1, 1, 0.7],
+      "mesh_scale": [1, 0.784, 0.915],
       "projection_axes": [0, 1],
       "projection_flip_u": false,
       "projection_view_sign": 1,
@@ -32,13 +36,18 @@
       "generation": "local",
       "seed": 17018,
       "longest_axis_metres": 7.0,
-      "mesh_rotation": [90, 0, 0],
+      "mesh_rotation": [-90, 0, 0],
       "mesh_scale": [1, 0.2, 0.55],
       "projection_axes": [0, 2],
+      "projection_view_sign": 1,
+      "projection_flip_v": true,
+      "projection_azimuth_degrees": -30,
+      "projection_elevation_degrees": 28,
+      "projection_distance": 3.2,
       "uv_angle_degrees": 48,
       "instances": [
-        { "name": "Wing_Port", "position": [-0.9, 2.65, -4.0], "rotation": [0, -90, 0] },
-        { "name": "Wing_Starboard", "position": [-0.9, 2.65, 4.0], "rotation": [0, 90, 0] }
+        { "name": "Wing_Port", "position": [-0.9, 2.65, -6.5], "rotation": [0, -90, 0] },
+        { "name": "Wing_Starboard", "mirror_of": "Wing_Port", "mirror_axis": "Z", "mirror_offset": 0 }
       ]
     },
     {
@@ -50,11 +59,12 @@
       "mesh_rotation": [-90, 0, 0],
       "mesh_scale": [1, 1, 1],
       "projection_axes": [0, 1],
+      "projection_flip_v": true,
       "uv_angle_degrees": 42,
       "instances": [
         { "name": "Gear_Nose", "position": [8.0, -0.85, 0], "rotation": [0, 0, 0] },
-        { "name": "Gear_Port", "position": [-4.2, -0.85, 2.8], "rotation": [0, 0, 8] },
-        { "name": "Gear_Starboard", "position": [-4.2, -0.85, -2.8], "rotation": [0, 0, -8] }
+        { "name": "Gear_Port", "position": [-4.2, -0.85, -2.8], "rotation": [0, 0, 8] },
+        { "name": "Gear_Starboard", "position": [-4.2, -0.85, 2.8], "rotation": [0, 0, -8] }
       ]
     },
     {
@@ -66,8 +76,8 @@
       "rotation": [0, 0, 0],
       "uv_angle_degrees": 42,
       "instances": [
-        { "name": "Drive_Port", "position": [-7.2, 4.6, 2.8], "rotation": [0, 180, 0] },
-        { "name": "Drive_Starboard", "position": [-7.2, 4.6, -2.8], "rotation": [0, 180, 0] }
+        { "name": "Drive_Port", "position": [-7.2, 4.6, -2.8], "rotation": [0, 180, 0] },
+        { "name": "Drive_Starboard", "mirror_of": "Drive_Port", "mirror_axis": "Z", "mirror_offset": 0 }
       ]
     }
   ]

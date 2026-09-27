@@ -1,0 +1,2 @@
+PASS: Grassworks actual GPU night/day pixel energy 0.05500; source target 0.05500.
+PASS: GaussianVegetation actual GPU night/day pixel energy 0.06000; source target 0.06000.

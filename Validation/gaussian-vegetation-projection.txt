@@ -1,0 +1,6 @@
+PASS: flat meadow GPU covariance agrees with projected 3D ellipsoid (variance error 0.11 %; cross error 0.00 %)
+PASS: tall canopy GPU covariance agrees with projected 3D ellipsoid (variance error 0.08 %; cross error 0.00 %)
+PASS: rotated camera GPU covariance agrees with projected 3D ellipsoid (variance error 0.12 %; cross error 0.02 %)
+PASS: rotated planet GPU covariance agrees with projected 3D ellipsoid (variance error 0.09 %; cross error 0.06 %)
+PASS: off-axis GPU covariance agrees with projected 3D ellipsoid (variance error 0.08 %; cross error 0.05 %)
+PASS: eye-plane crossing is culled instead of expanding over the screen

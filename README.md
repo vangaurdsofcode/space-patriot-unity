@@ -16,7 +16,7 @@ Open this folder in Unity 6000.3.25f1, then open `Assets/SpacePatriot/Scenes/Fro
 - Settings includes separate mouse/controller vertical inversion and mouse sensitivity. Normal mode means up looks up.
 - Cargo: buy at the freight exchange, approach the cargo ramp, open the hatch and load. Unload before selling or handing over freight contracts. Close the hatch before launch.
 
-The original source and artwork are retained under `Reference/Original`. The current fleet includes ten revised Blender-built exteriors, original specifications and new connected multideck interiors. The Downloads originals are untouched.
+The original source and artwork are retained under `Reference/Original`. The current fleet includes ten revised Blender-built exterior families, original specifications, connected multideck interiors, and the separate flyable Kestrel K-017 prototype (`SP-K017`). The Downloads originals are untouched.
 
 Grassworks, Spellworks, terrain, weather, ocean and fire behavior now have native Unity integrations. See [ENGINE_INTEGRATION.md](ENGINE_INTEGRATION.md) for exactly what runs and what remains incomplete. Rebuildable conversion tools are in [Tools/AssetPipeline](Tools/AssetPipeline).
 
@@ -30,17 +30,17 @@ The future standalone player has window/fullscreen controls (F11), Save & Quit, 
 
 `Space Patriot > Build Windows desktop` is available for later developer builds. Packaging and native-player verification are deferred; the current verification is in the Unity Editor. Historical WebGL tools and reports are retained as source history, not a delivery requirement.
 
-Unity caches, local settings, generated builds and credentials are excluded from version control. Public source availability does not grant a new license; existing asset and package terms still apply.
+Unity caches, local settings, generated builds and credentials are excluded from version control. Install Git LFS before cloning or pulling to receive the editable Blender and FBX files plus the Kestrel texture atlases. Public source availability does not grant a new license; existing asset and package terms still apply.
 
 Validation reports live under `Validation/`. Virtual-device tests exercise the running flight controller, cargo, MFD controls and deck lifts. They do not establish physical controller feel, art quality, full game completion or sustained performance.
 
 ## Current visual revision
 
-The first **locally generated mesh** is available in the art lab: [Kestrel drive trial](ArtDirection/Generated/KestrelDrive/VISUAL_REVIEW.md), [editable Blender file](ArtDirection/Generated/KestrelDrive/Kestrel_Drive.blend), and [artwork/mesh comparison](ArtDirection/local-mesh-review.html). TripoSG generated the geometry locally on an RTX 5060 Ti; Blender cleanup, three LODs, a mechanical rig and Unity animation import are verified. It remains an untextured candidate with softened details and an invented rear assembly. It has not replaced the live fleet.
+The first **locally generated mesh** remains an art-lab trial: [Kestrel drive trial](ArtDirection/Generated/KestrelDrive/VISUAL_REVIEW.md), [editable Blender file](ArtDirection/Generated/KestrelDrive/Kestrel_Drive.blend), and [artwork/mesh comparison](ArtDirection/local-mesh-review.html). TripoSG generated its geometry locally; Blender cleanup, three LODs, a mechanical rig and Unity animation import were verified. That isolated trial is not the finished fleet asset.
 
-A repeatable [multipart ship recipe and Blender bake pipeline](Tools/LocalMeshes/README.md) now builds the Kestrel K-017 from separate locally generated hull, wing and landing-gear meshes plus the reusable drive nacelle. It makes a shared 4K painted-color atlas, high-to-low tangent normals, roughness/metalness maps, three mesh LODs, an editable Blender source, FBX and review renders. The concept paint is now limited to matching-facing surfaces, and the [six-view comparison board](ArtDirection/Generated/KestrelK017/kestrel-v1/Renders/Comparison/six-view-ship-board.png) checks the full assembly. The result remains an art-lab candidate; its generated silhouettes and unsupported-side detail still need substantial cleanup before it can replace a production ship.
+A repeatable [multipart ship recipe and Blender bake pipeline](Tools/LocalMeshes/README.md) builds Kestrel K-017 from a hull, paired wings, gear and drives. The current [symmetric source and six-view review](ArtDirection/Generated/KestrelK017/kestrel-symmetric-mirror-20260926-r1/REVIEW.md) includes the editable `.blend`, three FBX LODs, atlas maps and measured comparison renders. The hull is cut and mirrored across the ship's world-Z centerline; the wings and drives use reflected geometry. The same asset is now [registered as a playable, selectable prototype](ArtDirection/AUTHORED_SHIP_RUNTIME.md). Actual Editor tests passed launch, nose-first flight, gear controls and all three LODs. Gear fit, paint seams, authored cockpit and surface detail still need art work before this is a finished ship.
 
-Model artists can start with the [model contribution guide](MODEL_CONTRIBUTING.md), which documents the ship axes, handoff folder, asset expectations, and comparison workflow. The [Kestrel comparison board](ArtDirection/Generated/KestrelK017/kestrel-v1/Renders/Comparison/comparison-board.png) and [interactive report](ArtDirection/Generated/KestrelK017/kestrel-v1/Renders/Comparison/index.html) show the geometry and bake issues to improve.
+Model artists can start with the [model contribution guide](MODEL_CONTRIBUTING.md), which documents the ship axes, handoff folder, asset expectations, and comparison workflow. The [current side/centerline board](ArtDirection/Generated/KestrelK017/kestrel-symmetric-mirror-20260926-r1/SymmetryComparison/symmetry-comparison.png) and [live runtime capture](Validation/kestrel-playable-runtime.png) show the present asset and its remaining issues.
 
 The working tools and pinned Windows environment are in [Tools/LocalMeshes](Tools/LocalMeshes). The installed neural model is an offline asset-authoring tool; it is not included in the game or this repository.
 

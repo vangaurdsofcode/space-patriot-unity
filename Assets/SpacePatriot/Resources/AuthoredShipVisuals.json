@@ -1,0 +1,14 @@
+{
+    "ships": [
+        {
+            "designation": "SP-K017",
+            "resource": "AuthoredShips/KestrelK017/kestrel-symmetric-mirror-20260926-r1",
+            "sourceBuild": "kestrel-symmetric-mirror-20260926-r1",
+            "sourceFbxSha256": "33fdf4f8329fbd9b746e9fb8aa41c6ce98982bd0b26758eba648f5dc53558e73",
+            "length": 19.506000518798829,
+            "width": 20.000499725341798,
+            "height": 8.592900276184082,
+            "rotationY": -90.0
+        }
+    ]
+}

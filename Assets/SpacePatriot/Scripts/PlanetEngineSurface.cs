@@ -19,6 +19,7 @@ namespace SpacePatriot
         readonly Vector3 offset;
 
         public float Amplitude=>amplitude;
+        public float SourceRadiusKm=>radiusKm;
         public float Frequency=>frequency;
         public float TerrainBase=>terrainBase;
         public Vector3 NoiseOffset=>offset;

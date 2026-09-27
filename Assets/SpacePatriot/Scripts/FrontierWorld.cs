@@ -23,12 +23,29 @@ namespace SpacePatriot
         readonly List<UnityEngine.Object> generatedAssets=new List<UnityEngine.Object>();
         public void Generate(WorldInfo world)
         {
-            info=world;var data=FrontierGame.Instance.save;settlement=Array.Find(SocietyEconomy.Catalog,c=>c.id==data.settlement&&c.world==world.id)??Array.Find(SocietyEconomy.Catalog,c=>c.primary&&c.world==world.id);data.settlement=settlement.id;if(content!=null){content.gameObject.SetActive(false);Destroy(content.gameObject);}places.Clear();
+            VegetationRevision++;
+            info=world;var data=FrontierGame.Instance.save;settlement=Array.Find(SocietyEconomy.Catalog,c=>c.id==data.settlement&&c.world==world.id)??Array.Find(SocietyEconomy.Catalog,c=>c.primary&&c.world==world.id);data.settlement=settlement.id;
+            // The streamed terrain patch is cached beside per-world content.
+            // Dispose it before the old world material is destroyed so it
+            // cannot keep a broken material after a planet switch.
+            if(streamedTerrainRoot)
+            {
+                var filter=streamedTerrainRoot.GetComponent<MeshFilter>();
+                if(filter)filter.sharedMesh=null;
+                if(streamedTerrainCollider)streamedTerrainCollider.sharedMesh=null;
+                if(streamedTerrainMesh)Destroy(streamedTerrainMesh);
+                streamedTerrainMesh=null;
+                streamedTerrainRoot.gameObject.SetActive(false);
+            }
+            if(content!=null){content.gameObject.SetActive(false);Destroy(content.gameObject);}places.Clear();
             foreach(var asset in generatedAssets)if(asset!=null)Destroy(asset);generatedAssets.Clear();
             content=Root(world.name+" / frontier",transform);Random.InitState(world.seed);
             RenderSettings.ambientMode=AmbientMode.Trilight;RenderSettings.ambientSkyColor=new Color(.68f,.72f,.77f);
             RenderSettings.ambientEquatorColor=new Color(.47f,.51f,.55f);RenderSettings.ambientGroundColor=new Color(.17f,.16f,.15f);
-            RenderSettings.fog=true;RenderSettings.fogMode=FogMode.ExponentialSquared;RenderSettings.fogDensity=.0008f;
+            // Match the source Three.js surface FogExp2 density. At Unity's
+            // metre scale, .0008 erases the HTML vegetation engine's 1.4-1.85km
+            // woodland band before its distance fade can do its job.
+            RenderSettings.fog=true;RenderSettings.fogMode=FogMode.ExponentialSquared;RenderSettings.fogDensity=.00022f;
             RenderSettings.fogColor=world.biome=="desert"?new Color(.38f,.28f,.23f):new Color(.20f,.28f,.34f);
             var sunObj=new GameObject("Late afternoon sun");sunObj.transform.SetParent(content);sunObj.transform.rotation=Quaternion.Euler(24,-32,0);
             var sun=sunObj.AddComponent<Light>();sun.type=LightType.Directional;sun.color=new Color(1,.86f,.69f);sun.intensity=2.05f;sun.shadows=LightShadows.Soft;sun.shadowStrength=.83f;RenderSettings.sun=sun;
@@ -54,6 +71,8 @@ namespace SpacePatriot
             StaticBatchingUtility.Combine(staticObjects.ToArray(),content.gameObject);
             BuildOrbit();
             grass=new GameObject("Grassworks / regional vegetation").AddComponent<Grassworks>();grass.transform.SetParent(content);grass.Initialize(this);
+            if(world.biome=="temperate")content.gameObject.AddComponent<WorldForestLayer>().Initialize(this);
+            if(world.biome=="temperate")content.gameObject.AddComponent<GaussianVegetationLayer>().Initialize(this);
             var weather=new GameObject("Weatherworks / climate").AddComponent<Weatherworks>();weather.transform.SetParent(content);weather.Initialize(this);
             var water=new GameObject("Oceanworks / watershed").AddComponent<Oceanworks>();water.transform.SetParent(content);water.Initialize(this);
         }
@@ -83,19 +102,19 @@ namespace SpacePatriot
             if(Physics.Raycast(pos+Vector3.up*.1f,Vector3.down,out var hit,Mathf.Max(4,pos.y-height+1),Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore))height=Mathf.Max(height,hit.point.y);
             return height;
         }
+        public float AltitudeAboveSurface(Vector3 position)
+        {
+            if(TrySurface(position,out var point,out var normal))return Mathf.Max(0,Vector3.Dot(position-point,normal));
+            return Mathf.Max(0,position.y-SurfaceAt(position));
+        }
         public Place Nearest(Vector3 p,string kind=null)
         {
             Place best=null;float distance=float.MaxValue;
             foreach(var place in places){if(kind!=null&&place.kind!=kind)continue;float d=Vector3.Distance(p,place.position);if(d<distance){best=place;distance=d;}}return best;
         }
-        public void Atmosphere(Camera camera,float altitude)
+        public void Atmosphere(Camera camera,Vector3 observer)
         {
-            float space=Mathf.InverseLerp(650,1200,altitude);
-            if(orbit!=null)orbit.gameObject.SetActive(space>.05f);
-            RenderSettings.fogDensity=Mathf.Lerp(.0008f,0,space);
-            camera.clearFlags=space>.5f?CameraClearFlags.SolidColor:CameraClearFlags.Skybox;
-            camera.backgroundColor=Color.Lerp(new Color(.13f,.19f,.25f),new Color(.003f,.006f,.012f),space);
-            camera.farClipPlane=80000;
+            UpdateRadialAtmosphere(camera,observer);
         }
         void BuildOrbit()
         {

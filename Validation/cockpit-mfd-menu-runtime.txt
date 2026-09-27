@@ -1,0 +1,31 @@
+PASS Control MFD 0 is in front of the pilot camera
+PASS Flight display opens vessel systems through its physical screen
+PASS Control MFD 1 is in front of the pilot camera
+PASS Navigation display opens the plotted-course menu
+PASS Control MFD 2 is in front of the pilot camera
+PASS Systems display opens vessel systems
+PASS Control MFD 2 is in front of the pilot camera
+PASS Cargo manifest display opens cargo handling
+PASS Display menus release and reveal the cursor
+PASS Control MFD 1 is in front of the pilot camera
+PASS Display wheel advances and wraps pages without opening a menu
+PASS Control MFD 1 is in front of the pilot camera
+PASS Display wheel reverses and wraps pages
+PASS Control Rotary control is in front of the pilot camera
+PASS NAV knob selects a destination and immediately shows the route
+PASS Control Rotary control is in front of the pilot camera
+PASS COMM knob immediately shows traffic channel
+PASS Control Rotary control is in front of the pilot camera
+PASS SENSOR knob immediately shows radar
+PASS Control Rotary control is in front of the pilot camera
+PASS DRIVE knob shows changed speed limit on the flight page
+PASS Control Machined panel is in front of the pilot camera
+PASS Control Machined panel is in front of the pilot camera
+PASS Physical power softkeys reveal distribution and reallocate actual power
+PASS Control Machined panel is in front of the pilot camera
+PASS Softkey hover names its actual action
+PASS Control Machined panel is in front of the pilot camera
+PASS Cargo softkey and manifest share the same menu route
+PASS Control Machined panel is in front of the pilot camera
+PASS Systems softkey opens the systems menu
+PASS All three displays retain independent live textures

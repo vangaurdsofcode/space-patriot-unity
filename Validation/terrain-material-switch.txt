@@ -1,0 +1,7 @@
+PASS: World catalog contains mars
+PASS: Streamed terrain has the current WorldworksPlanet material after mars switch
+PASS: Streamed terrain mesh is rebuilt after mars switch
+PASS: World catalog contains earth
+PASS: Streamed terrain has the current WorldworksPlanet material after earth switch
+PASS: Streamed terrain mesh is rebuilt after earth switch
+PASS: Planet switch replaces its per-world terrain material

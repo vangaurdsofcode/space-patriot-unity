@@ -8,6 +8,7 @@ safetensors==0.5.3
 einops==0.8.0
 omegaconf==2.3.0
 trimesh==4.4.7
+xatlas==0.0.11
 scikit-image==0.24.0
 jaxtyping==0.2.38
 typeguard==2.13.3

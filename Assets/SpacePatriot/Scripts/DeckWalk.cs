@@ -19,7 +19,7 @@ namespace SpacePatriot
         int deckLevel;float deckLiftTarget;bool deckLiftMoving;Transform deckLiftPlatform;
         void PrepareDeck()
         {
-            activeDeck=Array.Find(JsonUtility.FromJson<DeckCatalog>(Resources.Load<TextAsset>("DeckPlans").text).plans,p=>p.family==Spec.family);
+            activeDeck=Array.Find(JsonUtility.FromJson<DeckCatalog>(Resources.Load<TextAsset>("DeckPlans").text).plans,p=>p.family==Spec.interiorFamily);
             if(activeDeck==null)throw new InvalidOperationException("Missing interior plan for "+Spec.name);
             deckLevel=0;deckLiftMoving=false;openDoors.Clear();foreach(var d in activeDeck.doors)openDoors.Add(d.id);
             if(activeDeck.decks.Length>1){deckLiftPlatform=IndustrialArt.Box("Crew service lift",cabin,new Vector3(0,-1.70f,-5),new Vector3(2.16f,.12f,2.26f),IndustrialArt.Steel).transform;}
@@ -27,7 +27,7 @@ namespace SpacePatriot
         }
         void WalkDeck(float dt)
         {
-            if(activeDeck==null||activeDeck.family!=Spec.family)PrepareDeck();
+            if(activeDeck==null||activeDeck.family!=Spec.interiorFamily)PrepareDeck();
             if(deckLiftMoving){deckPosition.y=Mathf.MoveTowards(deckPosition.y,deckLiftTarget,dt*1.65f);deckLiftPlatform.localPosition=new Vector3(0,deckPosition.y-1.70f,-5);if(Mathf.Abs(deckPosition.y-deckLiftTarget)<.001f){deckLiftMoving=false;Toast("Deck "+(deckLevel+1)+" / "+activeDeck.decks[deckLevel].name);}return;}
             if(MouseButton(1)){var delta=Mouse.current.delta.ReadValue()*PlayerPrefs.GetFloat("sp.sensitivity",1);walkYaw+=delta.x*.12f;walkPitch=Mathf.Clamp(walkPitch+delta.y*.12f*(PlayerPrefs.GetInt("sp.invert",0)==1?1:-1),-75,75);}
             var pad=Gamepad.current;Vector2 sticks=pad?.leftStick.ReadValue()??Vector2.zero;
@@ -39,7 +39,7 @@ namespace SpacePatriot
             if(bindings.Down("Board / leave seat")){aboard=false;inputNeutral=true;return;}
             if(!Down(Key.E)&&!Down(Key.Z)&&pad?.buttonEast.wasPressedThisFrame!=true)return;
             if(activeDeck.decks.Length>1&&Mathf.Abs(deckPosition.x)<1.05f&&Mathf.Abs(deckPosition.z+5)<1.05f){deckLevel=(deckLevel+(Held(Key.LeftShift)?activeDeck.decks.Length-1:1))%activeDeck.decks.Length;deckLiftTarget=activeDeck.decks[deckLevel].y;deckPosition.x=0;deckPosition.z=-5;deckLiftMoving=true;Toast("Service lift travelling to deck "+(deckLevel+1));return;}
-            if(-deckPosition.z>activeDeck.end-2.4f){if(flying){Toast("Airlock interlock: land before disembarking.");return;}aboard=false;walking=true;walkPosition=CargoAccess;walkPosition.y=world.SurfaceAt(walkPosition)+1.75f;return;}
+            if(-deckPosition.z>activeDeck.end-2.4f){if(flying){Toast("Airlock interlock: land before disembarking.");return;}aboard=false;walking=true;SetSurfaceWalker(CargoAccess,ship.forward);return;}
             foreach(var station in activeDeck.stations)if(station.deck==deckLevel&&Vector2.Distance(new Vector2(deckPosition.x,-deckPosition.z),new Vector2(station.x,station.z))<1.3f){
                 if(station.id=="pilot"){aboard=false;inputNeutral=true;}
                 else if(station.id=="medical"){if(save.crewHealth<100&&save.vessel.spares>=1){save.vessel.spares--;save.crewHealth=Mathf.Min(100,save.crewHealth+40);Toast("Medical consumables replenished; crew recovery complete.");Save();}else Toast("Medical treatment requires an injury and one supply component.");}

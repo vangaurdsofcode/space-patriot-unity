@@ -1,0 +1,256 @@
+{
+  "passed": true,
+  "saved_files_reopened": true,
+  "hull_geometry_unchanged": true,
+  "validated_hull_lods": 3,
+  "source": "C:\\Users\\hendr\\Documents\\Codex\\2026-09-24\\can\\outputs\\SpacePatriot\\ArtDirection\\Generated\\KestrelK017\\kestrel-symmetric-uv-20260926-r1\\HullSymmetry\\Kestrel_K017.blend",
+  "uv0": "AtlasUV_Packed_v3",
+  "lods": [
+    {
+      "mesh": "Hull_LOD0",
+      "triangles": 60792,
+      "raster_overlap_texels": 0,
+      "sub_0_002_pixel_shared_edge_ties": 0,
+      "triangles_without_pixel_centers": 599,
+      "channels": {
+        "Kestrel_BaseColor.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "be32e24fb292c704c39ae91f54e33f76afe1d95edd79266d647123c383bb48da",
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 0.01684430084779413,
+            "surface_area_fraction_error_over_0_10": 0.0045426147324278115,
+            "triangle_error_p50": 0.01431126673251936,
+            "triangle_error_p95": 0.0662342376459721,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_Normal.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb",
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_MetallicSmoothness.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485",
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_Roughness_source.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713",
+          "surface_transfer": {
+            "samples": 243168,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        }
+      }
+    },
+    {
+      "mesh": "Hull_LOD1",
+      "triangles": 21230,
+      "raster_overlap_texels": 0,
+      "sub_0_002_pixel_shared_edge_ties": 0,
+      "triangles_without_pixel_centers": 260,
+      "channels": {
+        "Kestrel_BaseColor_LOD1.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "36244d95d82bedf3a873ac7e10eea175cde1c5b05ba38950f9dc56ca96585bda",
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 0.015459804592831227,
+            "surface_area_fraction_error_over_0_10": 0.003338596663555968,
+            "triangle_error_p50": 0.014026560705228272,
+            "triangle_error_p95": 0.06053422278414755,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_Normal_LOD1.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb",
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_MetallicSmoothness_LOD1.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485",
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_Roughness_source_LOD1.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713",
+          "surface_transfer": {
+            "samples": 84920,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        }
+      }
+    },
+    {
+      "mesh": "Hull_LOD2",
+      "triangles": 7548,
+      "raster_overlap_texels": 0,
+      "sub_0_002_pixel_shared_edge_ties": 0,
+      "triangles_without_pixel_centers": 133,
+      "channels": {
+        "Kestrel_BaseColor_LOD2.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "426f5aa5ecd5bfb1a5cac4940a58c87205f8857c634874abdd60c4ea1bbca8f9",
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 0.013462120694761296,
+            "surface_area_fraction_error_over_0_10": 0.0009124792706029172,
+            "triangle_error_p50": 0.012331435730872833,
+            "triangle_error_p95": 0.05324071230186661,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_Normal_LOD2.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb",
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_MetallicSmoothness_LOD2.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485",
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        },
+        "Kestrel_Roughness_source_LOD2.png": {
+          "passed": true,
+          "protected_non_hull_rgba8_unchanged": true,
+          "packed_matches_external": true,
+          "png_sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713",
+          "surface_transfer": {
+            "samples": 30192,
+            "area_weighted_rgb_error": 0.0,
+            "surface_area_fraction_error_over_0_10": 0.0,
+            "triangle_error_p50": 0.0,
+            "triangle_error_p95": 0.0,
+            "alpha_area_weighted_error": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "textures": [
+    {
+      "file": "Kestrel_BaseColor.png",
+      "sha256": "be32e24fb292c704c39ae91f54e33f76afe1d95edd79266d647123c383bb48da"
+    },
+    {
+      "file": "Kestrel_Normal.png",
+      "sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb"
+    },
+    {
+      "file": "Kestrel_MetallicSmoothness.png",
+      "sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485"
+    },
+    {
+      "file": "Kestrel_Roughness_source.png",
+      "sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713"
+    },
+    {
+      "file": "Kestrel_BaseColor_LOD1.png",
+      "sha256": "36244d95d82bedf3a873ac7e10eea175cde1c5b05ba38950f9dc56ca96585bda"
+    },
+    {
+      "file": "Kestrel_Normal_LOD1.png",
+      "sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb"
+    },
+    {
+      "file": "Kestrel_MetallicSmoothness_LOD1.png",
+      "sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485"
+    },
+    {
+      "file": "Kestrel_Roughness_source_LOD1.png",
+      "sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713"
+    },
+    {
+      "file": "Kestrel_BaseColor_LOD2.png",
+      "sha256": "426f5aa5ecd5bfb1a5cac4940a58c87205f8857c634874abdd60c4ea1bbca8f9"
+    },
+    {
+      "file": "Kestrel_Normal_LOD2.png",
+      "sha256": "31ace2516e98b01fb2930cd81428c016df021b6aeb610735da3f172be7bd97cb"
+    },
+    {
+      "file": "Kestrel_MetallicSmoothness_LOD2.png",
+      "sha256": "e80b214fa5922649fa0f950db21d420714b9dc28125525b13d31c6f3a43ce485"
+    },
+    {
+      "file": "Kestrel_Roughness_source_LOD2.png",
+      "sha256": "276f5f8aeeec9def5fa49cb066d4630c1e2661b7000ed34e118aa1cdd5320713"
+    }
+  ],
+  "fbx_sha256": "33fdf4f8329fbd9b746e9fb8aa41c6ce98982bd0b26758eba648f5dc53558e73"
+}

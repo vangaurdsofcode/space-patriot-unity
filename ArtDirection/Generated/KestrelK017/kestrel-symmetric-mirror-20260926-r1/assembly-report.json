@@ -1,0 +1,43 @@
+{
+  "ship": "Kestrel K-017",
+  "parts": [
+    {
+      "part": "Hull",
+      "instances": 1,
+      "lod_triangles": [
+        60792,
+        21230,
+        7548
+      ]
+    },
+    {
+      "part": "Wing",
+      "instances": 2,
+      "lod_triangles": [
+        100000,
+        33998,
+        12000
+      ]
+    },
+    {
+      "part": "LandingGear",
+      "instances": 3,
+      "lod_triangles": [
+        150000,
+        51000,
+        18000
+      ]
+    },
+    {
+      "part": "Drive",
+      "instances": 2,
+      "lod_triangles": [
+        99998,
+        34000,
+        11998
+      ]
+    }
+  ],
+  "hull_uv0": "AtlasUV_Packed_v3",
+  "status": "Post-bake UV review; projection seams and attachments remain art work"
+}

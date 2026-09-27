@@ -1,0 +1,3 @@
+PASS: build id traversal is rejected before any import
+PASS: failed saved-bake validation is rejected before copying assets
+PASS: active-build.txt stays kestrel-bake-current-settings

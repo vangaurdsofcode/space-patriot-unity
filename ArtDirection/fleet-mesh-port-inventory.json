@@ -1,0 +1,2195 @@
+{
+  "schema": "space-patriot-fleet-mesh-port-inventory",
+  "version": 1,
+  "inspected_at_utc": "2026-09-26T21:40:19.031515+00:00",
+  "scope": "Static source/prefab/mesh-reference audit of every catalog ship plus runtime NPC selections. Blender production collections were opened read-only. This does not certify visual quality or assert objects currently visible in a running save.",
+  "summary": {
+    "playable_families": 10,
+    "catalog_variants": 100,
+    "npc_seeded_families": [
+      1,
+      2,
+      4,
+      7,
+      9
+    ],
+    "families_with_named_concept_panels": [
+      2,
+      4,
+      5
+    ],
+    "families_with_dedicated_component_six_view_sets": 0,
+    "families_with_mapped_local_image_to_mesh_builds": 0,
+    "families_using_current_procedural_refit_prefabs": 10,
+    "unassigned_local_ship_builds": [
+      "Kestrel K-017"
+    ]
+  },
+  "runtime_evidence": {
+    "catalog": {
+      "path": "Assets/SpacePatriot/Scripts/FrontierData.cs",
+      "line": 79,
+      "contains": "public static ShipSpec[] Fleet"
+    },
+    "player_exterior": {
+      "path": "Assets/SpacePatriot/Scripts/FrontierGame.cs",
+      "line": 80,
+      "contains": "var hullAsset=Resources.Load"
+    },
+    "player_cabin": {
+      "path": "Assets/SpacePatriot/Scripts/FrontierGame.cs",
+      "line": 84,
+      "contains": "cabin=Instantiate(Resources.Load"
+    },
+    "player_variants": {
+      "path": "Assets/SpacePatriot/Scripts/FrontierGame.cs",
+      "line": 83,
+      "contains": "exterior.localScale=new Vector3"
+    },
+    "player_hangar": {
+      "path": "Assets/SpacePatriot/Scripts/FrontierUI.cs",
+      "line": 228,
+      "contains": "for(int i=0;i<10;i++)"
+    },
+    "npc_selection": {
+      "path": "Assets/SpacePatriot/Scripts/LivingUniverse.cs",
+      "line": 34,
+      "contains": "ship=(k==0?"
+    },
+    "npc_exterior": {
+      "path": "Assets/SpacePatriot/Scripts/LivingUniverse.cs",
+      "line": 111,
+      "contains": "OriginalShips/refit-"
+    },
+    "settlement_freight_selection": {
+      "path": "Assets/SpacePatriot/Scripts/SocietyEconomy.cs",
+      "line": 32,
+      "contains": "ship=job.Contains(\"pilot\")?20+"
+    },
+    "named_freight_selection": {
+      "path": "Assets/SpacePatriot/Scripts/SocietyEconomy.cs",
+      "line": 36,
+      "contains": "named.ship=w.seed%5"
+    },
+    "raider_exterior": {
+      "path": "Assets/SpacePatriot/Scripts/FrontierGame.cs",
+      "line": 375,
+      "contains": "OriginalShips/refit-1"
+    },
+    "deck_runtime": {
+      "path": "Assets/SpacePatriot/Scripts/DeckWalk.cs",
+      "line": 22,
+      "contains": "Resources.Load<TextAsset>(\"DeckPlans\")"
+    },
+    "local_mesh_importer": {
+      "path": "Assets/SpacePatriot/Editor/LocalShipImporter.cs",
+      "line": 13,
+      "contains": "const string Root ="
+    },
+    "production_importer": {
+      "path": "Assets/SpacePatriot/Editor/OriginalAssetImporter.cs",
+      "line": 80,
+      "contains": "PrefabUtility.SaveAsPrefabAsset"
+    }
+  },
+  "families": [
+    {
+      "family": 0,
+      "name": "Strider",
+      "class": "Survey ship",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        0,
+        9
+      ],
+      "variants": [
+        {
+          "id": "LW-S001",
+          "index": 0,
+          "name": "Strider Chalk",
+          "dimensions_metres_length_width_height": [
+            21.847619504770265,
+            14.413710616622122,
+            4.669629318197258
+          ]
+        },
+        {
+          "id": "LW-S002",
+          "index": 1,
+          "name": "Strider Graphite",
+          "dimensions_metres_length_width_height": [
+            21.846058902884835,
+            14.30865062419325,
+            4.9823916224529965
+          ]
+        },
+        {
+          "id": "LW-S003",
+          "index": 2,
+          "name": "Strider Ochre",
+          "dimensions_metres_length_width_height": [
+            19.75037352247629,
+            15.321828385442497,
+            4.741975053399802
+          ]
+        },
+        {
+          "id": "LW-S004",
+          "index": 3,
+          "name": "Strider Glacier",
+          "dimensions_metres_length_width_height": [
+            20.44158566790633,
+            15.289486822951586,
+            4.839258664287627
+          ]
+        },
+        {
+          "id": "LW-S005",
+          "index": 4,
+          "name": "Strider Oxide",
+          "dimensions_metres_length_width_height": [
+            19.873426582524555,
+            12.726465143635869,
+            5.156315939500928
+          ]
+        },
+        {
+          "id": "LW-S006",
+          "index": 5,
+          "name": "Strider Olive",
+          "dimensions_metres_length_width_height": [
+            24.18568176276982,
+            14.874360471870748,
+            4.9855241264216605
+          ]
+        },
+        {
+          "id": "LW-S007",
+          "index": 6,
+          "name": "Strider Titanium",
+          "dimensions_metres_length_width_height": [
+            22.12151464488357,
+            12.618363889306783,
+            5.004189263633453
+          ]
+        },
+        {
+          "id": "LW-S008",
+          "index": 7,
+          "name": "Strider Cobalt",
+          "dimensions_metres_length_width_height": [
+            21.902720930408684,
+            13.497625787090511,
+            5.142715674475768
+          ]
+        },
+        {
+          "id": "LW-S009",
+          "index": 8,
+          "name": "Strider Bone",
+          "dimensions_metres_length_width_height": [
+            23.8252928004507,
+            14.407588468119501,
+            4.785399542283267
+          ]
+        },
+        {
+          "id": "LW-S010",
+          "index": 9,
+          "name": "Strider Obsidian",
+          "dimensions_metres_length_width_height": [
+            24.54200419184286,
+            12.639658926334233,
+            5.142506888881327
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": true,
+        "npc_seeded_roles": [],
+        "npc_selection_note": "No NPC seed assignment found for this family"
+      },
+      "concept": {
+        "named_exterior_reference": null,
+        "panel": null,
+        "status": "no dedicated named family concept found",
+        "prompt_source": null,
+        "concept_length_metres": null,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png"
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-0",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 428,
+        "raw_vertices": 7212,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-0.prefab",
+        "resource_key": "OriginalShips/refit-0",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-0",
+        "source_mesh_count": 12,
+        "source_vertices": 98724,
+        "source_triangles": 32908,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-1fd708c25dccc68eed37df79.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-2ebbbbc20ef3d29549e1abac.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-4cef1646c99125c947d781a4.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-5b0d94035287e8b7e937f3f6.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-634a51f4a99bad7849d7636d.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-671488615610a1716cd221b3.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-6d88bf044266811009f1eb7e.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-84c3fa4d46495c01ebb32ff0.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-a9eb2c71872968d8ae58aef2.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-acfb5cd677e7a4c9e1035ce7.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-bc0a789c5f74a478c62306ac.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-c7c16917d387512a188d405f.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-0.prefab",
+        "resource_key": "OriginalShips/cabin-0",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-0",
+        "source_mesh_count": 58,
+        "source_vertices": 16842,
+        "source_triangles": 18922,
+        "prefab_mesh_count": 58,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 1,
+        "deck_names": [
+          "FLIGHT / UTILITY"
+        ],
+        "room_count": 2
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Author an original Strider concept and component view set for its existing Survey ship role; do not silently rename it to Kestrel."
+    },
+    {
+      "family": 1,
+      "name": "Kite",
+      "class": "Interceptor",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        10,
+        19
+      ],
+      "variants": [
+        {
+          "id": "LW-S011",
+          "index": 10,
+          "name": "Kite Chalk",
+          "dimensions_metres_length_width_height": [
+            18.35286884135101,
+            17.351139561831953,
+            4.009102885548957
+          ]
+        },
+        {
+          "id": "LW-S012",
+          "index": 11,
+          "name": "Kite Graphite",
+          "dimensions_metres_length_width_height": [
+            16.174070911512246,
+            17.757136834971607,
+            4.046490296536125
+          ]
+        },
+        {
+          "id": "LW-S013",
+          "index": 12,
+          "name": "Kite Ochre",
+          "dimensions_metres_length_width_height": [
+            18.953677809331566,
+            17.64050553403795,
+            3.6355553700532766
+          ]
+        },
+        {
+          "id": "LW-S014",
+          "index": 13,
+          "name": "Kite Glacier",
+          "dimensions_metres_length_width_height": [
+            15.60037256601965,
+            19.32637228583917,
+            3.9744663069788366
+          ]
+        },
+        {
+          "id": "LW-S015",
+          "index": 14,
+          "name": "Kite Oxide",
+          "dimensions_metres_length_width_height": [
+            18.77571887729224,
+            18.367637837771326,
+            4.022813691347838
+          ]
+        },
+        {
+          "id": "LW-S016",
+          "index": 15,
+          "name": "Kite Olive",
+          "dimensions_metres_length_width_height": [
+            17.658521401851903,
+            18.73997462829575,
+            3.7059750275090337
+          ]
+        },
+        {
+          "id": "LW-S017",
+          "index": 16,
+          "name": "Kite Titanium",
+          "dimensions_metres_length_width_height": [
+            18.785095894306433,
+            17.783181958738716,
+            3.912679359231144
+          ]
+        },
+        {
+          "id": "LW-S018",
+          "index": 17,
+          "name": "Kite Cobalt",
+          "dimensions_metres_length_width_height": [
+            17.523021289205644,
+            19.76436849022284,
+            4.060662163428963
+          ]
+        },
+        {
+          "id": "LW-S019",
+          "index": 18,
+          "name": "Kite Bone",
+          "dimensions_metres_length_width_height": [
+            17.651668471556622,
+            18.51783585716039,
+            3.685370902033523
+          ]
+        },
+        {
+          "id": "LW-S020",
+          "index": 19,
+          "name": "Kite Obsidian",
+          "dimensions_metres_length_width_height": [
+            15.17954864833271,
+            17.53066115146503,
+            3.9337023766450585
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [
+          "Patrol pilot",
+          "Unregistered interceptor / hostile raider"
+        ],
+        "npc_selection_note": "Selections verified in runtime source; this audit does not claim a particular save currently has this vessel spawned."
+      },
+      "concept": {
+        "named_exterior_reference": null,
+        "panel": null,
+        "status": "no dedicated named family concept found",
+        "prompt_source": null,
+        "concept_length_metres": null,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png"
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-1",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 432,
+        "raw_vertices": 7268,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-1.prefab",
+        "resource_key": "OriginalShips/refit-1",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-1",
+        "source_mesh_count": 12,
+        "source_vertices": 99396,
+        "source_triangles": 33132,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-00eabe6f627749bf2f18ae66.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-11af740259b0166ab06a2aa9.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-1faad0f1d6daf9b81b506976.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-299264a30841a4ac994d37a7.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-40f254ee91f91bafccb62f36.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-44f6b411935d05c3186d15af.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-56be441acb9e475613010cc2.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-5d25d2bddab0cc514325dcb1.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-8f261c51b70042244e8b089b.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-99a0bb32a23331bf9290be74.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-c88036f614cf228fa9bc8959.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-fe46c63363812c4fd66ade30.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-1.prefab",
+        "resource_key": "OriginalShips/cabin-1",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-1",
+        "source_mesh_count": 58,
+        "source_vertices": 16842,
+        "source_triangles": 18922,
+        "prefab_mesh_count": 58,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 1,
+        "deck_names": [
+          "FLIGHT / UTILITY"
+        ],
+        "room_count": 2
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Author an original Kite concept and component view set for its existing Interceptor role; do not silently rename it to Kestrel."
+    },
+    {
+      "family": 2,
+      "name": "Mule",
+      "class": "Freighter",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        20,
+        29
+      ],
+      "variants": [
+        {
+          "id": "LW-S021",
+          "index": 20,
+          "name": "Mule Chalk",
+          "dimensions_metres_length_width_height": [
+            34.09256804665318,
+            22.4067589469254,
+            7.53174953722395
+          ]
+        },
+        {
+          "id": "LW-S022",
+          "index": 21,
+          "name": "Mule Graphite",
+          "dimensions_metres_length_width_height": [
+            35.13328412616625,
+            23.67947164364159,
+            7.472709860872477
+          ]
+        },
+        {
+          "id": "LW-S023",
+          "index": 22,
+          "name": "Mule Ochre",
+          "dimensions_metres_length_width_height": [
+            29.88211430126801,
+            21.25996043747291,
+            7.691095758186653
+          ]
+        },
+        {
+          "id": "LW-S024",
+          "index": 23,
+          "name": "Mule Glacier",
+          "dimensions_metres_length_width_height": [
+            34.99623753722291,
+            21.771751733869316,
+            7.740427144927905
+          ]
+        },
+        {
+          "id": "LW-S025",
+          "index": 24,
+          "name": "Mule Oxide",
+          "dimensions_metres_length_width_height": [
+            34.88282448322512,
+            22.641027394216508,
+            7.278645837388933
+          ]
+        },
+        {
+          "id": "LW-S026",
+          "index": 25,
+          "name": "Mule Olive",
+          "dimensions_metres_length_width_height": [
+            30.43024165604962,
+            20.753320509754122,
+            7.320393712868914
+          ]
+        },
+        {
+          "id": "LW-S027",
+          "index": 26,
+          "name": "Mule Titanium",
+          "dimensions_metres_length_width_height": [
+            31.12250443277182,
+            24.130114739108834,
+            7.205093627363443
+          ]
+        },
+        {
+          "id": "LW-S028",
+          "index": 27,
+          "name": "Mule Cobalt",
+          "dimensions_metres_length_width_height": [
+            34.282967659465506,
+            21.66108866715804,
+            7.632362010795623
+          ]
+        },
+        {
+          "id": "LW-S029",
+          "index": 28,
+          "name": "Mule Bone",
+          "dimensions_metres_length_width_height": [
+            30.458218759289014,
+            21.694747456442567,
+            7.679233144493774
+          ]
+        },
+        {
+          "id": "LW-S030",
+          "index": 29,
+          "name": "Mule Obsidian",
+          "dimensions_metres_length_width_height": [
+            30.396431627855637,
+            20.32388710426167,
+            7.10732664911449
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [
+          "Freight pilot / settlement freight pilot"
+        ],
+        "npc_selection_note": "Selections verified in runtime source; this audit does not claim a particular save currently has this vessel spawned."
+      },
+      "concept": {
+        "named_exterior_reference": "ArtDirection/fleet-target.png",
+        "panel": "top-right / MULE",
+        "status": "perspective fleet board only; no family component/six-view source set",
+        "prompt_source": "ArtDirection/prompts.json",
+        "concept_length_metres": 50.0,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png",
+        "scale_warning": "Concept board dimensions differ from catalog; preserve gameplay dimensions or explicitly update the design contract before fitting meshes."
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-2",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 662,
+        "raw_vertices": 11480,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-2.prefab",
+        "resource_key": "OriginalShips/refit-2",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-2",
+        "source_mesh_count": 12,
+        "source_vertices": 169428,
+        "source_triangles": 56476,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-039d8025dd303a0b95b673ad.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-0b8f87e4f5894ebf716bc6a2.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-2337f1268a3a25c491c87b75.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-36dd3cee9e021009dfc947f3.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-49ddc3a829df032e8fd732d1.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-7b5e9f0c5534f955a6304abd.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-8c461fd4c2292c69b1290001.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-ba1dfb587959ef48f554e125.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-c54b4d0dfd764aed76c964f5.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-cbb1e70d5c9d279ef0d29aee.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-d3e7523f745b36c816072cb0.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-dd0fb3f1a4eb4720b3ef03cd.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-2.prefab",
+        "resource_key": "OriginalShips/cabin-2",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-2",
+        "source_mesh_count": 80,
+        "source_vertices": 33822,
+        "source_triangles": 31846,
+        "prefab_mesh_count": 80,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 2,
+        "deck_names": [
+          "FLIGHT / CREW",
+          "WORK DECK / AIRLOCK"
+        ],
+        "room_count": 11
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Extract Mule from its existing concept panel, preserve its identity, reconcile concept scale with catalog dimensions and author component orthographic views."
+    },
+    {
+      "family": 3,
+      "name": "Wisp",
+      "class": "Courier",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        30,
+        39
+      ],
+      "variants": [
+        {
+          "id": "LW-S031",
+          "index": 30,
+          "name": "Wisp Chalk",
+          "dimensions_metres_length_width_height": [
+            22.04017094708979,
+            11.181218789238482,
+            4.3860627363352105
+          ]
+        },
+        {
+          "id": "LW-S032",
+          "index": 31,
+          "name": "Wisp Graphite",
+          "dimensions_metres_length_width_height": [
+            21.641182733140884,
+            11.07111117374152,
+            4.000989615906962
+          ]
+        },
+        {
+          "id": "LW-S033",
+          "index": 32,
+          "name": "Wisp Ochre",
+          "dimensions_metres_length_width_height": [
+            21.37648845477961,
+            9.91669907886535,
+            4.189990965745412
+          ]
+        },
+        {
+          "id": "LW-S034",
+          "index": 33,
+          "name": "Wisp Glacier",
+          "dimensions_metres_length_width_height": [
+            18.8669954567682,
+            10.58107236600481,
+            3.935670970014297
+          ]
+        },
+        {
+          "id": "LW-S035",
+          "index": 34,
+          "name": "Wisp Oxide",
+          "dimensions_metres_length_width_height": [
+            18.24540850832127,
+            9.940231185918675,
+            4.294708400267177
+          ]
+        },
+        {
+          "id": "LW-S036",
+          "index": 35,
+          "name": "Wisp Olive",
+          "dimensions_metres_length_width_height": [
+            21.41971291685477,
+            11.915043324418367,
+            4.46579581817519
+          ]
+        },
+        {
+          "id": "LW-S037",
+          "index": 36,
+          "name": "Wisp Titanium",
+          "dimensions_metres_length_width_height": [
+            21.67508483706042,
+            11.048810816882177,
+            4.057982052139007
+          ]
+        },
+        {
+          "id": "LW-S038",
+          "index": 37,
+          "name": "Wisp Cobalt",
+          "dimensions_metres_length_width_height": [
+            19.85921342531219,
+            10.288582047400997,
+            3.978992037101649
+          ]
+        },
+        {
+          "id": "LW-S039",
+          "index": 38,
+          "name": "Wisp Bone",
+          "dimensions_metres_length_width_height": [
+            17.903316651750355,
+            10.689731355756521,
+            4.026063966678456
+          ]
+        },
+        {
+          "id": "LW-S040",
+          "index": 39,
+          "name": "Wisp Obsidian",
+          "dimensions_metres_length_width_height": [
+            19.678313570283354,
+            10.664131042407826,
+            4.091307058034466
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [],
+        "npc_selection_note": "No NPC seed assignment found for this family"
+      },
+      "concept": {
+        "named_exterior_reference": null,
+        "panel": null,
+        "status": "no dedicated named family concept found",
+        "prompt_source": null,
+        "concept_length_metres": null,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png"
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-3",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 432,
+        "raw_vertices": 7244,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-3.prefab",
+        "resource_key": "OriginalShips/refit-3",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-3",
+        "source_mesh_count": 12,
+        "source_vertices": 99924,
+        "source_triangles": 33308,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-0dbdaba9a14367f4bfeb08f0.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-2b2dee46984c44c9478209cc.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-4aadc722fdb50e624884ba8e.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-61db87a19e432e954c083e92.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-adf94019c94220bb10241246.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-b32c5c23bcc6ef292a277a81.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-b531c194adc06278d2848c15.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-c7e780f791ed80b93e952724.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-d175b641e664e7aa9313a7cf.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-d811a8ff55e3be45ee40a356.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-df3a1ba29ac08cb4678d00f9.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-fcd3a53467b3b1fe8df8703f.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-3.prefab",
+        "resource_key": "OriginalShips/cabin-3",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-3",
+        "source_mesh_count": 58,
+        "source_vertices": 16842,
+        "source_triangles": 18922,
+        "prefab_mesh_count": 58,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 1,
+        "deck_names": [
+          "FLIGHT / UTILITY"
+        ],
+        "room_count": 2
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Author an original Wisp concept and component view set for its existing Courier role; do not silently rename it to Kestrel."
+    },
+    {
+      "family": 4,
+      "name": "Manta",
+      "class": "Pathfinder",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        40,
+        49
+      ],
+      "variants": [
+        {
+          "id": "LW-S041",
+          "index": 40,
+          "name": "Manta Chalk",
+          "dimensions_metres_length_width_height": [
+            24.608224119138903,
+            36.150029616337264,
+            5.460370905106888
+          ]
+        },
+        {
+          "id": "LW-S042",
+          "index": 41,
+          "name": "Manta Graphite",
+          "dimensions_metres_length_width_height": [
+            24.289197865622118,
+            34.241858752537524,
+            5.145947742421181
+          ]
+        },
+        {
+          "id": "LW-S043",
+          "index": 42,
+          "name": "Manta Ochre",
+          "dimensions_metres_length_width_height": [
+            28.511901228495407,
+            31.76815393390134,
+            4.868172998990864
+          ]
+        },
+        {
+          "id": "LW-S044",
+          "index": 43,
+          "name": "Manta Glacier",
+          "dimensions_metres_length_width_height": [
+            24.36366943802219,
+            35.062394273839885,
+            4.960342611001805
+          ]
+        },
+        {
+          "id": "LW-S045",
+          "index": 44,
+          "name": "Manta Oxide",
+          "dimensions_metres_length_width_height": [
+            29.15469057452632,
+            31.509454708267004,
+            5.0608744350411
+          ]
+        },
+        {
+          "id": "LW-S046",
+          "index": 45,
+          "name": "Manta Olive",
+          "dimensions_metres_length_width_height": [
+            26.991354864144235,
+            33.380433144047856,
+            5.366102622954175
+          ]
+        },
+        {
+          "id": "LW-S047",
+          "index": 46,
+          "name": "Manta Titanium",
+          "dimensions_metres_length_width_height": [
+            26.338462317720985,
+            31.559744474571197,
+            5.02349056407623
+          ]
+        },
+        {
+          "id": "LW-S048",
+          "index": 47,
+          "name": "Manta Cobalt",
+          "dimensions_metres_length_width_height": [
+            25.184016002048736,
+            35.881622918602076,
+            5.274965766556562
+          ]
+        },
+        {
+          "id": "LW-S049",
+          "index": 48,
+          "name": "Manta Bone",
+          "dimensions_metres_length_width_height": [
+            28.42865173329134,
+            34.17102746106684,
+            5.179920516207814
+          ]
+        },
+        {
+          "id": "LW-S050",
+          "index": 49,
+          "name": "Manta Obsidian",
+          "dimensions_metres_length_width_height": [
+            26.81758384474553,
+            30.7406932217069,
+            5.404681452048942
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [
+          "Survey pilot"
+        ],
+        "npc_selection_note": "Selections verified in runtime source; this audit does not claim a particular save currently has this vessel spawned."
+      },
+      "concept": {
+        "named_exterior_reference": "ArtDirection/fleet-target.png",
+        "panel": "bottom-right / MANTA",
+        "status": "perspective fleet board only; no family component/six-view source set",
+        "prompt_source": "ArtDirection/prompts.json",
+        "concept_length_metres": 32.0,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png",
+        "scale_warning": "Concept board dimensions differ from catalog; preserve gameplay dimensions or explicitly update the design contract before fitting meshes."
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-4",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 428,
+        "raw_vertices": 7212,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-4.prefab",
+        "resource_key": "OriginalShips/refit-4",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-4",
+        "source_mesh_count": 12,
+        "source_vertices": 98292,
+        "source_triangles": 32764,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-0e65a45b65e2ca4ade5dcac5.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-5239a4b846c9479c110de7b5.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-603003a84e4b3df6a93ebe2b.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-6a3fa41d1aa6cd54dcea2289.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-7431f138e1c8098d7eff9bca.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-79be95138a740c2597c4bb1d.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-93f6cba7cdf3f778a2c3099a.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-9d6a9cb4545837b1e6ec4198.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-a78db62604c601570c590fd0.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-b73e34564974b9a365999c35.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-c369f7a47e408e4c3f83b89f.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-d1656256ab20206a90e32798.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-4.prefab",
+        "resource_key": "OriginalShips/cabin-4",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-4",
+        "source_mesh_count": 58,
+        "source_vertices": 16842,
+        "source_triangles": 18922,
+        "prefab_mesh_count": 58,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 1,
+        "deck_names": [
+          "FLIGHT / UTILITY"
+        ],
+        "room_count": 2
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Extract Manta from its existing concept panel, preserve its identity, reconcile concept scale with catalog dimensions and author component orthographic views."
+    },
+    {
+      "family": 5,
+      "name": "Spur",
+      "class": "Salvage craft",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        50,
+        59
+      ],
+      "variants": [
+        {
+          "id": "LW-S051",
+          "index": 50,
+          "name": "Spur Chalk",
+          "dimensions_metres_length_width_height": [
+            31.22985945999855,
+            19.93584974068217,
+            6.65104615534097
+          ]
+        },
+        {
+          "id": "LW-S052",
+          "index": 51,
+          "name": "Spur Graphite",
+          "dimensions_metres_length_width_height": [
+            31.38390958639095,
+            17.22181803630665,
+            7.025675757036544
+          ]
+        },
+        {
+          "id": "LW-S053",
+          "index": 52,
+          "name": "Spur Ochre",
+          "dimensions_metres_length_width_height": [
+            31.736513029912018,
+            19.21687688464299,
+            6.7107017340827735
+          ]
+        },
+        {
+          "id": "LW-S054",
+          "index": 53,
+          "name": "Spur Glacier",
+          "dimensions_metres_length_width_height": [
+            28.901865443999416,
+            18.9068190746475,
+            6.853143291634507
+          ]
+        },
+        {
+          "id": "LW-S055",
+          "index": 54,
+          "name": "Spur Oxide",
+          "dimensions_metres_length_width_height": [
+            32.47101836740272,
+            17.521912383660673,
+            6.494730895902961
+          ]
+        },
+        {
+          "id": "LW-S056",
+          "index": 55,
+          "name": "Spur Olive",
+          "dimensions_metres_length_width_height": [
+            29.79589872475248,
+            19.66055108290166,
+            6.796546170372516
+          ]
+        },
+        {
+          "id": "LW-S057",
+          "index": 56,
+          "name": "Spur Titanium",
+          "dimensions_metres_length_width_height": [
+            28.476495271639433,
+            17.50698568774387,
+            6.476014384291135
+          ]
+        },
+        {
+          "id": "LW-S058",
+          "index": 57,
+          "name": "Spur Cobalt",
+          "dimensions_metres_length_width_height": [
+            28.45038709638873,
+            19.37639329866506,
+            6.634118388396687
+          ]
+        },
+        {
+          "id": "LW-S059",
+          "index": 58,
+          "name": "Spur Bone",
+          "dimensions_metres_length_width_height": [
+            27.43157808247255,
+            19.005088017554954,
+            6.91688533763867
+          ]
+        },
+        {
+          "id": "LW-S060",
+          "index": 59,
+          "name": "Spur Obsidian",
+          "dimensions_metres_length_width_height": [
+            28.1139593879343,
+            17.69944407483563,
+            6.380417850600556
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [],
+        "npc_selection_note": "No NPC seed assignment found for this family"
+      },
+      "concept": {
+        "named_exterior_reference": "ArtDirection/fleet-target.png",
+        "panel": "bottom-left / SPUR",
+        "status": "perspective fleet board only; no family component/six-view source set",
+        "prompt_source": "ArtDirection/prompts.json",
+        "concept_length_metres": 42.0,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png",
+        "scale_warning": "Concept board dimensions differ from catalog; preserve gameplay dimensions or explicitly update the design contract before fitting meshes."
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-5",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 499,
+        "raw_vertices": 9832,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-5.prefab",
+        "resource_key": "OriginalShips/refit-5",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-5",
+        "source_mesh_count": 12,
+        "source_vertices": 122328,
+        "source_triangles": 40776,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-109816eb2236b992a03c056d.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-1e8e73a68c8d6e64a0c50315.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-303dc3f72cb814c16bd44f06.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-310a3c851e30f2b123dc5456.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-5e96ad79101a2aa74b108bde.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-5fb3c13cf42d5eeb8963ccdc.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-6ca4f1b8a3d1f474dbb7b6c0.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-940b82ed417a2c4bab56019b.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-aea60efa153f315b14020891.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-c453f4055f5b126d225f2447.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-d119a856ef15b5dd50d2e989.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-fed9bd599fb4016dfe42d44d.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-5.prefab",
+        "resource_key": "OriginalShips/cabin-5",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-5",
+        "source_mesh_count": 80,
+        "source_vertices": 33822,
+        "source_triangles": 31846,
+        "prefab_mesh_count": 80,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 2,
+        "deck_names": [
+          "FLIGHT / CREW",
+          "WORK DECK / AIRLOCK"
+        ],
+        "room_count": 11
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Extract Spur from its existing concept panel, preserve its identity, reconcile concept scale with catalog dimensions and author component orthographic views."
+    },
+    {
+      "family": 6,
+      "name": "Gannet",
+      "class": "Shuttle",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        60,
+        69
+      ],
+      "variants": [
+        {
+          "id": "LW-S061",
+          "index": 60,
+          "name": "Gannet Chalk",
+          "dimensions_metres_length_width_height": [
+            28.840564458221195,
+            21.98483187891543,
+            7.222982284076512
+          ]
+        },
+        {
+          "id": "LW-S062",
+          "index": 61,
+          "name": "Gannet Graphite",
+          "dimensions_metres_length_width_height": [
+            25.40982645617798,
+            21.501454164274037,
+            6.34203150227666
+          ]
+        },
+        {
+          "id": "LW-S063",
+          "index": 62,
+          "name": "Gannet Ochre",
+          "dimensions_metres_length_width_height": [
+            27.70616003740579,
+            21.61235373094678,
+            6.434571828179061
+          ]
+        },
+        {
+          "id": "LW-S064",
+          "index": 63,
+          "name": "Gannet Glacier",
+          "dimensions_metres_length_width_height": [
+            30.681397665403782,
+            18.54669054225087,
+            7.2667315262909975
+          ]
+        },
+        {
+          "id": "LW-S065",
+          "index": 64,
+          "name": "Gannet Oxide",
+          "dimensions_metres_length_width_height": [
+            29.16890960567631,
+            20.748361117206514,
+            7.266073966128752
+          ]
+        },
+        {
+          "id": "LW-S066",
+          "index": 65,
+          "name": "Gannet Olive",
+          "dimensions_metres_length_width_height": [
+            27.97798474598676,
+            18.651020059362054,
+            6.499002934252844
+          ]
+        },
+        {
+          "id": "LW-S067",
+          "index": 66,
+          "name": "Gannet Titanium",
+          "dimensions_metres_length_width_height": [
+            29.344789997376502,
+            21.475066262297332,
+            7.182529582520948
+          ]
+        },
+        {
+          "id": "LW-S068",
+          "index": 67,
+          "name": "Gannet Cobalt",
+          "dimensions_metres_length_width_height": [
+            27.329798025274652,
+            18.713305455632508,
+            6.797036181995645
+          ]
+        },
+        {
+          "id": "LW-S069",
+          "index": 68,
+          "name": "Gannet Bone",
+          "dimensions_metres_length_width_height": [
+            29.537190633779396,
+            20.095012333244085,
+            7.168470243491232
+          ]
+        },
+        {
+          "id": "LW-S070",
+          "index": 69,
+          "name": "Gannet Obsidian",
+          "dimensions_metres_length_width_height": [
+            29.653165401443843,
+            21.79149463865906,
+            7.2717223665528
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [],
+        "npc_selection_note": "No NPC seed assignment found for this family"
+      },
+      "concept": {
+        "named_exterior_reference": null,
+        "panel": null,
+        "status": "no dedicated named family concept found",
+        "prompt_source": null,
+        "concept_length_metres": null,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png"
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-6",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 571,
+        "raw_vertices": 10468,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-6.prefab",
+        "resource_key": "OriginalShips/refit-6",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-6",
+        "source_mesh_count": 12,
+        "source_vertices": 141744,
+        "source_triangles": 47248,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-0010ed94bd0b347a43ee7a6a.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-3c6a9c6275ddda06562d2447.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-4b6fb9d127c121cc2deb4624.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-7af9bb1acca4b4e9ee4629c2.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-8103509b45ae2ba33105e965.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-94f0f0fe83c84dd3be21d7df.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-b630023ce74372f4fb02e185.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-ddbddb27abe6618becc785ec.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-e49dfa5b57e21ac31e2f09cf.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-ee244b635021a402ca255afd.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-ee4992dd09828fe0b3c7d06f.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-fc7d15f13fd86513864417d3.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-6.prefab",
+        "resource_key": "OriginalShips/cabin-6",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-6",
+        "source_mesh_count": 80,
+        "source_vertices": 33822,
+        "source_triangles": 31846,
+        "prefab_mesh_count": 80,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 2,
+        "deck_names": [
+          "FLIGHT / CREW",
+          "WORK DECK / AIRLOCK"
+        ],
+        "room_count": 11
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Author an original Gannet concept and component view set for its existing Shuttle role; do not silently rename it to Kestrel."
+    },
+    {
+      "family": 7,
+      "name": "Wayfarer",
+      "class": "Exploration corvette",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        70,
+        79
+      ],
+      "variants": [
+        {
+          "id": "LW-S071",
+          "index": 70,
+          "name": "Wayfarer Chalk",
+          "dimensions_metres_length_width_height": [
+            99.98033429570495,
+            58.73095948537812,
+            17.48431459955871
+          ]
+        },
+        {
+          "id": "LW-S072",
+          "index": 71,
+          "name": "Wayfarer Graphite",
+          "dimensions_metres_length_width_height": [
+            103.59776362493633,
+            52.60632035611197,
+            17.716782179251314
+          ]
+        },
+        {
+          "id": "LW-S073",
+          "index": 72,
+          "name": "Wayfarer Ochre",
+          "dimensions_metres_length_width_height": [
+            98.70315642066299,
+            49.51633626893163,
+            19.11187375263311
+          ]
+        },
+        {
+          "id": "LW-S074",
+          "index": 73,
+          "name": "Wayfarer Glacier",
+          "dimensions_metres_length_width_height": [
+            96.60044368766249,
+            55.97897872980684,
+            17.856516251675785
+          ]
+        },
+        {
+          "id": "LW-S075",
+          "index": 74,
+          "name": "Wayfarer Oxide",
+          "dimensions_metres_length_width_height": [
+            87.35078989125789,
+            50.24020903492347,
+            18.763236909080295
+          ]
+        },
+        {
+          "id": "LW-S076",
+          "index": 75,
+          "name": "Wayfarer Olive",
+          "dimensions_metres_length_width_height": [
+            100.50762873440982,
+            57.68962278049439,
+            19.08794441669248
+          ]
+        },
+        {
+          "id": "LW-S077",
+          "index": 76,
+          "name": "Wayfarer Titanium",
+          "dimensions_metres_length_width_height": [
+            87.385729117468,
+            51.63227214412764,
+            18.949145889803766
+          ]
+        },
+        {
+          "id": "LW-S078",
+          "index": 77,
+          "name": "Wayfarer Cobalt",
+          "dimensions_metres_length_width_height": [
+            91.40221587516368,
+            54.73509478066117,
+            17.792655454427006
+          ]
+        },
+        {
+          "id": "LW-S079",
+          "index": 78,
+          "name": "Wayfarer Bone",
+          "dimensions_metres_length_width_height": [
+            95.07459980741143,
+            53.03087537074462,
+            18.71543224775232
+          ]
+        },
+        {
+          "id": "LW-S080",
+          "index": 79,
+          "name": "Wayfarer Obsidian",
+          "dimensions_metres_length_width_height": [
+            103.24187435947358,
+            57.25738433338702,
+            17.326054146364335
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [
+          "Named freight pilot / corvette transport"
+        ],
+        "npc_selection_note": "Selections verified in runtime source; this audit does not claim a particular save currently has this vessel spawned."
+      },
+      "concept": {
+        "named_exterior_reference": null,
+        "panel": null,
+        "status": "no dedicated named family concept found",
+        "prompt_source": null,
+        "concept_length_metres": null,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png"
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-7",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 1496,
+        "raw_vertices": 19616,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-7.prefab",
+        "resource_key": "OriginalShips/refit-7",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-7",
+        "source_mesh_count": 12,
+        "source_vertices": 348648,
+        "source_triangles": 116216,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-25d2babc482888b2c2ecae75.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-2f7bee9ad5c866c8dc51c747.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-481b68c95703d0f44245af71.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-676e249584e91dad5a97eece.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-71cac618ec59944d1806ac2d.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-7704d10bb998cb7426419548.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-78fcfd5e020315a78ee55498.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-956cc90e25238224835124f8.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-af462f63173913b45a07529b.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-c85b4e92c291426cf40e116a.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-d892269a1a8f57ac8870f823.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-ddd160409e575fd2b38ba9d0.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-7.prefab",
+        "resource_key": "OriginalShips/cabin-7",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-7",
+        "source_mesh_count": 115,
+        "source_vertices": 97520,
+        "source_triangles": 89002,
+        "prefab_mesh_count": 115,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 3,
+        "deck_names": [
+          "BRIDGE / CREW",
+          "SCIENCE / ENGINEERING",
+          "CARGO / AIRLOCK"
+        ],
+        "room_count": 28
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Author an original Wayfarer concept and component view set for its existing Exploration corvette role; do not silently rename it to Kestrel."
+    },
+    {
+      "family": 8,
+      "name": "Peregrine",
+      "class": "Racer",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        80,
+        89
+      ],
+      "variants": [
+        {
+          "id": "LW-S081",
+          "index": 80,
+          "name": "Peregrine Chalk",
+          "dimensions_metres_length_width_height": [
+            18.190618547312916,
+            12.352320995740591,
+            3.368036728659645
+          ]
+        },
+        {
+          "id": "LW-S082",
+          "index": 81,
+          "name": "Peregrine Graphite",
+          "dimensions_metres_length_width_height": [
+            20.158824188634753,
+            10.840398552641272,
+            3.3670323859546336
+          ]
+        },
+        {
+          "id": "LW-S083",
+          "index": 82,
+          "name": "Peregrine Ochre",
+          "dimensions_metres_length_width_height": [
+            18.29096704311669,
+            11.551636397838593,
+            3.675735660301522
+          ]
+        },
+        {
+          "id": "LW-S084",
+          "index": 83,
+          "name": "Peregrine Glacier",
+          "dimensions_metres_length_width_height": [
+            19.80794984954875,
+            10.881965330243112,
+            3.4096037057731303
+          ]
+        },
+        {
+          "id": "LW-S085",
+          "index": 84,
+          "name": "Peregrine Oxide",
+          "dimensions_metres_length_width_height": [
+            16.454449809961954,
+            11.77953420728445,
+            3.4905741706620903
+          ]
+        },
+        {
+          "id": "LW-S086",
+          "index": 85,
+          "name": "Peregrine Olive",
+          "dimensions_metres_length_width_height": [
+            18.119176950724796,
+            11.096952738426626,
+            3.5594896683990958
+          ]
+        },
+        {
+          "id": "LW-S087",
+          "index": 86,
+          "name": "Peregrine Titanium",
+          "dimensions_metres_length_width_height": [
+            19.030008882349357,
+            12.08039411790669,
+            3.6751077316012237
+          ]
+        },
+        {
+          "id": "LW-S088",
+          "index": 87,
+          "name": "Peregrine Cobalt",
+          "dimensions_metres_length_width_height": [
+            19.377851879750377,
+            11.540523739345371,
+            3.572865090988577
+          ]
+        },
+        {
+          "id": "LW-S089",
+          "index": 88,
+          "name": "Peregrine Bone",
+          "dimensions_metres_length_width_height": [
+            19.977577675287613,
+            11.42162670493126,
+            3.4228634336069232
+          ]
+        },
+        {
+          "id": "LW-S090",
+          "index": 89,
+          "name": "Peregrine Obsidian",
+          "dimensions_metres_length_width_height": [
+            17.113851388650946,
+            12.067997885495423,
+            3.5270190798696133
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [],
+        "npc_selection_note": "No NPC seed assignment found for this family"
+      },
+      "concept": {
+        "named_exterior_reference": null,
+        "panel": null,
+        "status": "no dedicated named family concept found",
+        "prompt_source": null,
+        "concept_length_metres": null,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png"
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-8",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 431,
+        "raw_vertices": 7232,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-8.prefab",
+        "resource_key": "OriginalShips/refit-8",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-8",
+        "source_mesh_count": 12,
+        "source_vertices": 99432,
+        "source_triangles": 33144,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-05e323d0763cdc3f04fe3e4e.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-391a87f33f3318616bd6a453.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-3fced2b37ddbc875a981d16b.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-40386ea669f81b8f16b50c7c.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-40d99545dbcf915dafd0914f.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-487edd84621f83114c3bbb86.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-5acb052c68a6b0c533975357.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-7a942998c0a03a9ab0e3f553.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-b91fd0c501302fd03c3da31b.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-dedec57c1f1313c6f92e7ceb.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-f2c3c1ad22d9805684f1f188.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-f4abe52c63555ca5fed3fdbf.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-8.prefab",
+        "resource_key": "OriginalShips/cabin-8",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-8",
+        "source_mesh_count": 58,
+        "source_vertices": 16842,
+        "source_triangles": 18922,
+        "prefab_mesh_count": 58,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 1,
+        "deck_names": [
+          "FLIGHT / UTILITY"
+        ],
+        "room_count": 2
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Author an original Peregrine concept and component view set for its existing Racer role; do not silently rename it to Kestrel."
+    },
+    {
+      "family": 9,
+      "name": "Meridian",
+      "class": "Expedition carrier",
+      "catalog": "Assets/SpacePatriot/Resources/Fleet.json",
+      "catalog_index_range": [
+        90,
+        99
+      ],
+      "variants": [
+        {
+          "id": "LW-S091",
+          "index": 90,
+          "name": "Meridian Chalk",
+          "dimensions_metres_length_width_height": [
+            220.16135111488404,
+            117.20642000436783,
+            51.51130004031584
+          ]
+        },
+        {
+          "id": "LW-S092",
+          "index": 91,
+          "name": "Meridian Graphite",
+          "dimensions_metres_length_width_height": [
+            231.43672152757645,
+            116.1721871526912,
+            54.13815562168137
+          ]
+        },
+        {
+          "id": "LW-S093",
+          "index": 92,
+          "name": "Meridian Ochre",
+          "dimensions_metres_length_width_height": [
+            217.73674030657858,
+            118.12751556672157,
+            48.4763855156675
+          ]
+        },
+        {
+          "id": "LW-S094",
+          "index": 93,
+          "name": "Meridian Glacier",
+          "dimensions_metres_length_width_height": [
+            244.79522023759782,
+            112.39902284294368,
+            49.96038565604017
+          ]
+        },
+        {
+          "id": "LW-S095",
+          "index": 94,
+          "name": "Meridian Oxide",
+          "dimensions_metres_length_width_height": [
+            266.938526632078,
+            114.8310114119202,
+            54.7318155441247
+          ]
+        },
+        {
+          "id": "LW-S096",
+          "index": 95,
+          "name": "Meridian Olive",
+          "dimensions_metres_length_width_height": [
+            223.92780587095768,
+            119.41512745544316,
+            50.48052597332746
+          ]
+        },
+        {
+          "id": "LW-S097",
+          "index": 96,
+          "name": "Meridian Titanium",
+          "dimensions_metres_length_width_height": [
+            217.40072457790373,
+            117.0469341589138,
+            49.81473891947419
+          ]
+        },
+        {
+          "id": "LW-S098",
+          "index": 97,
+          "name": "Meridian Cobalt",
+          "dimensions_metres_length_width_height": [
+            230.39432987384498,
+            117.31930593121797,
+            51.22691351426766
+          ]
+        },
+        {
+          "id": "LW-S099",
+          "index": 98,
+          "name": "Meridian Bone",
+          "dimensions_metres_length_width_height": [
+            249.32945656031367,
+            130.11416602097452,
+            48.86329019421712
+          ]
+        },
+        {
+          "id": "LW-S100",
+          "index": 99,
+          "name": "Meridian Obsidian",
+          "dimensions_metres_length_width_height": [
+            215.9501979427412,
+            127.16513691935688,
+            53.16497993117199
+          ]
+        }
+      ],
+      "runtime_usage": {
+        "player_selectable": true,
+        "default_starting_ship": false,
+        "npc_seeded_roles": [
+          "Named freight pilot / capital transport"
+        ],
+        "npc_selection_note": "Selections verified in runtime source; this audit does not claim a particular save currently has this vessel spawned."
+      },
+      "concept": {
+        "named_exterior_reference": null,
+        "panel": null,
+        "status": "no dedicated named family concept found",
+        "prompt_source": null,
+        "concept_length_metres": null,
+        "shared_cockpit_reference": "ArtDirection/cockpit-target.png",
+        "shared_interior_reference": "ArtDirection/interiors-target.png"
+      },
+      "current_model_source": {
+        "type": "procedural Blender fabrication, not local image-to-mesh generation",
+        "blend": "ArtDirection/Production/SpacePatriot-Fleet.blend",
+        "collection": "refit-9",
+        "collection_verified_by_opening_blend": true,
+        "mesh_objects": 1858,
+        "raw_vertices": 24624,
+        "generator": "Tools/AssetPipeline/blender_fleet.py"
+      },
+      "local_artwork_to_mesh_build": null,
+      "unity_exterior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/refit-9.prefab",
+        "resource_key": "OriginalShips/refit-9",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "refit-9",
+        "source_mesh_count": 12,
+        "source_vertices": 463584,
+        "source_triangles": 154528,
+        "prefab_mesh_count": 12,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "imported_mesh_assets": [
+          "Assets/SpacePatriot/Models/Original/mesh-0210f243fc886f437372acb6.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-1a29e0f36b651940b32437ab.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-1a63b4915139a226f616b071.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-23bb08a35d6b6e28354e0e5a.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-678e300db91d556b89dcd340.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-67eb4407ed31456e7ae8b644.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-68ab5bd618ecff0bd85c973b.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-9da76f3af19e9098b852626e.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-a1fcf288fbc321762fba1633.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-b78b26eff2945c98f48f53f6.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-b8b8f2dd490993dfcd7e7320.asset",
+          "Assets/SpacePatriot/Models/Original/mesh-d347646c644eb84aa914b476.asset"
+        ]
+      },
+      "unity_interior": {
+        "prefab": "Assets/SpacePatriot/Resources/OriginalShips/cabin-9.prefab",
+        "resource_key": "OriginalShips/cabin-9",
+        "import_manifest": "Assets/SpacePatriot/Original/Converted/import.json",
+        "model_record_id": "cabin-9",
+        "source_mesh_count": 166,
+        "source_vertices": 212166,
+        "source_triangles": 175550,
+        "prefab_mesh_count": 166,
+        "prefab_matches_current_import_manifest": true,
+        "unexpected_prefab_mesh_guids": [],
+        "manifest_mesh_guids_absent_from_prefab": [],
+        "has_serialized_lod_group": false,
+        "generator": "Tools/AssetPipeline/visuals/production-art.js",
+        "layout_generator": "Tools/AssetPipeline/visuals/production-layout.js",
+        "deck_plan": "Assets/SpacePatriot/Resources/DeckPlans.json",
+        "deck_count": 4,
+        "deck_names": [
+          "COMMAND / HABITATION",
+          "SCIENCE / MEDICAL",
+          "ENGINEERING / WORKSHOPS",
+          "FREIGHT / FLIGHT SUPPORT"
+        ],
+        "room_count": 53
+      },
+      "missing": [
+        "Dedicated component references and consistent top/bottom/port/starboard/nose/aft art",
+        "Family-specific local mesh generation/config and editable cleanup/rig build",
+        "Accepted UV0/PBR bakes with saved-file and matched-view validation",
+        "Reviewed replacement prefab wired to the existing runtime family",
+        "Replacement cabin/room geometry fitted to existing cockpit, door, cargo and deck interaction coordinates"
+      ],
+      "next_action": "Author an original Meridian concept and component view set for its existing Expedition carrier role; do not silently rename it to Kestrel."
+    }
+  ],
+  "unassigned_local_assets": [
+    {
+      "id": "Kestrel K-017",
+      "catalog_family": null,
+      "runtime_status": "ArtLab-only; absent from Fleet.json and runtime refit/cabin loaders",
+      "concept": "ArtDirection/fleet-target.png",
+      "concept_panel": "top-left / KESTREL",
+      "kit": "Tools/LocalMeshes/kestrel-kit.json",
+      "parts": [
+        {
+          "id": "Hull",
+          "reference": "ArtDirection/Modules/kestrel-hull-reference.png",
+          "raw_mesh": "ArtDirection/Generated/KestrelK017/kestrel-v1/Parts/Hull/raw.glb",
+          "generation_report": "ArtDirection/Generated/KestrelK017/kestrel-v1/Parts/Hull/raw.generation.json",
+          "instance_names": [
+            "Hull"
+          ]
+        },
+        {
+          "id": "Wing",
+          "reference": "ArtDirection/Modules/kestrel-wing-reference.png",
+          "raw_mesh": "ArtDirection/Generated/KestrelK017/kestrel-v1/Parts/Wing/raw.glb",
+          "generation_report": "ArtDirection/Generated/KestrelK017/kestrel-v1/Parts/Wing/raw.generation.json",
+          "instance_names": [
+            "Wing_Port",
+            "Wing_Starboard"
+          ]
+        },
+        {
+          "id": "LandingGear",
+          "reference": "ArtDirection/Modules/kestrel-landing-gear-reference.png",
+          "raw_mesh": "ArtDirection/Generated/KestrelK017/kestrel-v1/Parts/LandingGear/raw.glb",
+          "generation_report": "ArtDirection/Generated/KestrelK017/kestrel-v1/Parts/LandingGear/raw.generation.json",
+          "instance_names": [
+            "Gear_Nose",
+            "Gear_Port",
+            "Gear_Starboard"
+          ]
+        },
+        {
+          "id": "Drive",
+          "reference": "ArtDirection/Modules/kestrel-drive-reference-v2.png",
+          "raw_mesh": "ArtDirection/Generated/KestrelDrive/raw.glb",
+          "generation_report": "ArtDirection/Generated/KestrelDrive/raw.generation.json",
+          "instance_names": [
+            "Drive_Port",
+            "Drive_Starboard"
+          ]
+        }
+      ],
+      "hull_six_view_art": "ArtDirection/Modules/kestrel-hull-ortho-v1/turnaround.json",
+      "editable_assembled_source": "ArtDirection/Generated/KestrelK017/kestrel-v1/Kestrel_K017.blend",
+      "local_build_pointer": "ArtDirection/Generated/KestrelK017/active-build.txt",
+      "local_build_pointer_value": "kestrel-bake-current-settings",
+      "pointer_build_fbx": "ArtDirection/Generated/KestrelK017/kestrel-bake-current-settings/Kestrel_K017.fbx",
+      "unity_review_prefabs": [
+        "Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-v1/Kestrel_K017.prefab"
+      ],
+      "pointer_build_has_unity_review_prefab": false,
+      "missing": [
+        "Explicit relationship to the existing ten gameplay families",
+        "Completed fit/bake/attachment review",
+        "Runtime adapter preserving +Z flight direction, measured scale, landing gear, cockpit and deck interactions",
+        "Runtime prefab integration"
+      ]
+    },
+    {
+      "id": "Kestrel drive module",
+      "catalog_family": null,
+      "runtime_status": "Standalone ArtLab module; not a playable vessel",
+      "concept": "ArtDirection/Modules/kestrel-drive-reference-v2.png",
+      "raw_mesh": "ArtDirection/Generated/KestrelDrive/raw.glb",
+      "editable_source": "ArtDirection/Generated/KestrelDrive/Kestrel_Drive.blend",
+      "unity_review_prefab": "Assets/SpacePatriot/ArtLab/KestrelDrive/KestrelDrive.prefab"
+    }
+  ],
+  "other_runtime_vehicle": {
+    "name": "Automated district shuttle",
+    "kind": "Procedural ground transit / district tram, not a Fleet ship",
+    "source": {
+      "path": "Assets/SpacePatriot/Scripts/CityDistricts.cs",
+      "line": 64,
+      "contains": "var transit=Root(\"Automated district shuttle\""
+    },
+    "concept": null,
+    "local_mesh_build": null,
+    "unity_prefab": null,
+    "next_action": "If included in the vehicle art overhaul, add a separate transit asset contract rather than reuse a spacecraft family."
+  },
+  "inactive_legacy_assets": {
+    "original_hull_prefabs": [
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-0.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-1.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-2.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-3.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-4.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-5.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-6.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-7.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-8.prefab",
+      "Assets/SpacePatriot/Resources/OriginalShips/hull-9.prefab"
+    ],
+    "note": "Original imported hulls exist but active player/NPC ship loaders select refit-* instead. IndustrialArt.Ship is a procedural helper with no call site found in current runtime scripts."
+  },
+  "action_order": [
+    "Finish and verify Kestrel bake/UV persistence, six-view registration and module attachment fit.",
+    "Resolve Kestrel identity explicitly: new catalog ship or an explicitly chosen family replacement. Current source supplies no such mapping.",
+    "Reuse the validated tooling for Mule, Manta and Spur, which already have named hero concepts; author orthographic components before generation.",
+    "Create dedicated concepts for the remaining seven catalog families, preserving their existing roles, dimensions and multi-deck layouts.",
+    "Import and wire reviewed per-family exteriors/interiors into refit/cabin resource contracts; verify all ten player families and NPC/raider spawn paths in Unity."
+  ],
+  "verification": {
+    "all_recorded_artifact_paths_exist": true,
+    "verified_path_count": 1213,
+    "all_runtime_prefab_mesh_references_match_current_manifest": true,
+    "catalog_sha256": "f64a2fe1ce78b77225bb851929565692d1d62165711e5478d9e140e57f170036",
+    "import_manifest_sha256": "dac32e7a5fe67a856c2218a34ecb01318ad20a006fa10b1edcdea60bbc49c061",
+    "source_directories_searched": [
+      "ArtDirection/Modules",
+      "ArtDirection/Generated",
+      "ArtDirection/Concepts",
+      "Tools/LocalMeshes",
+      "Assets/SpacePatriot/ArtLab"
+    ],
+    "absence_claim_limit": "No family-specific artwork-to-mesh build or runtime mapping was found in the inspected project. Kestrel assets are listed separately rather than guessed to replace an existing family."
+  }
+}

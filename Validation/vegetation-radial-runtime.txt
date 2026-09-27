@@ -1,0 +1,5 @@
+PASS: grass grows on land previously rejected for negative Y: (1500.00, -27.00, 300.00)
+Radial clearance above sea: 44.965 m
+Grass blades: 108000
+LIMIT: the existing 2700 m port streaming cap is unchanged; full-sphere vegetation is unfinished.
+PASS: all vegetation layers populate negative-Y dry land: trees=867, meadow splats=37175, woodland splats=49032

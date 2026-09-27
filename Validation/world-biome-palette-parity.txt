@@ -1,0 +1,24 @@
+Worldworks / vegetation source-star palette parity
+Validated: 2026-09-26
+
+Source behavior
+- Reference/Original/source/climate.js chooses green foliage/grass at >= 4400 K and violet/blue pigments below 4400 K.
+- Reference/Original/source/visuals/vegetation-stage.js multiplies those pigments by twice each source splat's maximum RGB brightness.
+- Tools/AssetPipeline/export-worldworks.mjs now copies each source host's stellar.effectiveTemperatureK into the matching Unity WorldInfo. Its full export regenerated five blended original Worldworks/Terrainworks provinces for each of 13 solid worlds.
+
+Unity behavior
+- WorldInfo.GrassPigment reproduces the source moisture interpolation and switches the base/dry colors at 4400 K. WorldInfo.FoliagePigment reproduces the source canopy colors.
+- Grassworks blade vertices and shader now preserve the per-world pigment at blade bases and tips instead of replacing it with a fixed green.
+- GaussianVegetationLayer applies the source brightness multiplier to the same grass/canopy pigments.
+- Assets/SpacePatriot/Resources/Worlds.json contains stellar temperatures for all 19 worlds: Sun 5772 K, TRAPPIST-1 2566 K, TOI-270 3506 K. Thirteen solid-world Worldworks binary field sets were exported.
+
+Live Unity evidence
+- Unity 6000.3.25f1 Play Mode loaded 19 WorldInfo records; TRAPPIST-1 e loaded at 2566 K.
+- TRAPPIST-1 e at a valid highland point (-400, 33.63, 0) rendered blue-violet close grass and its forest/woodland layers. Its Grassworks runtime reported 108000 blades after streaming.
+- Earth rendered green at the same horizontal sample (-400, 28.65, 0); its computed GrassPigment(.65) was RGBA(0.225, 0.446, 0.083, 1).
+- Captures: Assets/Validation/worlds-earth-star-palette.png and Assets/Validation/worlds-trappist-1e-star-palette.png.
+- Unity compile status was successful, with no compile errors. Runtime console had zero current errors after a clean Play Mode restart.
+
+Limits
+- This verifies Earth and TRAPPIST-1 e, not all 19 worlds. Full flora recoloring for the close tree prefabs and all non-temperate biome vegetation still needs comparison against source renders.
+- The Unity view still shows oversized bright white effect/sun-glare artifacts in the grassland capture; this pass did not claim visual parity for lighting/effects.

@@ -1,1 +1,1 @@
-kestrel-v1
+kestrel-symmetric-mirror-20260926-r1

@@ -1,0 +1,20 @@
+{
+  "asset": "Kestrel K-017 central pressure hull",
+  "source": "Built-in image_gen, using kestrel-hull-reference.png as the design reference",
+  "status": "REJECTED FOR BAKE: test overlay exposed missing cockpit/panel geometry in Tripo hull; author mesh features first",
+  "generated": {
+    "kestrel-hull-underside-reference-v1.png": {
+      "requested_view": "orthographic ventral/bottom, nose left, aft right",
+      "observed_view": "ventral-like view with dark central service keel",
+      "silhouette_iou": { "blender_top": 0.7074, "blender_bottom": 0.7069 }
+    },
+    "kestrel-hull-dorsal-reference-v1.png": {
+      "requested_view": "orthographic dorsal/top, nose left, aft right",
+      "observed_view": "cockpit glazing visible",
+      "silhouette_iou": { "blender_top": 0.6649, "blender_bottom": 0.6647 }
+    }
+  },
+  "overlay": "Validation/hull-view-overlay-dorsal-flip/comparison.png; opaque-background alpha was excluded from concept masks before scoring",
+  "geometry_check": "Validation/Hull_Top_neutral.png and Validation/Hull_Bottom_neutral.png use a neutral emission material. Both show a smooth hull without physical cockpit glazing or raised surface panel geometry.",
+  "acceptance": "Do not feed these generated images to the color bake yet. Add and align real cockpit/frame and hull panel geometry, then render the same views and re-check silhouette/landmark overlays."
+}

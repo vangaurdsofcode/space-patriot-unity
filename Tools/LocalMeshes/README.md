@@ -33,13 +33,114 @@ Run the full pipeline from PowerShell on the configured development machine:
 .\Tools\LocalMeshes\build-kestrel.ps1
 ```
 
-It generates any missing raw components with TripoSG, retains a JSON provenance report beside each mesh, then runs `assemble_ship.py` in Blender. Blender cleans and scales each module, unwraps a dedicated UV atlas, projects concept color only onto faces oriented toward the reference view, uses the matching base finish elsewhere, bakes high-to-low tangent normals and roughness/metallic maps, makes three LODs per component and exports an editable `.blend`, a combined FBX and review renders. The concept image is a single view; the other five direction captures inspect the produced model and atlas, they are not independent source-image bakes. The FBX and atlas are review candidates; generated geometry and projected color need human art review before replacing production ship assets.
+It generates any missing raw components with TripoSG, retains a JSON provenance report beside each mesh, then runs `assemble_ship.py` in Blender. Blender cleans and scales each module, unwraps a dedicated UV atlas, projects concept color to front- and reverse-facing surfaces, uses a stable material on unseen faces, bakes roughness/metallic maps, makes three LODs per component and exports an editable `.blend`, a combined FBX and review renders. The hull recipe supplies dorsal and underside concept views, and the wing recipe supplies a separate wing-top view. `bake_hull_dorsal_overlay.py` fits each segmented crop to the corresponding hull or wing UV tile and saves post-bake views under both `Renders/DorsalOverlay/` and `Renders/Final/`. `dorsal-overlay-report.json` records per-view atlas coverage. Earlier build folders may contain pre-overlay images in `Renders/`; use `Renders/Final/` for the finished bake. The current TripoSG parts are untextured and non-watertight, so high-to-low normal ray baking is **off by default**; enable `bake_high_detail_normals` in the manifest only for an authored, cleaned high-poly source. Wing sides and undersides still need their own art views. The FBX and atlas are review candidates; generated geometry and projected color need human art review before replacing production ship assets.
+
+The isolated `kestrel-bake-quiet-surface-20260926` candidate removed the cracked-looking fallback and stray normal-ray pixels, but its atlas left reverse hull and wing faces nearly blank. `kestrel-bake-bilateral-pass2-20260926` mirrored the single concept projection across both sides, improving paint coverage but leaving top and underside surfaces unfinished. Its [comparison board](../../ArtDirection/Generated/KestrelK017/kestrel-bake-bilateral-pass2-20260926/Renders/Comparison/comparison-board.png) and [six-view ship board](../../ArtDirection/Generated/KestrelK017/kestrel-bake-bilateral-pass2-20260926/Renders/Comparison/six-view-ship-board.png) remain review-only.
+
+The perspective paint projection now uses one shared image scale for horizontal and vertical coordinates; earlier versions independently stretched both axes to the reference crop. The `kestrel-aspect-preserving-pass-20260926-r1` rebake reused the existing `kestrel-v1` meshes and regenerated the atlas plus six-view diagnostic boards. It remains a non-active candidate: the hull and full-ship silhouette checks are still below art-approval quality, and the single-view wing mesh fails the current comparison. Review [the bake board](../../ArtDirection/Generated/KestrelK017/kestrel-aspect-preserving-pass-20260926-r1/Renders/Comparison/comparison-board.png) and [the assembled six-view board](../../ArtDirection/Generated/KestrelK017/kestrel-aspect-preserving-pass-20260926-r1/Renders/Comparison/six-view-ship-board.png). Do not promote it by changing `active-build.txt`; fix the underlying wing/view fit and verify the hull and assembly against matched concept cameras first.
+
+### Fresh Kestrel hull UVs and ordered six-view bake
+
+The `kestrel-sixview-fit-review-20260926-r2` candidate is rejected: saving an already packed Blender image and calling `pack()` without supplying new bytes retained its old packed PNG. Every reopened pass restored the original atlas. Its old preservation-only check missed this because it never required new paint. Do not reuse that candidate or its success claims.
+
+`bake_kestrel_ortho_views.py` now makes `AtlasUV_SixView_v2` the sole UV0 on all three hull LODs, uses exact 12-pixel gutters, registers the artwork foreground at one uniform pixel/metre scale, and explicitly packs each newly saved PNG. It replaces the invalid hull albedo, normal and material channels on reset, then paints top, bottom, port, starboard, nose and aft one at a time. Earlier view pixels and non-hull atlas regions are protected. Normal/metal/roughness get neutral hull values compatible with the new UVs instead of sampling unrelated old atlas islands.
+
+The [r3 candidate](../../ArtDirection/Generated/KestrelK017/kestrel-sixview-persisted-20260926-r3/) passed independent save/reopen checks and Unity UV0 import for all LODs. `verify_kestrel_ortho_saved.py` reopens every blend, requires actual target-chart changes, compares protected pixels, checks packed bytes against each pass PNG, and validates UV0 and companion PBR channels. It correctly rejects the old broken candidate. `finalize_kestrel_sixview.py` exports only after the six passes and renders the reopened final file, avoiding intermediate in-memory preview claims. Visual issues still visible in the final renders include faceted projection seams, a detached forward landing leg and unfinished wing/drive surfaces. This is not a production art approval.
+
+`kestrel-kit.json` now selects the six-view route for normal builds. `build_ship.py` records all six source image hashes, runs the ordered pipeline and verification, then finalizes the FBX and blend. The cropped source views and coordinate convention are in [`turnaround.json`](../../ArtDirection/Modules/kestrel-hull-ortho-v1/turnaround.json). To run the bake independently, pass absolute paths and a fresh output directory:
+
+```powershell
+python Tools/LocalMeshes/bake_sixview_pipeline.py --blender C:/Tools/Blender/blender.exe --input C:/Builds/Kestrel/Kestrel_K017.blend --references C:/SpacePatriot/ArtDirection/Modules/kestrel-hull-ortho-v1 --output C:/Builds/Kestrel-sixview
+```
+
+Unity's `LocalShipImporter.ImportBuild(buildId)` imports a specific verified candidate into ArtLab without changing `active-build.txt`; `CaptureBuild(buildId)` renders that same candidate. A failed saved-bake report is rejected. The imported hull must have UV0 and no stale UV1 layout. The actual game fleet is tracked separately in [`fleet-mesh-port-inventory.json`](../../ArtDirection/fleet-mesh-port-inventory.json); Kestrel currently has no runtime family mapping.
+
+### Final UV unwrap after the ordered paint bake
+
+The final output now gets a separate post-bake unwrap. `post_bake_uv_pipeline.py` runs
+`repack_baked_hull.py`, then independently reopens the source and result with
+`verify_repacked_hull.py`. The [xatlas Python bindings](https://github.com/mworchel/xatlas-python)
+(`xatlas==0.0.11`, installed in the authoring Python) create new charts. A strict
+texel-overlap audit detects folded charts; the affected faces are split into
+separate UV islands and repacked. This does not move or replace hull vertices.
+
+The transfer samples the already completed six-view paint into the new
+`AtlasUV_Packed_v3` layout. It does not project another view over existing paint.
+All four atlas channels retain their non-hull quadrants. The old hull UV layer
+is removed after transfer. Each existing hull LOD is independently
+unwrapped and transferred into its own texture set; no decimation happens after
+packing. A rejected earlier candidate showed why: post-pack decimation folded
+the lower-LOD UVs. Unity binds the correct material per hull LOD and caps the
+lower texture imports at 1024/512 pixels with mipmaps. Other parts keep the
+protected LOD0 atlas. Detailed
+tangent-space normal maps are rejected by this transfer: the current neutral
+hull normal is supported; an authored detailed normal must be rebaked into the
+new tangent basis.
+
+### Hull and module symmetry
+
+The current recipe uses world +X for the nose, +Y for up, and Z for span. Its
+`Hull.symmetry` setting retains the port half (world Z<=0), cuts at Z=0, mirrors
+that half with its paint, and welds matching centerline vertices. This deliberately
+replaces the old starboard shape and paint with the port master. It runs after
+the six protected projection passes and before the final unwrap. Existing
+off-centerline holes and projection defects are not repaired by symmetry.
+
+`symmetrize_hull.py` checks saved/reopened vertex and face symmetry, winding,
+interpolated UVs, material bindings, exact source PNGs, and a closed centerline.
+The port half has more triangles than the old starboard half: the current
+symmetric hulls have 60,792 / 21,230 / 7,548 triangles. Each is independently
+unwrapped afterward; the old layout is not reused as the final bake layout.
+
+Wings and drives use `mirror_of` recipe entries, so the second instance is a
+true reflection of the first across Z=0. Opposite rotations are not equivalent.
+`mirror_ship_pairs.py` bakes reflected geometry with reversed triangle winding,
+preserved per-corner UVs, and positive object transforms. This mirrors existing
+root placements; it does not certify an authored mounting socket or hull contact.
+
+Normal `build-kestrel.ps1` builds follow the recipe through these steps. The
+six-view pipeline preserves its intermediate projection, `PostBakeUV/HullSymmetry`,
+UV, and `PairedModules` evidence. Final FBX/texture hashes are verified again after
+module mirroring. To apply just hull symmetry and the final UV transfer to an
+existing completed six-view blend, add `--symmetrize-hull` to
+`post_bake_uv_pipeline.py`. Omitting it preserves the supplied geometry.
+
+`bake_sixview_pipeline.py` runs this stage by default after top, bottom, port,
+starboard, nose and aft. The six intermediate blends remain available for
+checking paint preservation; `PostBakeUV/` holds the transfer evidence, and the
+root blend/FBX/textures plus `Renders/Saved/` are the final repacked result.
+`--projection-only` is an explicit diagnostic option to stop before this stage.
+
+An independent transfer can be run with absolute paths:
+
+```powershell
+python Tools/LocalMeshes/post_bake_uv_pipeline.py --blender C:/Tools/Blender/blender.exe --input C:/Builds/Kestrel/06-aft.blend --output C:/Builds/Kestrel-final-uv
+```
+
+`saved-uv-repack-validation.json` records save/reopen checks, exact protected
+pixels, packed/external PNG agreement, UV overlap checks on all three LODs,
+material bindings and surface RGBA comparisons (including smoothness alpha).
+Unity refuses repacked builds unless all three saved LODs passed and all twelve
+texture hashes plus the FBX hash match. `CaptureBuild(buildId, lod)` captures
+each imported LOD at an appropriate distance. A passing transfer preserves the existing appearance;
+it does not certify concept matching or repair pre-existing projection seams,
+malformed hull geometry, wings or floating landing-gear attachments.
+
+The current review build projects the hull's [dorsal](../../ArtDirection/Generated/KestrelK017/kestrel-wing-top-pipeline-20260926/Renders/Final/top.png) and [underside](../../ArtDirection/Generated/KestrelK017/kestrel-wing-top-pipeline-20260926/Renders/Final/underside.png) references and paints the wing tops from their own view. Its [quarter view](../../ArtDirection/Generated/KestrelK017/kestrel-wing-top-pipeline-20260926/Renders/Final/quarter.png) is the post-bake image, and per-view coverage is recorded in that build's `dorsal-overlay-report.json`. Oblique and underside-facing wing surfaces still need their own art views. A neutral-emission render strips color and confirms the generated hull has no physical canopy glazing or raised panel geometry ([top](../../Validation/Hull_Top_neutral.png), [bottom](../../Validation/Hull_Bottom_neutral.png), [starboard](../../Validation/Hull_Starboard_neutral.png)). The color projection fits detected white-background crops, avoiding detail shrinkage from full concept margins. The mesh still needs physical cockpit/frame and hull-panel geometry; art pixels cannot create real openings or raised details. The neutral-view renderer is `render_hull_geometry_views.py`; the alpha-safe silhouette overlay tool is `compare_hull_view_candidates.py`. The review candidate does not change the current active build.
 
 To repeat or resume one named build without regenerating successful meshes:
 
 ```powershell
 .\Tools\LocalMeshes\build-kestrel.ps1 -BuildId kestrel-v1 -Resume
 ```
+
+To rebake existing geometry against the current `kestrel-kit.json` without running TripoSG again, choose a new build id and reuse a prior build's source meshes. The new bake remains a review candidate unless `-DoNotActivate` is omitted:
+
+```powershell
+.\Tools\LocalMeshes\build-kestrel.ps1 -BuildId kestrel-rebake -ReuseMeshesFrom kestrel-v1
+```
+
+The command checks each reused mesh's recorded source-image hash before assembling. This avoids silently reusing geometry generated from a different concept image and avoids stale camera/UV settings stored in an older build manifest.
 
 The Unity Editor menu **Space Patriot → Art lab → Import latest baked Kestrel** copies the result into a versioned ArtLab folder, configures one URP atlas material and creates a prefab with the three levels grouped by distance. **Capture latest baked Kestrel** saves actual Unity renders for comparison. These commands leave the live fleet untouched. The color bake transfers visible paint placement from the reference; it cannot invent hidden-side paint or repair inaccurate mesh silhouettes. Screens, openings, controls, mechanical pivots and walkable interiors still require explicit authored geometry and interaction systems.
 

@@ -20,7 +20,8 @@ namespace SpacePatriot
             var vertices=new List<Vector3>();var indices=new List<int>();const int rings=180,sectors=256;
             for(int ring=0;ring<=rings;ring++)for(int j=0;j<=sectors;j++){
                 float a=j*Mathf.PI*2/sectors,r=ring*15f,x=Mathf.Cos(a)*r,z=Mathf.Sin(a)*r;
-                float y=Mathf.Sqrt(FrontierWorld.PlanetRadius*FrontierWorld.PlanetRadius-r*r)-FrontierWorld.PlanetRadius-7;
+                float seaRadius=FrontierWorld.PlanetRadius+FrontierWorld.SeaLevel;
+                float y=world.PlanetCenter.y+Mathf.Sqrt(seaRadius*seaRadius-r*r);
                 vertices.Add(new Vector3(x,y,z));if(ring<rings&&j<sectors){int k=ring*(sectors+1)+j;indices.AddRange(new[]{k,k+1,k+sectors+1,k+1,k+sectors+2,k+sectors+1});}
             }
             mesh=new Mesh{name="Oceanworks curved water",indexFormat=IndexFormat.UInt32};mesh.SetVertices(vertices);mesh.SetTriangles(indices,0);mesh.RecalculateNormals();mesh.RecalculateBounds();var bounds=mesh.bounds;bounds.Expand(2);mesh.bounds=bounds;

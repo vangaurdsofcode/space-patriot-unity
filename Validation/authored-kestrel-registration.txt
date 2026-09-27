@@ -1,0 +1,12 @@
+PASS Kestrel prototype registration
+Source build: kestrel-symmetric-mirror-20260926-r1
+Craft ID: SP-K017 (separate from 100 original variants)
+FBX SHA256: 33fdf4f8329fbd9b746e9fb8aa41c6ce98982bd0b26758eba648f5dc53558e73
+Saved UV LODs: 3
+Source maps checked: 12
+Unity maps checked: 9
+LOD0 parts/collision proxies: 8
+Source art prefab: Assets/SpacePatriot/ArtLab/KestrelK017/kestrel-symmetric-mirror-20260926-r1/Kestrel_K017.prefab
+Runtime prefab: Assets/SpacePatriot/Resources/AuthoredShips/KestrelK017/kestrel-symmetric-mirror-20260926-r1.prefab
+Source Blender +X nose rotates -90 degrees about Unity Y to gameplay +Z.
+Temporary cockpit/deck: original family 0. This does not validate Kestrel interior art.

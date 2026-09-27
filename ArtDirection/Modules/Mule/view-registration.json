@@ -1,0 +1,254 @@
+{
+  "schema": "space-patriot-orthographic-art-registration-v1",
+  "source_sha256": "d03ef0bff9572d1881c0f2399f98d4ed62d98d50e2e5c1299f5b46c7afce979c",
+  "canvas_pixels": [
+    1536,
+    768
+  ],
+  "normalization": "Independent affine bounds registration to the proposed physical component envelope; the raw concept drawings are retained unchanged.",
+  "three_dimensional_consistency_verified": false,
+  "mesh_overlay_verified": false,
+  "bake_approved": false,
+  "views": {
+    "top": {
+      "sheet_crop_ltrb": [
+        8,
+        48,
+        760,
+        325
+      ],
+      "raw_subject_bbox_ltrb": [
+        17,
+        16,
+        737,
+        259
+      ],
+      "raw_subject_size_pixels": [
+        720,
+        243
+      ],
+      "raw_pixels_per_metre_u_v": [
+        27.692307692307693,
+        25.3125
+      ],
+      "raw_anisotropy_ratio_u_over_v": 1.0940170940170941,
+      "registered_subject_bbox_ltrb": [
+        248,
+        192,
+        1288,
+        576
+      ],
+      "registered_metres_u_v": [
+        26.0,
+        9.6
+      ],
+      "registered_pixels_per_metre": 40,
+      "rescale_x_y": [
+        1.4444444444444444,
+        1.5802469135802468
+      ],
+      "raw_file": "views-raw/top.png",
+      "registered_file": "views-registered/top.png"
+    },
+    "bottom": {
+      "sheet_crop_ltrb": [
+        776,
+        48,
+        1528,
+        325
+      ],
+      "raw_subject_bbox_ltrb": [
+        2,
+        17,
+        738,
+        258
+      ],
+      "raw_subject_size_pixels": [
+        736,
+        241
+      ],
+      "raw_pixels_per_metre_u_v": [
+        28.307692307692307,
+        25.104166666666668
+      ],
+      "raw_anisotropy_ratio_u_over_v": 1.1276093201404405,
+      "registered_subject_bbox_ltrb": [
+        248,
+        192,
+        1288,
+        576
+      ],
+      "registered_metres_u_v": [
+        26.0,
+        9.6
+      ],
+      "registered_pixels_per_metre": 40,
+      "rescale_x_y": [
+        1.4130434782608696,
+        1.5933609958506223
+      ],
+      "raw_file": "views-raw/bottom.png",
+      "registered_file": "views-registered/bottom.png"
+    },
+    "port": {
+      "sheet_crop_ltrb": [
+        8,
+        384,
+        760,
+        635
+      ],
+      "raw_subject_bbox_ltrb": [
+        14,
+        10,
+        736,
+        231
+      ],
+      "raw_subject_size_pixels": [
+        722,
+        221
+      ],
+      "raw_pixels_per_metre_u_v": [
+        27.76923076923077,
+        31.126760563380284
+      ],
+      "raw_anisotropy_ratio_u_over_v": 0.8921336581970066,
+      "registered_subject_bbox_ltrb": [
+        248,
+        242,
+        1288,
+        526
+      ],
+      "registered_metres_u_v": [
+        26.0,
+        7.1
+      ],
+      "registered_pixels_per_metre": 40,
+      "rescale_x_y": [
+        1.440443213296399,
+        1.2850678733031675
+      ],
+      "raw_file": "views-raw/port.png",
+      "registered_file": "views-registered/port.png"
+    },
+    "starboard": {
+      "sheet_crop_ltrb": [
+        776,
+        384,
+        1528,
+        635
+      ],
+      "raw_subject_bbox_ltrb": [
+        15,
+        10,
+        735,
+        231
+      ],
+      "raw_subject_size_pixels": [
+        720,
+        221
+      ],
+      "raw_pixels_per_metre_u_v": [
+        27.692307692307693,
+        31.126760563380284
+      ],
+      "raw_anisotropy_ratio_u_over_v": 0.8896623738252697,
+      "registered_subject_bbox_ltrb": [
+        248,
+        242,
+        1288,
+        526
+      ],
+      "registered_metres_u_v": [
+        26.0,
+        7.1
+      ],
+      "registered_pixels_per_metre": 40,
+      "rescale_x_y": [
+        1.4444444444444444,
+        1.2850678733031675
+      ],
+      "raw_file": "views-raw/starboard.png",
+      "registered_file": "views-registered/starboard.png"
+    },
+    "nose": {
+      "sheet_crop_ltrb": [
+        195,
+        703,
+        550,
+        991
+      ],
+      "raw_subject_bbox_ltrb": [
+        26,
+        10,
+        337,
+        267
+      ],
+      "raw_subject_size_pixels": [
+        311,
+        257
+      ],
+      "raw_pixels_per_metre_u_v": [
+        32.395833333333336,
+        36.19718309859155
+      ],
+      "raw_anisotropy_ratio_u_over_v": 0.8949821660181583,
+      "registered_subject_bbox_ltrb": [
+        576,
+        242,
+        960,
+        526
+      ],
+      "registered_metres_u_v": [
+        9.6,
+        7.1
+      ],
+      "registered_pixels_per_metre": 40,
+      "rescale_x_y": [
+        1.234726688102894,
+        1.105058365758755
+      ],
+      "raw_file": "views-raw/nose.png",
+      "registered_file": "views-registered/nose.png"
+    },
+    "aft": {
+      "sheet_crop_ltrb": [
+        976,
+        703,
+        1330,
+        991
+      ],
+      "raw_subject_bbox_ltrb": [
+        20,
+        5,
+        328,
+        266
+      ],
+      "raw_subject_size_pixels": [
+        308,
+        261
+      ],
+      "raw_pixels_per_metre_u_v": [
+        32.083333333333336,
+        36.760563380281695
+      ],
+      "raw_anisotropy_ratio_u_over_v": 0.872765006385696,
+      "registered_subject_bbox_ltrb": [
+        576,
+        242,
+        960,
+        526
+      ],
+      "registered_metres_u_v": [
+        9.6,
+        7.1
+      ],
+      "registered_pixels_per_metre": 40,
+      "rescale_x_y": [
+        1.2467532467532467,
+        1.0881226053639848
+      ],
+      "raw_file": "views-raw/aft.png",
+      "registered_file": "views-registered/aft.png"
+    }
+  }
+}

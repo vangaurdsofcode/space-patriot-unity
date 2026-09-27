@@ -20,7 +20,7 @@ namespace SpacePatriot
         public Transform ship,cabin,engines;
         Transform exterior;
         TextMesh velocityDisplay,serviceDisplay;
-        Vector3 velocity,walkPosition;
+        Vector3 velocity,walkPosition,walkForward=Vector3.forward;
         public bool flying,walking,cockpit,started,menu=true,dead;
         public string page="overview",toast="",reportTitle="",reportText="";
         public float speed,heat,shield=100,throttle,travelFade;
@@ -53,7 +53,7 @@ namespace SpacePatriot
             worlds=JsonUtility.FromJson<WorldCatalog>(Resources.Load<TextAsset>("Worlds").text).worlds;
             cases=JsonUtility.FromJson<CampaignCatalog>(Resources.Load<TextAsset>("Campaign").text).arcs;
             try{save=DesktopVerification.Active?new SaveData():CampaignStorage.Load();}catch{save=new SaveData();}
-            if(save==null||save.version<1)save=new SaveData();save.world=Mathf.Clamp(save.world,0,worlds.Length-1);if(save.version==1){save.ship=0;save.version=2;}save.ship=Mathf.Clamp(save.ship,0,99);save.ownedShips??=new List<int>{0};save.dockCargo??=new List<DockCargo>();save.vessel??=new VesselState();
+            if(save==null||save.version<1)save=new SaveData();save.world=Mathf.Clamp(save.world,0,worlds.Length-1);if(save.version==1){save.ship=0;save.version=2;}save.ship=Mathf.Clamp(save.ship,0,ShipSpec.Fleet.Length-1);save.ownedShips??=new List<int>{0};save.dockCargo??=new List<DockCargo>();save.vessel??=new VesselState();
             foreach(var c in cases)Progression.Get(save,c.id);
             FrontierEconomy.Ensure(save,worlds);
             LivingUniverse.Ensure(save,worlds);
@@ -77,16 +77,21 @@ namespace SpacePatriot
         {
             if(ship!=null){ship.gameObject.SetActive(false);Destroy(ship.gameObject);}
             ship=new GameObject(Spec.name).transform;ship.SetParent(transform);
-            var hullAsset=Resources.Load<GameObject>("OriginalShips/refit-"+Spec.family);
-            if(hullAsset==null)throw new System.InvalidOperationException("Original fleet assets must be imported before entering the game.");
-            exterior=Instantiate(hullAsset,ship).transform;exterior.name="Exterior hull";
-            var basis=ShipSpec.Fleet[Spec.family*10];exterior.localScale=new Vector3(Spec.width/basis.width,Spec.height/basis.height,Spec.length/basis.length);
-            cabin=Instantiate(Resources.Load<GameObject>("OriginalShips/cabin-"+Spec.family),ship).transform;
+            if(!AuthoredShipVisuals.TryCreate(Spec,ship,StandHeight,out exterior))
+            {
+                var hullAsset=Resources.Load<GameObject>("OriginalShips/refit-"+Spec.family);
+                if(hullAsset==null)throw new System.InvalidOperationException("Original fleet assets must be imported before entering the game.");
+                exterior=Instantiate(hullAsset,ship).transform;exterior.name="Exterior hull";
+                var basis=ShipSpec.Fleet[Spec.family*10];exterior.localScale=new Vector3(Spec.width/basis.width,Spec.height/basis.height,Spec.length/basis.length);
+            }
+            cabin=Instantiate(Resources.Load<GameObject>("OriginalShips/cabin-"+Spec.interiorFamily),ship).transform;
             cabin.name="Pressure cabin";PrepareDeck();cabin.localPosition=new Vector3(0,Spec.height*.23f,Spec.length*.18f);
             cabin.gameObject.AddComponent<CabinLighting>().Configure(activeDeck);
             engines=new GameObject("Drive plumes").transform;engines.SetParent(ship,false);
             var model=ship.gameObject.AddComponent<OriginalShip>();model.eye=cabin.localPosition;model.exterior=exterior;model.cabin=cabin;
-            var gearParts=new List<Transform>();foreach(var t in exterior.GetComponentsInChildren<Transform>())if(t.name=="Landing gear")gearParts.Add(t);model.gear=gearParts.ToArray();
+            var gearParts=new List<Transform>();foreach(var t in exterior.GetComponentsInChildren<Transform>())if(t.name=="Landing gear")gearParts.Add(t);
+            foreach(var r in exterior.GetComponentsInChildren<MeshRenderer>())if(r.name.StartsWith("Gear_",StringComparison.Ordinal)&&r.name.Contains("_LOD"))gearParts.Add(r.transform);
+            model.gear=gearParts.ToArray();
             foreach(var control in cabin.GetComponentsInChildren<CockpitControl>())control.gameObject.layer=2;
             velocityDisplay=Label(cabin,"VELOCITY",new Vector3(-1.02f,-.87f,1.46f),.0018f,new Color(.75f,.84f,.52f));
             serviceDisplay=Label(cabin,"SYSTEMS",new Vector3(1.02f,-.87f,1.46f),.0018f,new Color(.75f,.84f,.52f));
@@ -101,7 +106,7 @@ namespace SpacePatriot
         }
         void StartGame()
         {
-            started=true;menu=false;walking=true;walkPosition=ship.position+new Vector3(-Spec.width*.65f,1.75f-StandHeight,-3);walkYaw=0;walkPitch=0;
+            started=true;menu=false;walking=true;SetSurfaceWalker(ship.position+new Vector3(-Spec.width*.65f,0,-3),ship.forward);
             Toast("WASD to walk • Right mouse to look • F to board • E to use equipment • Cargo handling at the freight terminal");Save();
         }
         public void Save()
@@ -119,10 +124,14 @@ namespace SpacePatriot
         static bool MouseButton(int i)=>Mouse.current!=null&&(i==0?Mouse.current.leftButton.isPressed:Mouse.current.rightButton.isPressed);
         void Update()
         {
+            // Unity can recompile scripts while Play Mode is active without
+            // invoking Awake again. Recreate transient input helpers before
+            // movement/combat callbacks use them after that domain reload.
+            bindings??=new FlightBindings();pilot??=new PilotInput();
             float dt=Mathf.Min(Time.deltaTime,.04f);
             if(Down(Key.F11))ToggleDesktopFullscreen();
             float fit=Mathf.Min(Screen.width/1440f,Screen.height/900f);float rw=1440*fit/Screen.width,rh=900*fit/Screen.height;view.rect=new Rect((1-rw)/2,(1-rh)/2,rw,rh);view.aspect=1.6f;
-            world.Atmosphere(view,ship.position.y-world.Deck);
+            world.Atmosphere(view,walking&&!aboard?walkPosition:ship.position);
             world.StreamSurface(walking&&!aboard?walkPosition:ship.position,walking&&!aboard);
             if(Time.frameCount%8==0)UpdateInstruments();
             if(Down(Key.Escape)||Gamepad.current?.startButton.wasPressedThisFrame==true)
@@ -171,12 +180,18 @@ namespace SpacePatriot
             walkYaw+=Axis(Key.LeftArrow,Key.RightArrow)*90*dt;walkPitch=Mathf.Clamp(walkPitch+Axis(Key.UpArrow,Key.DownArrow)*65*dt,-75,75);
             var pad=Gamepad.current;var stick=pad?.leftStick.ReadValue()??Vector2.zero;var look=pad?.rightStick.ReadValue()??Vector2.zero;
             walkYaw+=look.x*110*dt;walkPitch=Mathf.Clamp(walkPitch+look.y*90*dt*(PlayerPrefs.GetInt("sp.padInvert",0)==1?1:-1),-75,75);
-            var move=Quaternion.Euler(0,walkYaw,0)*new Vector3(bindings.Axis("Strafe left","Strafe right")+stick.x,0,bindings.Axis("Reverse","Forward")+stick.y);if(move.sqrMagnitude>1)move.Normalize();
-            Vector3 next=walkPosition+move*(Held(Key.LeftShift)?8:4.5f)*dt;
-            float ground=world.SurfaceAt(next);
-            // Do not allow walking across a platform edge or through a wall.
-            if(Mathf.Abs(ground-(walkPosition.y-1.75f))<1.2f&&!Physics.Raycast(walkPosition,move,out _,move.magnitude*.5f))
-            {next.y=ground+1.75f;walkPosition=next;}
+            var move=new Vector3(bindings.Axis("Strafe left","Strafe right")+stick.x,0,bindings.Axis("Reverse","Forward")+stick.y);if(move.sqrMagnitude>1)move.Normalize();
+            Vector3 groundPoint=walkPosition-Vector3.up*1.75f,normal=world.transform.up;
+            if(world.TrySurface(walkPosition,out var currentPoint,out var currentNormal)){groundPoint=currentPoint;normal=currentNormal;}
+            Vector3 forward=Vector3.ProjectOnPlane(walkForward,normal).normalized;
+            if(forward.sqrMagnitude<.01f)forward=Vector3.ProjectOnPlane(Vector3.forward,normal).normalized;
+            forward=Quaternion.AngleAxis(walkYaw,normal)*forward;Vector3 right=Vector3.Cross(normal,forward).normalized;
+            Vector3 travel=right*move.x+forward*move.z;
+            Vector3 next=walkPosition+travel*(Held(Key.LeftShift)?8:4.5f)*dt;
+            // Walk on the tangent patch over the globe, keeping the feet attached
+            // to the same collision surface used by ship landing.
+            if(!Physics.Raycast(walkPosition,travel,out _,travel.magnitude*.5f)&&world.TrySurface(next,out var nextPoint,out var nextNormal)&&Vector3.Distance(groundPoint,nextPoint)<1.2f)
+            {walkPosition=nextPoint+nextNormal*1.75f;walkForward=Vector3.ProjectOnPlane(forward,nextNormal).normalized;walkYaw=0;}
             if(Down(Key.E)||Down(Key.Z)||pad?.buttonEast.wasPressedThisFrame==true)Interact();
             if(bindings.Down("Board / leave seat")||Down(Key.J))BoardOrExit();
             if(Down(Key.B)){if(Held(Key.LeftShift))CollectFieldSample();else {Signal("scan");Toast("Survey scan complete. Shift+B collects a sample near the field station.");}}
@@ -216,7 +231,7 @@ namespace SpacePatriot
             cabin.gameObject.SetActive(aboard||!walking&&cockpit);
             if(aboard){view.transform.position=cabin.TransformPoint(deckPosition);view.transform.rotation=ship.rotation*Quaternion.Euler(walkPitch,walkYaw,0);exterior.gameObject.SetActive(false);}
             else if(walking)
-            {view.transform.position=walkPosition;view.transform.rotation=Quaternion.Euler(walkPitch,walkYaw,0);exterior.gameObject.SetActive(true);}
+            {view.transform.position=walkPosition;Vector3 up=world.transform.up,forward=walkForward;if(world.TrySurface(walkPosition,out _,out var normal)){up=normal;forward=Vector3.ProjectOnPlane(walkForward,normal).normalized;}forward=Quaternion.AngleAxis(walkYaw,up)*forward;view.transform.rotation=Quaternion.LookRotation(forward,up)*Quaternion.Euler(walkPitch,0,0);exterior.gameObject.SetActive(true);}
             else if(cockpit)
             {view.transform.position=cabin.position;view.transform.rotation=ship.rotation;exterior.gameObject.SetActive(false);}
             else
@@ -431,7 +446,7 @@ namespace SpacePatriot
             if(save.hull<=0){save.hull=0;dead=true;menu=false;velocity=Vector3.zero;Save();}
         }
         void Rescue()
-        {save.credits=Mathf.Max(0,save.credits-180);save.hull=Spec.health;save.crewHealth=100;save.fuel=Mathf.Max(save.fuel,35);shield=100;dead=false;ClearCombat();RespawnShip();SpawnRaiders();walking=true;walkPosition=ship.position+new Vector3(-Spec.width*.65f,1.75f-StandHeight,-3);Save();Toast("Port recovery complete. Service fee: up to 180 cr.");}
+        {save.credits=Mathf.Max(0,save.credits-180);save.hull=Spec.health;save.crewHealth=100;save.fuel=Mathf.Max(save.fuel,35);shield=100;dead=false;ClearCombat();RespawnShip();SpawnRaiders();walking=true;SetSurfaceWalker(ship.position+new Vector3(-Spec.width*.65f,0,-3),ship.forward);Save();Toast("Port recovery complete. Service fee: up to 180 cr.");}
     }
 }
 

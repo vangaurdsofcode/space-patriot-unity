@@ -39,7 +39,9 @@ public static class RestorationValidation
         var rt=JsonUtility.FromJson<SaveData>(JsonUtility.ToJson(s));Check(CargoHandling.Staged(rt,2,"ore")==2,"Dock inventory survives save round trip");
         var systems=new VesselState();systems.Allocate("engines",1);Check(systems.engines+systems.weapons+systems.shields==12,"Power redistribution conserves 12 points");
         systems.Get("engines").enabled=false;Check(systems.Factor("engines",true)==0,"Disabled engine component removes thrust");
-        Check(ShipSpec.Fleet.Length==100,"All 100 original craft variants restored");
+        bool originalsPreserved=ShipSpec.Fleet.Length>=100;
+        for(int i=0;i<100&&originalsPreserved;i++)originalsPreserved=ShipSpec.Fleet[i].family==i/10;
+        Check(originalsPreserved,"All 100 original craft variants remain in their catalog slots");
         Check(ShipSpec.Fleet[70].length>80&&ShipSpec.Fleet[90].length>210,"Large-ship dimensions are preserved");
         foreach(int family in new[]{0,1,2,3,4,5,6,7,8,9})Check(Resources.Load<GameObject>("OriginalShips/hull-"+family)!=null,"Original hull prefab "+family);
         foreach(var prefab in Resources.LoadAll<GameObject>("OriginalShips")){int missing=0;foreach(var node in prefab.GetComponentsInChildren<Transform>(true))missing+=GameObjectUtility.GetMonoBehavioursWithMissingScriptCount(node.gameObject);Check(missing==0,"No missing script references: "+prefab.name);}
