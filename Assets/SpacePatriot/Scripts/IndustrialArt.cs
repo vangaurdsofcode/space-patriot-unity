@@ -82,7 +82,9 @@ namespace SpacePatriot
             float b=Mathf.Min(.065f,Mathf.Min(scale.x,Mathf.Min(scale.y,scale.z))*.12f);float z=scale.z*.5f;
             string key="Panel "+scale.x.ToString("F3")+"/"+scale.y.ToString("F3")+"/"+scale.z.ToString("F3");
             var mesh=HullMesh(new[]{-z,-z+b,z-b,z},new[]{scale.x-b*2,scale.x,scale.x,scale.x-b*2},new[]{scale.y-b*2,scale.y,scale.y,scale.y-b*2},new[]{0f,0,0,0},key);
-            var go=MeshObject(name,parent,mesh,material,p,Vector3.one);if(collider)go.AddComponent<BoxCollider>();return go;
+            // Box geometry is baked into the mesh; the Transform remains unit scale.
+            // A default BoxCollider is only 1 m across, regardless of the visible deck.
+            var go=MeshObject(name,parent,mesh,material,p,Vector3.one);if(collider)go.AddComponent<BoxCollider>().size=scale;return go;
         }
         public static GameObject Cylinder(string name,Transform parent,Vector3 p,float radius,float length,Material mat,bool horizontal=false)
         {

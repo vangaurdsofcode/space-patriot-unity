@@ -39,7 +39,7 @@ namespace SpacePatriot
             if(bindings.Down("Board / leave seat")){aboard=false;inputNeutral=true;return;}
             if(!Down(Key.E)&&!Down(Key.Z)&&pad?.buttonEast.wasPressedThisFrame!=true)return;
             if(activeDeck.decks.Length>1&&Mathf.Abs(deckPosition.x)<1.05f&&Mathf.Abs(deckPosition.z+5)<1.05f){deckLevel=(deckLevel+(Held(Key.LeftShift)?activeDeck.decks.Length-1:1))%activeDeck.decks.Length;deckLiftTarget=activeDeck.decks[deckLevel].y;deckPosition.x=0;deckPosition.z=-5;deckLiftMoving=true;Toast("Service lift travelling to deck "+(deckLevel+1));return;}
-            if(-deckPosition.z>activeDeck.end-2.4f){if(flying){Toast("Airlock interlock: land before disembarking.");return;}aboard=false;walking=true;SetSurfaceWalker(CargoAccess,ship.forward);return;}
+            if(-deckPosition.z>activeDeck.end-2.4f){if(flying){Toast("Airlock interlock: land before disembarking.");return;}aboard=false;walking=true;if(!SetSurfaceWalker(CargoAccess,ship.forward))aboard=true;return;}
             foreach(var station in activeDeck.stations)if(station.deck==deckLevel&&Vector2.Distance(new Vector2(deckPosition.x,-deckPosition.z),new Vector2(station.x,station.z))<1.3f){
                 if(station.id=="pilot"){aboard=false;inputNeutral=true;}
                 else if(station.id=="medical"){if(save.crewHealth<100&&save.vessel.spares>=1){save.vessel.spares--;save.crewHealth=Mathf.Min(100,save.crewHealth+40);Toast("Medical consumables replenished; crew recovery complete.");Save();}else Toast("Medical treatment requires an injury and one supply component.");}

@@ -181,17 +181,28 @@ namespace SpacePatriot
             var pad=Gamepad.current;var stick=pad?.leftStick.ReadValue()??Vector2.zero;var look=pad?.rightStick.ReadValue()??Vector2.zero;
             walkYaw+=look.x*110*dt;walkPitch=Mathf.Clamp(walkPitch+look.y*90*dt*(PlayerPrefs.GetInt("sp.padInvert",0)==1?1:-1),-75,75);
             var move=new Vector3(bindings.Axis("Strafe left","Strafe right")+stick.x,0,bindings.Axis("Reverse","Forward")+stick.y);if(move.sqrMagnitude>1)move.Normalize();
-            Vector3 groundPoint=walkPosition-Vector3.up*1.75f,normal=world.transform.up;
-            if(world.TrySurface(walkPosition,out var currentPoint,out var currentNormal)){groundPoint=currentPoint;normal=currentNormal;}
-            Vector3 forward=Vector3.ProjectOnPlane(walkForward,normal).normalized;
-            if(forward.sqrMagnitude<.01f)forward=Vector3.ProjectOnPlane(Vector3.forward,normal).normalized;
-            forward=Quaternion.AngleAxis(walkYaw,normal)*forward;Vector3 right=Vector3.Cross(normal,forward).normalized;
+            Vector3 up=world.WalkUp(walkPosition);
+            Vector3 feet=walkPosition-up*1.75f;
+            Vector3 forward=Vector3.ProjectOnPlane(walkForward,up).normalized;
+            if(forward.sqrMagnitude<.01f)forward=Vector3.ProjectOnPlane(Vector3.forward,up).normalized;
+            forward=Quaternion.AngleAxis(walkYaw,up)*forward;Vector3 right=Vector3.Cross(up,forward).normalized;
             Vector3 travel=right*move.x+forward*move.z;
-            Vector3 next=walkPosition+travel*(Held(Key.LeftShift)?8:4.5f)*dt;
-            // Walk on the tangent patch over the globe, keeping the feet attached
-            // to the same collision surface used by ship landing.
-            if(!Physics.Raycast(walkPosition,travel,out _,travel.magnitude*.5f)&&world.TrySurface(next,out var nextPoint,out var nextNormal)&&Vector3.Distance(groundPoint,nextPoint)<1.2f)
-            {walkPosition=nextPoint+nextNormal*1.75f;walkForward=Vector3.ProjectOnPlane(forward,nextNormal).normalized;walkYaw=0;}
+            if(travel.sqrMagnitude>.0001f)
+            {
+                Vector3 nextFeet=feet+travel*(Held(Key.LeftShift)?8:4.5f)*dt;
+                if(world.TryWalkSupport(nextFeet,.45f,.85f,out var nextPoint,out _,out var support))
+                {
+                    Vector3 nextUp=world.WalkUp(nextPoint);
+                    if(world.WalkClear(nextPoint,nextUp,support))
+                    {walkPosition=nextPoint+nextUp*1.75f;walkForward=Vector3.ProjectOnPlane(forward,nextUp).normalized;walkYaw=0;}
+                }
+            }
+            else if(world.TryWalkSupport(feet,.45f,.85f,out var currentPoint,out _,out var currentSupport)
+                && world.WalkClear(currentPoint,world.WalkUp(currentPoint),currentSupport))
+            {
+                // No input means no horizontal drift. Follow a moving deck vertically.
+                walkPosition+=up*Vector3.Dot(currentPoint-feet,up);
+            }
             if(Down(Key.E)||Down(Key.Z)||pad?.buttonEast.wasPressedThisFrame==true)Interact();
             if(bindings.Down("Board / leave seat")||Down(Key.J))BoardOrExit();
             if(Down(Key.B)){if(Held(Key.LeftShift))CollectFieldSample();else {Signal("scan");Toast("Survey scan complete. Shift+B collects a sample near the field station.");}}
@@ -231,7 +242,7 @@ namespace SpacePatriot
             cabin.gameObject.SetActive(aboard||!walking&&cockpit);
             if(aboard){view.transform.position=cabin.TransformPoint(deckPosition);view.transform.rotation=ship.rotation*Quaternion.Euler(walkPitch,walkYaw,0);exterior.gameObject.SetActive(false);}
             else if(walking)
-            {view.transform.position=walkPosition;Vector3 up=world.transform.up,forward=walkForward;if(world.TrySurface(walkPosition,out _,out var normal)){up=normal;forward=Vector3.ProjectOnPlane(walkForward,normal).normalized;}forward=Quaternion.AngleAxis(walkYaw,up)*forward;view.transform.rotation=Quaternion.LookRotation(forward,up)*Quaternion.Euler(walkPitch,0,0);exterior.gameObject.SetActive(true);}
+            {view.transform.position=walkPosition;Vector3 up=world.WalkUp(walkPosition),forward=Vector3.ProjectOnPlane(walkForward,up).normalized;forward=Quaternion.AngleAxis(walkYaw,up)*forward;view.transform.rotation=Quaternion.LookRotation(forward,up)*Quaternion.Euler(walkPitch,0,0);exterior.gameObject.SetActive(true);}
             else if(cockpit)
             {view.transform.position=cabin.position;view.transform.rotation=ship.rotation;exterior.gameObject.SetActive(false);}
             else

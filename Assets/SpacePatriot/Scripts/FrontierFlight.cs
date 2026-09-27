@@ -30,17 +30,37 @@ namespace SpacePatriot
                 walking=false;aboard=false;cockpit=true;Toast("Space launches • WASD translates • Arrows / mouse steer • Q/E roll • X brakes • G gear • V camera");return;}
             if(activeDeck!=null){aboard=!aboard;deckLevel=0;deckLiftMoving=false;if(deckLiftPlatform)deckLiftPlatform.localPosition=new Vector3(0,-1.7f,-5);deckPosition=new Vector3(0,0,-1.8f);walkYaw=walkPitch=0;cockpit=true;Toast(aboard?"Walk the deck. F returns to the helm; use the airlock to disembark.":"Pilot station occupied.");return;}
             if(flying){Toast("Land before opening the airlock.");return;}
-            walking=true;SetSurfaceWalker(ship.position+ship.right*(Spec.width*.6f+2),ship.forward);cockpit=false;
+            walking=true;if(SetSurfaceWalker(ship.position+ship.right*(Spec.width*.6f+2),ship.forward))cockpit=false;
         }
-        void SetSurfaceWalker(Vector3 near,Vector3 facing)
+        bool SetSurfaceWalker(Vector3 near,Vector3 facing)
         {
-            Vector3 normal=world.transform.up;
-            if(world.TrySurface(near,out var point,out var surfaceNormal)){normal=surfaceNormal;walkPosition=point+normal*1.75f;}
-            else {walkPosition=near;walkPosition.y=world.SurfaceAt(walkPosition)+1.75f;}
-            walkForward=Vector3.ProjectOnPlane(facing,normal).normalized;
-            if(walkForward.sqrMagnitude<.01f)walkForward=Vector3.ProjectOnPlane(Vector3.forward,normal).normalized;
-            if(walkForward.sqrMagnitude<.01f)walkForward=Vector3.ProjectOnPlane(Vector3.right,normal).normalized;
-            walkYaw=walkPitch=0;
+            Vector3 up=world.WalkUp(near);
+            Vector3 right=Vector3.Cross(up,facing).normalized;
+            if(right.sqrMagnitude<.01f)right=Vector3.right;
+            Vector3 forward=Vector3.ProjectOnPlane(facing,up).normalized;
+            if(forward.sqrMagnitude<.01f)forward=Vector3.forward;
+            float[] distances={0,2,4,8,12};
+            for(int ring=0;ring<distances.Length;ring++)
+            {
+                float distance=distances[ring];
+                for(int direction=0;direction<(ring==0?1:4);direction++)
+                {
+                    Vector3 offset=direction==0?right:direction==1?-right:direction==2?forward:-forward;
+                    Vector3 guess=near+offset*distance-up*1.75f;
+                    if(!world.TryWalkSupport(guess,.65f,Mathf.Max(8,StandHeight+5),out var point,out _,out var support))continue;
+                    Vector3 groundUp=world.WalkUp(point);
+                    if(!world.WalkClear(point,groundUp,support))continue;
+                    walkPosition=point+groundUp*1.75f;
+                    walkForward=Vector3.ProjectOnPlane(facing,groundUp).normalized;
+                    if(walkForward.sqrMagnitude<.01f)walkForward=Vector3.ProjectOnPlane(Vector3.forward,groundUp).normalized;
+                    if(walkForward.sqrMagnitude<.01f)walkForward=Vector3.ProjectOnPlane(Vector3.right,groundUp).normalized;
+                    walkYaw=walkPitch=0;
+                    return true;
+                }
+            }
+            walking=false;cockpit=true;
+            Toast("No clear ground beside the ship. Stay aboard and try another landing spot.");
+            return false;
         }
         bool NeutralControls()
         {
