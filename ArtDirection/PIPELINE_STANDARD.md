@@ -14,13 +14,13 @@ Put the returned `.glb` or `.fbx` beside the concept folder and run from the pro
 
 ```powershell
 blender --background --python Tools/AssetPipeline/creatures/prepare_tripo_asset.py -- `
-  ArtDirection/Production/Tripo/earth-wild-01.glb `
-  ArtDirection/Production/Tripo/earth-wild-01 earth-wild-01 fauna 2.0 +x
+  ArtDirection/Production/Tripo/earth-wild-01/raw.glb `
+  ArtDirection/Production/Tripo/earth-wild-01/prepared-review earth-wild-01 fauna 2.0 +x 0.5,0,0.5 '#687651'
 ```
 
-The arguments after `--` are source model, output folder, stable ID, category, target height in metres, and the model's source forward axis. The final optional argument sets the pivot as normalized `x,y,z` fractions inside the aligned model bounds. Omit it for ground-centred categories; weapons default to a grip/mount fraction and should be reviewed per model. For a weapon, pass its actual grip or mount point fraction after checking the six renders.
+The arguments after `--` are source model, output folder, stable ID, category, target height in metres, and the model's horizontal source-forward axis (`+x`, `-x`, `+z`, or `-z`). Source models use `+Y` up. Blender's glTF importer changes that to Blender `+Z` up, so the script restores `+Y` up before turning the forward axis to game `+Z`. Verify the source axis from model bounds and a side view; an incorrect axis can make all six bake reviews appear valid while standing the asset on its nose. The next optional argument sets the pivot as normalized `x,y,z` fractions inside aligned bounds. The last optional argument sets a flat sRGB `#RRGGBB` fallback color for untextured geometry; the script converts it to Blender linear input before baking, and it does not manufacture concept-art detail. Omit the pivot for ground-centred categories; weapons default to a grip/mount fraction and should be reviewed per model.
 
-The Blender run outputs a review render for each canonical view, `basecolor.png`, `normal-tangent.png`, `ambient-occlusion.png`, a `.blend` source file, a Unity-ready `.fbx`, and `bake-layout.json` with the final object bounds, camera transforms, UV bounds per mesh, atlas name, size, and padding. It preserves the source UV layer and writes the bake layout to a new UV layer, so the view grid and the bake coordinates stay independent. Bake margin is 16 pixels at 2048². Fix topology or UV failures in Blender, rerun, and compare the six matched reference views before import.
+The Blender run outputs a review render for each canonical view, `basecolor.png`, `normal-tangent.png`, `ambient-occlusion.png`, a `.blend` source file, an `.fbx` draft, and `bake-layout.json` with the final object bounds, axis conversion, camera transforms, UV bounds per mesh, atlas name, size, and padding. It preserves the source UV layer in Blender and exports only `SP_BakeUV` as UV0 for Unity. The view grid and bake coordinates stay independent. Bake margin is 16 pixels at 2048². Check the normal and AO PNG alpha as well as RGB; a bake command returning success does not prove that the saved map contains visible pixels. Fix topology or UV failures in Blender, rerun, and compare the six matched reference views before import.
 
 Compare approved views and Blender output with overlays and per-view pixel error:
 

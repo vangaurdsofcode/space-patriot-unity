@@ -1,0 +1,1 @@
+Functional roof retracted, lift raised 26m, 31 physical MFD click checks passed.
